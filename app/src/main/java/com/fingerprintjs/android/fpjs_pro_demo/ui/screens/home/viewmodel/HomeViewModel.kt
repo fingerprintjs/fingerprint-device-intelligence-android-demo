@@ -59,8 +59,7 @@ class HomeViewModel(private val applicationContext: Context) : ViewModel() {
     fun onReloadFingerprint() {
         viewModelScope.launch {
             mutableState.value = loadingState
-            delay(2000)
-            mutableState.value = HomeViewModelState.from(getVisitorId())
+            mutableState.value = HomeViewModelState.from(getRealOrStubbedVisitorId())
         }
     }
 
@@ -77,9 +76,10 @@ class HomeViewModel(private val applicationContext: Context) : ViewModel() {
         viewModelScope.launch { externalLinkToOpenMutable.emit(url) }
     }
 
-    private suspend fun getVisitorId(): FingerprintJSWrappedResult {
+    private suspend fun getRealOrStubbedVisitorId(): FingerprintJSWrappedResult {
         initJob.join()
         return if (mockingState.value == true) {
+            delay(2000)
             if (++reloadCount % 4 == 0)
                 FingerprintJSWrappedResult.Error(
                     error = StateMocks.fingerprintJSOtherError
