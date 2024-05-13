@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -88,7 +89,7 @@ val LightMaterialColorScheme: ColorScheme
 
 val DarkMaterialColorScheme: ColorScheme
     @Composable
-    get() = lightColorScheme(
+    get() = darkColorScheme(
         primary = AppColors.Orange400,
         onPrimary = AppColors.Gray900,
         primaryContainer = AppColors.Orange100,

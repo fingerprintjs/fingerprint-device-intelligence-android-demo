@@ -1,7 +1,7 @@
 /*
-The API key from the published version of the app is hidden from the source code.
-
-But in case you want to build the app locally and get the idea of how it looks like visually,
-there is an option to toggle response mocking.
+For release builds, a special version of this file is used.
 */
-const char* string = "DuMbApIkEy";
+const char *string = "DuMbApIkEy\n"
+                     "https://dashboard.fingerprint.com/signup\n"
+                     "__placeholder__\n"
+                     "__placeholder__\n";
