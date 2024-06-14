@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -125,7 +125,7 @@ fun HomeScreenInternal(
                         ) {
                             IconButton(onClick = onToggleMocking) {
                                 Icon(
-                                    imageVector = Icons.Filled.Build,
+                                    imageVector = Icons.Outlined.BugReport,
                                     contentDescription = "Toggle mocking",
                                     tint = when (isMockEnabled) {
                                         true -> MaterialTheme.colorScheme.primary
