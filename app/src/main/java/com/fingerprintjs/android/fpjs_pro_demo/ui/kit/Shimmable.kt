@@ -34,7 +34,7 @@ import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
 
 @Stable
-class ShimmableState<T>(
+data class ShimmableState<T>(
     val isShimmed: Boolean,
     val data: T,
 )

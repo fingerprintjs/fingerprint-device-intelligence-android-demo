@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.kit
 
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -10,10 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 
@@ -27,13 +29,16 @@ object LinkableText {
 
 @Composable
 fun LinkableText(
-    text: String,
+    text: AnnotatedString,
     modifier: Modifier = Modifier,
     links: List<LinkableText.Link> = emptyList(),
     style: TextStyle = LocalTextStyle.current,
     color: Color = Color.Unspecified,
     linkColor: Color = MaterialTheme.colorScheme.primary,
     textAlign: TextAlign = TextAlign.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    inlineContent: Map<String, InlineTextContent> = mapOf(),
 ) {
     // copied from "Text" function
     val textColor = color.takeOrElse {
@@ -78,6 +83,9 @@ fun LinkableText(
         modifier = modifier,
         text = annotatedString,
         style = style.merge(textAlign = textAlign),
+        inlineContent = inlineContent,
+        maxLines = maxLines,
+        overflow = overflow,
         onClick = {
             annotatedString
                 .getStringAnnotations(URL_TAG, it, it)
@@ -93,7 +101,7 @@ fun LinkableText(
 private fun WithLink() {
     AppTheme {
         LinkableText(
-            text = "Please contact support if you have any issues.",
+            text = buildAnnotatedString { append("Please contact support if you have any issues.") },
             links = listOf(
                 LinkableText.Link(
                     mask = "contact support",

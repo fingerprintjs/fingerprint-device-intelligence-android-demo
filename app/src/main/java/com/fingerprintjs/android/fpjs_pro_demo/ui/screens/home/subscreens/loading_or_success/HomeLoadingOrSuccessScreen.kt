@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,8 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.Shimmable
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeViewModelState
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.EventDetailsView
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.signup_prompt_view.SignupPromptView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.LoadingMocked
@@ -33,9 +37,12 @@ import com.fingerprintjs.android.fpjs_pro_demo.utils.copyOnLongPress
 @Composable
 fun HomeLoadingOrSuccessScreen(
     modifier: Modifier,
-    state: HomeLoadingOrSuccessScreenState,
+    state: HomeScreenUiState.LoadingOrSuccess,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -58,20 +65,22 @@ fun HomeLoadingOrSuccessScreen(
                     color = AppTheme.materialTheme.colorScheme.onBackground,
                 )
             }
+            val expandTransition = expandVertically(
+                expandFrom = Alignment.Top,
+                animationSpec = tween(),
+            ) + fadeIn(
+                animationSpec = tween(delayMillis = 100)
+            )
+            val shrinkTransition = shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                animationSpec = tween(delayMillis = 100)
+            ) + fadeOut(
+                animationSpec = tween()
+            )
             AnimatedVisibility(
                 visible = state.isLoading,
-                enter = expandVertically(
-                    expandFrom = Alignment.Top,
-                    animationSpec = tween(),
-                ) + fadeIn(
-                    animationSpec = tween(delayMillis = 100)
-                ),
-                exit = shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    animationSpec = tween(delayMillis = 100)
-                ) + fadeOut(
-                    animationSpec = tween()
-                ),
+                enter = expandTransition,
+                exit = shrinkTransition,
             ) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -106,6 +115,21 @@ fun HomeLoadingOrSuccessScreen(
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
+            AnimatedVisibility(
+                visible = state.isSignupPromptShown,
+                enter = expandTransition,
+                exit = shrinkTransition,
+            ) {
+                Column {
+                    SignupPromptView(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        onHideClicked = state.onHideSignupPromptClicked,
+                        onSignUpClicked = state.onSignupPromptClicked,
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            }
             Text(
                 text = "SDK Response",
                 style = AppTheme.materialTheme.typography.labelLarge,
@@ -114,8 +138,10 @@ fun HomeLoadingOrSuccessScreen(
         }
 
         EventDetailsView(
-            modifier = Modifier.fillMaxSize(),
-            state = state.eventDetailsViewState,
+            modifier = Modifier.wrapContentSize(),
+            prettifiedProperties = state.prettifiedProps,
+            rawJson = state.rawJson,
+            isLoading = state.isLoading,
         )
     }
 }
@@ -127,7 +153,7 @@ private fun Loading() {
         Surface {
             HomeLoadingOrSuccessScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeLoadingOrSuccessScreenState.from(HomeViewModelState.LoadingMocked),
+                state = HomeScreenUiState.LoadingOrSuccess.LoadingMocked,
             )
         }
     }
@@ -140,7 +166,7 @@ private fun Success() {
         Surface {
             HomeLoadingOrSuccessScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeLoadingOrSuccessScreenState.from(HomeViewModelState.SuccessMocked),
+                state = HomeScreenUiState.LoadingOrSuccess.SuccessMocked,
             )
         }
     }

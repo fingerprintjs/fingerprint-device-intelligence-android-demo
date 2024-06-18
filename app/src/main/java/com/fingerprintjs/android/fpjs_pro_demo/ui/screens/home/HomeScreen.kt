@@ -14,8 +14,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.BugReport
+import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,23 +45,18 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fingerprintjs.android.fpjs_pro_demo.R
+import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.rememberPullToRefreshStateCustom
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error.HomeErrorScreen
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error.HomeErrorScreenState
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error.from
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success.HomeLoadingOrSuccessScreen
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success.HomeLoadingOrSuccessScreenState
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success.from
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin.HomeTapToBeginScreen
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeViewModel
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeViewModelState
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.reloadAllowed
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropdown_menu.AppBarDropdownMenu
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropdown_menu.AppBarDropdownMenuItem
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ClipboardUtils
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
+import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.Mocked
 import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.SuccessMocked
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -66,23 +64,12 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun HomeScreen() {
-    val appContext = LocalContext.current.applicationContext!!
-    val viewModel: HomeViewModel = viewModel {
-        HomeViewModel(appContext)
-    }
+    val viewModel = injectedViewModel { homeViewModel }
     val state by viewModel.state.collectAsState()
     val mockingState by viewModel.mockingState.collectAsState()
-    val onStartFingerprint by rememberUpdatedState(viewModel::onStartFingerprint)
-    val onReloadFingerprint by rememberUpdatedState(viewModel::onReloadFingerprint)
-    val onSupportClicked by rememberUpdatedState(viewModel::onSupportClicked)
-    val onDocumentationClicked by rememberUpdatedState(viewModel::onDocumentationClicked)
     val onToggleMocking by rememberUpdatedState(viewModel::onToggleMocking)
     HomeScreenInternal(
         state = state,
-        onStartFingerprint = onStartFingerprint,
-        onReloadFingerprint = onReloadFingerprint,
-        onSupportClicked = onSupportClicked,
-        onDocumentationClicked = onDocumentationClicked,
         isMockEnabled = mockingState,
         onToggleMocking = onToggleMocking,
     )
@@ -94,18 +81,21 @@ fun HomeScreen() {
                 IntentUtils.openUrl(context, link)
             }
             .launchIn(this)
+
+
+        viewModel.textToCopy
+            .onEach { text ->
+                ClipboardUtils.copyToClipboardAndNotifyUser(context, text)
+            }
+            .launchIn(this)
     }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreenInternal(
-    state: HomeViewModelState,
+    state: HomeScreenUiState,
     isMockEnabled: Boolean? = false,
-    onStartFingerprint: () -> Unit = {},
-    onReloadFingerprint: () -> Unit = {},
-    onSupportClicked: () -> Unit = {},
-    onDocumentationClicked: () -> Unit = {},
     onToggleMocking: () -> Unit = {},
 ) {
     Scaffold(
@@ -135,7 +125,7 @@ fun HomeScreenInternal(
                         ) {
                             IconButton(onClick = onToggleMocking) {
                                 Icon(
-                                    imageVector = Icons.Filled.Build,
+                                    imageVector = Icons.Outlined.BugReport,
                                     contentDescription = "Toggle mocking",
                                     tint = when (isMockEnabled) {
                                         true -> MaterialTheme.colorScheme.primary
@@ -150,25 +140,40 @@ fun HomeScreenInternal(
                             imageVector = Icons.Filled.MoreVert,
                             contentDescription = "Open Navigation Drawer",
                         )
+                        val docIcon = Icons.AutoMirrored.Filled.MenuBook
+                        val mailIcon = Icons.Outlined.Mail
+                        val openInNewIcon = Icons.AutoMirrored.Filled.OpenInNew
                         AppBarDropdownMenu(
                             expanded = dropdownExpanded,
-                            items = remember {
+                            sections = remember {
                                 listOf(
-                                    AppBarDropdownMenuItem(
-                                        icon = R.drawable.ic_book_filled_left_page,
-                                        description = "Documentation",
-                                        onClick = {
-                                            onDocumentationClicked()
-                                            dropdownExpanded = false
-                                        },
+                                    listOf(
+                                        AppBarDropdownMenuItem(
+                                            icon = docIcon,
+                                            description = "Documentation",
+                                            onClick = {
+                                                state.onDocumentationClicked()
+                                                dropdownExpanded = false
+                                            },
+                                        ),
+                                        AppBarDropdownMenuItem(
+                                            icon = mailIcon,
+                                            description = "Support",
+                                            onClick = {
+                                                state.onSupportClicked()
+                                                dropdownExpanded = false
+                                            },
+                                        ),
                                     ),
-                                    AppBarDropdownMenuItem(
-                                        icon = R.drawable.ic_mail,
-                                        description = "Support",
-                                        onClick = {
-                                            onSupportClicked()
-                                            dropdownExpanded = false
-                                        },
+                                    listOf(
+                                        AppBarDropdownMenuItem(
+                                            icon = openInNewIcon,
+                                            description = "Sign up",
+                                            onClick = {
+                                                state.onSignupClicked()
+                                                dropdownExpanded = false
+                                            },
+                                        ),
                                     ),
                                 )
                             },
@@ -187,7 +192,7 @@ fun HomeScreenInternal(
 
         if (pullToRefreshState.isRefreshing) {
             LaunchedEffect(true) {
-                onReloadFingerprint()
+                state.onReload()
                 delay(500)
                 pullToRefreshState.endRefreshAnimated()
             }
@@ -213,28 +218,24 @@ fun HomeScreenInternal(
                     .padding(paddingValues),
             ) {
                 when (state) {
-                    is HomeViewModelState.TapToBegin -> {
+                    is HomeScreenUiState.TapToBegin -> {
                         HomeTapToBeginScreen(
                             modifier = Modifier.fillMaxSize(),
-                            onTapToBegin = onStartFingerprint,
+                            onTapToBegin = state.onTap,
                         )
                     }
 
-                    is HomeViewModelState.Error -> {
+                    is HomeScreenUiState.Error -> {
                         HomeErrorScreen(
                             modifier = Modifier.fillMaxSize(),
-                            state = HomeErrorScreenState.from(
-                                state = state,
-                                onSupport = onSupportClicked,
-                                onReload = onReloadFingerprint,
-                            ),
+                            state = state,
                         )
                     }
 
-                    is HomeViewModelState.LoadingOrSuccess -> {
+                    is HomeScreenUiState.LoadingOrSuccess -> {
                         HomeLoadingOrSuccessScreen(
                             modifier = Modifier.fillMaxSize(),
-                            state = HomeLoadingOrSuccessScreenState.from(state),
+                            state = state,
                         )
                     }
                 }
@@ -254,7 +255,7 @@ fun HomeScreenInternal(
 @Composable
 private fun TapToBegin() {
     AppTheme {
-        HomeScreenInternal(state = HomeViewModelState.TapToBegin)
+        HomeScreenInternal(state = HomeScreenUiState.TapToBegin.Mocked)
     }
 }
 
@@ -262,7 +263,7 @@ private fun TapToBegin() {
 @Composable
 private fun Success() {
     AppTheme {
-        HomeScreenInternal(state = HomeViewModelState.SuccessMocked)
+        HomeScreenInternal(state = HomeScreenUiState.LoadingOrSuccess.SuccessMocked)
     }
 }
 
@@ -270,6 +271,6 @@ private fun Success() {
 @Composable
 private fun Error() {
     AppTheme {
-        HomeScreenInternal(state = HomeViewModelState.Error.TooManyRequests)
+        HomeScreenInternal(state = HomeScreenUiState.Error.Mocked)
     }
 }

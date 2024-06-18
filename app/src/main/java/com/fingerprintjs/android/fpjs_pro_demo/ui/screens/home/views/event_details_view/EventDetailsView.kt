@@ -1,10 +1,11 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view
 
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Tab
@@ -13,11 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.EventPrettifiedView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.EventRawJsonView
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.SuccessMocked
 import kotlinx.coroutines.launch
 
 private enum class EventDetailsViewTabs(
@@ -35,15 +40,17 @@ private enum class EventDetailsViewTabs(
 @Composable
 fun EventDetailsView(
     modifier: Modifier,
-    state: EventDetailsViewState
+    prettifiedProperties: List<PrettifiedProperty>,
+    rawJson: String?,
+    isLoading: Boolean,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) { EventDetailsViewTabs.entries.size }
 
-    LaunchedEffect(state) {
-        if (state.isLoading) {
+    LaunchedEffect(isLoading) {
+        if (isLoading) {
             pagerState.scrollToPage(EventDetailsViewTabs.Prettified.ordinal)
         }
     }
@@ -66,7 +73,7 @@ fun EventDetailsView(
                             color = when (isTabActive) {
                                 true -> AppTheme.materialTheme.colorScheme.onBackground
                                 false -> AppTheme.materialTheme.colorScheme.onSurfaceVariant.let {
-                                    if (!state.isLoading) it
+                                    if (!isLoading) it
                                     else it.copy(alpha = 0.5f)
                                 }
                             },
@@ -75,7 +82,7 @@ fun EventDetailsView(
                         )
                     },
                     selected = pagerState.currentPage == tab.ordinal,
-                    enabled = !state.isLoading,
+                    enabled = !isLoading,
                     onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(tab.ordinal)
@@ -86,23 +93,26 @@ fun EventDetailsView(
         }
 
         HorizontalPager(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .wrapContentSize()
+                .animateContentSize(),
             state = pagerState,
+            verticalAlignment = Alignment.Top,
             userScrollEnabled = false,
         ) { page ->
             when (page) {
                 EventDetailsViewTabs.Prettified.ordinal -> {
                     EventPrettifiedView(
-                        modifier = Modifier.fillMaxSize(),
-                        properties = state.prettifiedProperties,
-                        isLoading = state.isLoading,
+                        modifier = Modifier.wrapContentSize(),
+                        properties = prettifiedProperties,
+                        isLoading = isLoading,
                     )
                 }
 
                 EventDetailsViewTabs.Raw.ordinal -> {
                     EventRawJsonView(
-                        modifier = Modifier.fillMaxSize(),
-                        code = state.rawJson.orEmpty()
+                        modifier = Modifier.wrapContentSize(),
+                        code = rawJson.orEmpty()
                     )
                 }
             }
@@ -116,11 +126,9 @@ private fun EventDetailsViewPreview() {
     AppTheme {
         EventDetailsView(
             modifier = Modifier.fillMaxSize(),
-            state = EventDetailsViewState(
-                prettifiedProperties = StateMocks.prettifiedProperties,
-                rawJson = null,
-                isLoading = false,
-            ),
+            rawJson = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.rawJson,
+            prettifiedProperties = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.prettifiedProps,
+            isLoading = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.isLoading,
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error
 
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,20 +12,23 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.LinkableText
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.Mocked
 
 @Composable
 fun HomeErrorScreen(
     modifier: Modifier,
-    state: HomeErrorScreenState,
+    state: HomeScreenUiState.Error,
 ) {
     Column(modifier = modifier) {
         Spacer(Modifier.weight(0.34f))
@@ -40,7 +42,7 @@ fun HomeErrorScreen(
             Image(
                 modifier = Modifier
                     .size(40.dp),
-                painter = painterResource(state.image),
+                imageVector = state.image,
                 contentDescription = "Error icon",
                 colorFilter = ColorFilter.tint(color = AppTheme.materialTheme.colorScheme.outline)
             )
@@ -52,8 +54,11 @@ fun HomeErrorScreen(
                 textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(8.dp))
+            val description = remember(state.description) {
+                buildAnnotatedString { append(state.description) }
+            }
             LinkableText(
-                text = state.description,
+                text = description,
                 links = state.links,
                 style = AppTheme.materialTheme.typography.bodyLarge,
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
@@ -77,7 +82,7 @@ private fun Preview() {
         Surface {
             HomeErrorScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeErrorScreenState.Mocked,
+                state = HomeScreenUiState.Error.Mocked,
             )
         }
     }
