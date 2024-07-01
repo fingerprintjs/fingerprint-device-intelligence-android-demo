@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.domain
+package com.fingerprintjs.android.fpjs_pro_demo.domain.signup
 
 import com.fingerprintjs.android.fpjs_pro_demo.storage.AppStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey
@@ -26,12 +26,12 @@ class ShowSignUpPromptUseCase @Inject constructor(
     }
 
     private suspend fun getFingerprintSuccessCount() =
-        appStorage.load(StorageKey.FingerprintSuccessCount, Int::class.java).getOrElse { 0 }
+        appStorage.load(StorageKey.FingerprintSuccessCount, Int::class).getOrElse { 0 }
     private suspend fun setFingerprintSuccessCount(value: Int) =
         appStorage.save(value,StorageKey.FingerprintSuccessCount)
 
     private suspend fun getSignupPromptHideTimeMillis() =
-        appStorage.load(StorageKey.SignupPromptHideTimeMillis, Long::class.java).getOrElse { 0 }
+        appStorage.load(StorageKey.SignupPromptHideTimeMillis, Long::class).getOrElse { 0 }
     private suspend fun setSignupPromptHideTimeMillis(value: Long) =
         appStorage.save(value,StorageKey.SignupPromptHideTimeMillis)
 

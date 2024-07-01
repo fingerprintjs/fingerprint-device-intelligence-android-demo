@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.SuccessMocked
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
 @Composable
 fun EventRawJsonView(
@@ -44,18 +44,21 @@ fun EventRawJsonView(
                 text = lineNumbersString(code)
             )
             Spacer(modifier = Modifier.width(24.dp))
-            SelectionContainer {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(
-                            state = rememberScrollState(),
-                        ),
-                    color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
-                    style = AppTheme.extendedTheme.typography.codeNormal,
-                    softWrap = false,
-                    text = code,
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(state = rememberScrollState()),
+            ) {
+                SelectionContainer {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
+                        style = AppTheme.extendedTheme.typography.codeNormal,
+                        softWrap = false,
+                        text = code,
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
             }
         }
 
@@ -74,10 +77,10 @@ private fun lineNumbersString(from: String): String =
 @PreviewMultipleConfigurations
 @Composable
 private fun Preview() {
-    AppTheme {
+    ShowPreview {
         EventRawJsonView(
             modifier = Modifier.fillMaxSize(),
-            code = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.rawJson.orEmpty(),
+            code = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.rawJson.orEmpty(),
         )
     }
 }

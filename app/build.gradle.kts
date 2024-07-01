@@ -5,12 +5,14 @@ val VERSION_NAME="3.1.1"
 @Suppress("PropertyName")
 val VERSION_CODE=25
 @Suppress("PropertyName")
-val SDK_VERSION_NAME="2.6.0"
+val SDK_VERSION_NAME="2.7.0"
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -27,7 +29,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
-        minSdk = 26
+        minSdk = 21
         targetSdk = 34
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
@@ -81,10 +83,6 @@ android {
     }
     buildFeatures {
         buildConfig = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -100,27 +98,31 @@ android {
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-compose:2.8.3")
     val useFpProDebugVersion = false // switch to true when needed to debug the locally built library
     implementation("com.fingerprint.android:pro:$SDK_VERSION_NAME${if (useFpProDebugVersion) "-debug" else ""}")
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
     implementation ("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("androidx.compose.animation:animation:1.7.4")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-jackson:2.11.0")
+    implementation("com.michael-bull.kotlin-result:kotlin-result-coroutines:2.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("androidx.security:security-crypto:1.0.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

@@ -9,7 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.HomeScreen
+import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                HomeScreen()
+                NavScreen()
             }
         }
     }

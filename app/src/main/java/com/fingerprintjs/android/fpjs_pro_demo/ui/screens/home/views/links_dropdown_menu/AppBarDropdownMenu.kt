@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
 data class AppBarDropdownMenuItem(
     val icon: ImageVector,
@@ -38,6 +39,7 @@ fun AppBarDropdownMenu(
     onDismiss: () -> Unit,
 ) {
     DropdownMenu(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         expanded = expanded,
         onDismissRequest = onDismiss,
     ) {
@@ -78,7 +80,7 @@ fun AppBarDropdownMenu(
 @Composable
 private fun Preview() {
     var expanded by remember { mutableStateOf(true) }
-    AppTheme {
+    ShowPreview {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -91,7 +93,7 @@ private fun Preview() {
             Box {
                 AppBarDropdownMenu(
                     expanded = expanded,
-                    sections = StateMocks.appBarDropdownMenuItems,
+                    sections = appBarDropdownMenuItems,
                     onDismiss = { expanded = false },
                 )
             }
