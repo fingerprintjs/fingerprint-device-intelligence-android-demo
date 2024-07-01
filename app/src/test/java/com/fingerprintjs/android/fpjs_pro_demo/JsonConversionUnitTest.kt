@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo
 
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeViewModel
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.createRawJson
 import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks
 import junit.framework.TestCase
 import org.junit.Test
@@ -8,7 +8,7 @@ import org.junit.Test
 class JsonConversionUnitTest {
     @Test
     fun fingerprintDataJsonifiedProperly() {
-        val json = HomeViewModel.createRawJson(
+        val json = createRawJson(
             StateMocks.fingerprintJSResponse,
             StateMocks.smartSignals
         )

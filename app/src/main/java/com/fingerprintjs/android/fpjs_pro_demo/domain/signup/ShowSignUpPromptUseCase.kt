@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.domain
+package com.fingerprintjs.android.fpjs_pro_demo.domain.signup
 
 import com.fingerprintjs.android.fpjs_pro_demo.storage.AppStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey

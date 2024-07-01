@@ -1,9 +1,13 @@
 package com.fingerprintjs.android.fpjs_pro_demo.constants
 
 object URLs {
+    const val main = "https://fingerprint.com"
     const val support = "https://fingerprint.com/support"
     const val documentation = "https://dev.fingerprint.com/docs/android-sdk"
     val signup = Protected.signupUrl
+    const val eventsEndpoint = "https://api.fpjs.io/events/"
+    const val playStoreListing = "https://play.google.com/store/apps/details"
+    const val privacyPolicy = "https://dev.fingerprint.com/docs/privacy-policy"
 
     object SmartSignalsOverview {
         val clonedApp = smartSignalOverviewUrl("cloned-app-detection")

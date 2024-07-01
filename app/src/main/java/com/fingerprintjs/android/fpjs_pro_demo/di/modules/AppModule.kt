@@ -8,16 +8,14 @@ import com.fingerprintjs.android.fpjs_pro.FingerprintJS
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials
 import com.fingerprintjs.android.fpjs_pro_demo.di.AppScope
-import com.fingerprintjs.android.fpjs_pro_demo.network.SmartSignalsApi
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
-import retrofit2.create
+import okhttp3.OkHttpClient
 
 @Module
 class AppModule {
 
+    // todo: unused. remove it
     @Provides
     @AppScope
     fun provideFingerprintJS(context: Application): FingerprintJS {
@@ -40,18 +38,7 @@ class AppModule {
 
     @Provides
     @AppScope
-    fun provideRetrofit(objectMapper: ObjectMapper): Retrofit {
-        return Retrofit.Builder()
-            .addConverterFactory(
-                JacksonConverterFactory.create(objectMapper)
-            )
-            .baseUrl("http://localhost/") // won't be used, will pass entire url as a param
-            .build()
-    }
-
-    @AppScope
-    @Provides
-    fun provideSmartSignalsApi(retrofit: Retrofit): SmartSignalsApi {
-        return retrofit.create()
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient()
     }
 }

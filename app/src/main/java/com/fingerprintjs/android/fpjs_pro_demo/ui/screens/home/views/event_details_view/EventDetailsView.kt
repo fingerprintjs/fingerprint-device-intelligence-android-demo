@@ -126,9 +126,9 @@ private fun EventDetailsViewPreview() {
     AppTheme {
         EventDetailsView(
             modifier = Modifier.fillMaxSize(),
-            rawJson = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.rawJson,
-            prettifiedProperties = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.prettifiedProps,
-            isLoading = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.isLoading,
+            rawJson = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.rawJson,
+            prettifiedProperties = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.prettifiedProps,
+            isLoading = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.isLoading,
         )
     }
 }

@@ -20,5 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# todo: any more flexible solutions?
--keep class com.fingerprintjs.android.fpjs_pro_demo.network.**Dto {*;}
+# todo (minor): any more flexible solutions?
+-keep class com.fingerprintjs.android.fpjs_pro_demo.**Dto {*;}

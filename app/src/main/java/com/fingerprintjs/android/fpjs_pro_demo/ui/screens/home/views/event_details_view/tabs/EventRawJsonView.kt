@@ -77,7 +77,7 @@ private fun Preview() {
     AppTheme {
         EventRawJsonView(
             modifier = Modifier.fillMaxSize(),
-            code = HomeScreenUiState.LoadingOrSuccess.SuccessMocked.rawJson.orEmpty(),
+            code = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.rawJson.orEmpty(),
         )
     }
 }

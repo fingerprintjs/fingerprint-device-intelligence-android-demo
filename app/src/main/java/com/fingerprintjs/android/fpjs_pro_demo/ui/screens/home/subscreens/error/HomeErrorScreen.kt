@@ -28,7 +28,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.Mocked
 @Composable
 fun HomeErrorScreen(
     modifier: Modifier,
-    state: HomeScreenUiState.Error,
+    state: HomeScreenUiState.Content.Error,
 ) {
     Column(modifier = modifier) {
         Spacer(Modifier.weight(0.34f))
@@ -69,7 +69,7 @@ fun HomeErrorScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = state.onButtonCLick,
             ) {
-                Text("Try again")
+                Text(state.buttonTitle)
             }
         }
     }
@@ -82,7 +82,7 @@ private fun Preview() {
         Surface {
             HomeErrorScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeScreenUiState.Error.Mocked,
+                state = HomeScreenUiState.Content.Error.Mocked,
             )
         }
     }

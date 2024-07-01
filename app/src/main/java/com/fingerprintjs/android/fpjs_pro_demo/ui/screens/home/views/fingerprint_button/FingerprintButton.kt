@@ -86,7 +86,8 @@ fun FingerprintButton(
 
 @Composable
 private fun updateButtonScaleAnimation(isPressed: Boolean): State<Float> {
-    val scale = remember { Animatable(1f) }
+    val initialScale = 1f
+    val scale = remember { Animatable(initialScale) }
     LaunchedEffect(isPressed) {
         launch {
             if (isPressed) {
@@ -95,10 +96,12 @@ private fun updateButtonScaleAnimation(isPressed: Boolean): State<Float> {
                     animationSpec = tween(durationMillis = 250, easing = EaseOut)
                 )
             } else {
-                scale.animateTo(
-                    targetValue = 1f,
-                    animationSpec = tween(durationMillis = 600, easing = EaseOut)
-                )
+                if (scale.value != initialScale) {
+                    scale.animateTo(
+                        targetValue = initialScale,
+                        animationSpec = tween(durationMillis = 600, easing = EaseOut)
+                    )
+                }
                 scale.animateTo(
                     targetValue = 0.9f,
                     animationSpec = infiniteRepeatable(

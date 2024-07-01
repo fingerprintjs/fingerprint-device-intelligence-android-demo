@@ -1,26 +1,12 @@
-package com.fingerprintjs.android.fpjs_pro_demo.network
+package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.Url
 
-interface SmartSignalsApi {
-
-    @Headers("Accept: application/json")
-    @GET
-    suspend fun getSmartSignals(
-        @Url url: String,
-        @Header("Origin") origin: String,
-    ): SmartSignalsDto
-
-    data class SmartSignalsDto(
-        @JsonProperty("products")
-        val products: ProductsDto
-    )
-
+data class SmartSignalsDto(
+    @JsonProperty("products")
+    val products: ProductsDto
+) {
     data class ProductsDto(
         @JsonProperty(CLONED_APP_KEY)
         val clonedApp: SmartSignalEntryDto<ClonedAppDto>?,
@@ -45,9 +31,9 @@ interface SmartSignalsApi {
         val data: T?
     )
 
-    data class EmulatorDto(
+    data class ClonedAppDto(
         @JsonProperty("result")
-        val result: Boolean?,
+        val result: Boolean?
     )
 
     data class FactoryResetDto(
@@ -55,6 +41,26 @@ interface SmartSignalsApi {
         val time: String?,
         @JsonProperty("timestamp")
         val timestamp: Int?,
+    )
+
+    data class FridaDto(
+        @JsonProperty("result")
+        val result: Boolean?
+    )
+
+    data class EmulatorDto(
+        @JsonProperty("result")
+        val result: Boolean?,
+    )
+
+    data class LocationSpoofingDto(
+        @JsonProperty("result")
+        val result: Boolean?
+    )
+
+    data class RootDto(
+        @JsonProperty("result")
+        val result: Boolean?
     )
 
     data class VpnDto(
@@ -79,26 +85,6 @@ interface SmartSignalsApi {
         )
     }
 
-    data class RootDto(
-        @JsonProperty("result")
-        val result: Boolean?
-    )
-
-    data class ClonedAppDto(
-        @JsonProperty("result")
-        val result: Boolean?
-    )
-
-    data class FridaDto(
-        @JsonProperty("result")
-        val result: Boolean?
-    )
-
-    data class LocationSpoofingDto(
-        @JsonProperty("result")
-        val result: Boolean?
-    )
-
     data class HighActivityDto(
         @JsonProperty("result")
         val result: Boolean?,
@@ -117,4 +103,16 @@ interface SmartSignalsApi {
         const val ROOT_KEY = "rootApps"
         const val VPN_KEY = "vpn"
     }
+}
+
+data class SmartSignalsErrorDto(
+    @JsonProperty("error")
+    val error: ErrorDto
+) {
+    data class ErrorDto(
+        @JsonProperty("code")
+        val code: String?,
+        @JsonProperty("message")
+        val message: String?,
+    )
 }

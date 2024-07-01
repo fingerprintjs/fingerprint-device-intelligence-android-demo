@@ -2,11 +2,8 @@ package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loadi
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,11 +17,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.Shimmable
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
+import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalExpandTransition
+import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalShrinkTransition
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.EventDetailsView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.signup_prompt_view.SignupPromptView
@@ -37,7 +35,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.utils.copyOnLongPress
 @Composable
 fun HomeLoadingOrSuccessScreen(
     modifier: Modifier,
-    state: HomeScreenUiState.LoadingOrSuccess,
+    state: HomeScreenUiState.Content.LoadingOrSuccess,
 ) {
     Column(
         modifier = modifier
@@ -65,18 +63,8 @@ fun HomeLoadingOrSuccessScreen(
                     color = AppTheme.materialTheme.colorScheme.onBackground,
                 )
             }
-            val expandTransition = expandVertically(
-                expandFrom = Alignment.Top,
-                animationSpec = tween(),
-            ) + fadeIn(
-                animationSpec = tween(delayMillis = 100)
-            )
-            val shrinkTransition = shrinkVertically(
-                shrinkTowards = Alignment.Top,
-                animationSpec = tween(delayMillis = 100)
-            ) + fadeOut(
-                animationSpec = tween()
-            )
+            val expandTransition = verticalExpandTransition()
+            val shrinkTransition = verticalShrinkTransition()
             AnimatedVisibility(
                 visible = state.isLoading,
                 enter = expandTransition,
@@ -131,7 +119,7 @@ fun HomeLoadingOrSuccessScreen(
                 }
             }
             Text(
-                text = "SDK Response",
+                text = "API Response",
                 style = AppTheme.materialTheme.typography.labelLarge,
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
             )
@@ -153,7 +141,7 @@ private fun Loading() {
         Surface {
             HomeLoadingOrSuccessScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeScreenUiState.LoadingOrSuccess.LoadingMocked,
+                state = HomeScreenUiState.Content.LoadingOrSuccess.LoadingMocked,
             )
         }
     }
@@ -166,7 +154,7 @@ private fun Success() {
         Surface {
             HomeLoadingOrSuccessScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeScreenUiState.LoadingOrSuccess.SuccessMocked,
+                state = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked,
             )
         }
     }

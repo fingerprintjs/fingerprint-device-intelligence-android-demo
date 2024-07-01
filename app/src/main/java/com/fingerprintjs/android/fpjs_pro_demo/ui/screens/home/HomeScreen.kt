@@ -63,16 +63,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onGoToApiKeysSettings: () -> Unit,
+) {
     val viewModel = injectedViewModel { homeViewModel }
-    val state by viewModel.state.collectAsState()
-    val mockingState by viewModel.mockingState.collectAsState()
-    val onToggleMocking by rememberUpdatedState(viewModel::onToggleMocking)
-    HomeScreenInternal(
-        state = state,
-        isMockEnabled = mockingState,
-        onToggleMocking = onToggleMocking,
-    )
+    val state by viewModel.state.collectAsState(initial = null)
+    state?.let {
+        HomeScreenInternal(
+            modifier = modifier,
+            state = it,
+        )
+    }
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -88,17 +90,21 @@ fun HomeScreen() {
                 ClipboardUtils.copyToClipboardAndNotifyUser(context, text)
             }
             .launchIn(this)
+
+        viewModel.goToApiKeySettings
+            .onEach { onGoToApiKeysSettings() }
+            .launchIn(this)
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenInternal(
+    modifier: Modifier = Modifier,
     state: HomeScreenUiState,
-    isMockEnabled: Boolean? = false,
-    onToggleMocking: () -> Unit = {},
 ) {
     Scaffold(
+        modifier = modifier,
         contentWindowInsets = WindowInsets(
             bottom = 0.dp,
         ),
@@ -110,7 +116,7 @@ fun HomeScreenInternal(
                 title = {},
                 actions = {
                     var dropdownExpanded by remember { mutableStateOf(false) }
-                    if (isMockEnabled != null) {
+                    if (state.mocking != null) {
                         TooltipBox(
                             state = rememberTooltipState(),
                             positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
@@ -123,11 +129,11 @@ fun HomeScreenInternal(
                                 )
                             }
                         ) {
-                            IconButton(onClick = onToggleMocking) {
+                            IconButton(onClick = state.mocking.onToggle) {
                                 Icon(
                                     imageVector = Icons.Outlined.BugReport,
                                     contentDescription = "Toggle mocking",
-                                    tint = when (isMockEnabled) {
+                                    tint = when (state.mocking.enabled) {
                                         true -> MaterialTheme.colorScheme.primary
                                         false -> MaterialTheme.colorScheme.onSurfaceVariant
                                     }
@@ -152,7 +158,7 @@ fun HomeScreenInternal(
                                             icon = docIcon,
                                             description = "Documentation",
                                             onClick = {
-                                                state.onDocumentationClicked()
+                                                state.appBar.onDocumentationClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -160,7 +166,7 @@ fun HomeScreenInternal(
                                             icon = mailIcon,
                                             description = "Support",
                                             onClick = {
-                                                state.onSupportClicked()
+                                                state.appBar.onSupportClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -170,7 +176,7 @@ fun HomeScreenInternal(
                                             icon = openInNewIcon,
                                             description = "Sign up",
                                             onClick = {
-                                                state.onSignupClicked()
+                                                state.appBar.onSignupClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -184,7 +190,7 @@ fun HomeScreenInternal(
             )
         },
     ) { paddingValues: PaddingValues ->
-        val pullToRefreshEnabled by rememberUpdatedState(state.reloadAllowed)
+        val pullToRefreshEnabled by rememberUpdatedState(state.reload.reloadAllowed)
 
         val pullToRefreshState = rememberPullToRefreshStateCustom(
             enabled = { pullToRefreshEnabled }
@@ -192,14 +198,14 @@ fun HomeScreenInternal(
 
         if (pullToRefreshState.isRefreshing) {
             LaunchedEffect(true) {
-                state.onReload()
+                state.reload.onReload()
                 delay(500)
                 pullToRefreshState.endRefreshAnimated()
             }
         }
 
         val transition = updateTransition(
-            targetState = state,
+            targetState = state.content,
             label = "Home screen state transition",
         )
         transition.Crossfade(
@@ -218,21 +224,21 @@ fun HomeScreenInternal(
                     .padding(paddingValues),
             ) {
                 when (state) {
-                    is HomeScreenUiState.TapToBegin -> {
+                    is HomeScreenUiState.Content.TapToBegin -> {
                         HomeTapToBeginScreen(
                             modifier = Modifier.fillMaxSize(),
                             onTapToBegin = state.onTap,
                         )
                     }
 
-                    is HomeScreenUiState.Error -> {
+                    is HomeScreenUiState.Content.Error -> {
                         HomeErrorScreen(
                             modifier = Modifier.fillMaxSize(),
                             state = state,
                         )
                     }
 
-                    is HomeScreenUiState.LoadingOrSuccess -> {
+                    is HomeScreenUiState.Content.LoadingOrSuccess -> {
                         HomeLoadingOrSuccessScreen(
                             modifier = Modifier.fillMaxSize(),
                             state = state,
@@ -255,7 +261,7 @@ fun HomeScreenInternal(
 @Composable
 private fun TapToBegin() {
     AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.TapToBegin.Mocked)
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.TapToBegin.Mocked))
     }
 }
 
@@ -263,7 +269,7 @@ private fun TapToBegin() {
 @Composable
 private fun Success() {
     AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.LoadingOrSuccess.SuccessMocked)
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked))
     }
 }
 
@@ -271,6 +277,6 @@ private fun Success() {
 @Composable
 private fun Error() {
     AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.Error.Mocked)
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.Error.Mocked))
     }
 }

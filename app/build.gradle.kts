@@ -101,6 +101,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     val useFpProDebugVersion = false // switch to true when needed to debug the locally built library
     implementation("com.fingerprint.android:pro:$SDK_VERSION_NAME${if (useFpProDebugVersion) "-debug" else ""}")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -111,13 +112,19 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    implementation("androidx.compose.animation:animation:1.7.0-beta04")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
     implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-jackson:2.11.0")
+    implementation("com.michael-bull.kotlin-result:kotlin-result-coroutines:2.0.0")
+    val jacksonVersion = "2.17.2"
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

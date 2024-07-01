@@ -16,10 +16,8 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -89,14 +87,13 @@ private fun PrettifiedPropertyView(
     isLoading: Boolean,
     isLast: Boolean,
 ) {
-    val _onLongClick by rememberUpdatedState(onLongClick)
     Box(
         modifier = modifier
             .combinedClickable(
                 enabled = onLongClickEnabled,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onLongClick = _onLongClick,
+                onLongClick = onLongClick,
                 onClick = {},
             )
     ) {
@@ -203,7 +200,7 @@ private fun PrettifiedPropertyView(
 @Composable
 private fun Preview() {
     AppTheme {
-        with(HomeScreenUiState.LoadingOrSuccess.SuccessMocked) {
+        with(HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked) {
             EventPrettifiedView(
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
@@ -217,7 +214,7 @@ private fun Preview() {
 @Composable
 private fun PreviewLoading() {
     AppTheme {
-        with(HomeScreenUiState.LoadingOrSuccess.LoadingMocked) {
+        with(HomeScreenUiState.Content.LoadingOrSuccess.LoadingMocked) {
             EventPrettifiedView(
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
