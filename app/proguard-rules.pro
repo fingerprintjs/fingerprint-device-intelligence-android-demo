@@ -19,6 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# todo: any more flexible solutions?
--keep class com.fingerprintjs.android.fpjs_pro_demo.network.**Dto {*;}

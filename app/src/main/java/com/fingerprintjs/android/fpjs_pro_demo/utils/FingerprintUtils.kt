@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
+import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
 
 fun FingerprintJSProResponse.toJsonMap() = mapOf(
@@ -59,4 +60,11 @@ fun FingerprintJSProResponse.toJsonMap() = mapOf(
         )
     },
     "errorMessage" to errorMessage,
-)
+).filterValues { it != null }
+
+val Configuration.Region.description: String
+    get() = when(this) {
+        Configuration.Region.US -> "Global (US)"
+        Configuration.Region.EU -> "EU"
+        Configuration.Region.AP -> "Asia (Mumbai)"
+    }

@@ -23,12 +23,12 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.LinkableText
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.Mocked
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
 @Composable
 fun HomeErrorScreen(
     modifier: Modifier,
-    state: HomeScreenUiState.Error,
+    state: HomeScreenUiState.Content.Error,
 ) {
     Column(modifier = modifier) {
         Spacer(Modifier.weight(0.34f))
@@ -69,7 +69,7 @@ fun HomeErrorScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = state.onButtonCLick,
             ) {
-                Text("Try again")
+                Text(state.buttonTitle)
             }
         }
     }
@@ -78,11 +78,11 @@ fun HomeErrorScreen(
 @PreviewMultipleConfigurations
 @Composable
 private fun Preview() {
-    AppTheme {
+    ShowPreview {
         Surface {
             HomeErrorScreen(
                 modifier = Modifier.fillMaxSize(),
-                state = HomeScreenUiState.Error.Mocked,
+                state = HomeScreenUiState.Content.Error.Mocked,
             )
         }
     }

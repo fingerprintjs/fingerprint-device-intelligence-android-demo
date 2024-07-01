@@ -4,14 +4,17 @@ import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.LinkInteractionListener
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -47,12 +50,6 @@ fun LinkableText(
         }
     }
 
-    val helperAnnotationToLink = remember(links) {
-        links
-            .mapIndexed { index, link -> index.toString() to link }
-            .toMap()
-    }
-
     val annotatedString = buildAnnotatedString {
         append(text)
         addStyle(
@@ -60,39 +57,34 @@ fun LinkableText(
             start = 0,
             end = text.length
         )
-        for ((annotation, link) in helperAnnotationToLink) {
+        links.forEach { link ->
             val startIndex = text.indexOf(link.mask)
             val endIndex = startIndex + link.mask.length
-            addStyle(
-                style = SpanStyle(
-                    color = linkColor,
+            addLink(
+                clickable = LinkAnnotation.Clickable(
+                    tag = URL_TAG,
+                    styles = TextLinkStyles(
+                        style = SpanStyle(color = linkColor)
+                    ),
+                    linkInteractionListener = object : LinkInteractionListener {
+                        override fun onClick(unused: LinkAnnotation) {
+                            link.handler.invoke()
+                        }
+                    }
                 ),
                 start = startIndex,
-                end = endIndex
-            )
-            addStringAnnotation(
-                tag = URL_TAG,
-                annotation = annotation,
-                start = startIndex,
-                end = endIndex
+                end = endIndex,
             )
         }
     }
 
-    ClickableText(
+    Text(
         modifier = modifier,
         text = annotatedString,
         style = style.merge(textAlign = textAlign),
         inlineContent = inlineContent,
         maxLines = maxLines,
         overflow = overflow,
-        onClick = {
-            annotatedString
-                .getStringAnnotations(URL_TAG, it, it)
-                .firstOrNull()?.let { helperAnnotation ->
-                    helperAnnotationToLink.get(helperAnnotation.item)?.handler?.invoke()
-                }
-        }
     )
 }
 

@@ -29,7 +29,9 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.pullToRefresh
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,16 +39,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
-import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.rememberPullToRefreshStateCustom
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error.HomeErrorScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success.HomeLoadingOrSuccessScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin.HomeTapToBeginScreen
@@ -56,23 +57,25 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropd
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.ClipboardUtils
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.Mocked
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.SuccessMocked
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    onGoToApiKeysSettings: () -> Unit,
+) {
     val viewModel = injectedViewModel { homeViewModel }
-    val state by viewModel.state.collectAsState()
-    val mockingState by viewModel.mockingState.collectAsState()
-    val onToggleMocking by rememberUpdatedState(viewModel::onToggleMocking)
-    HomeScreenInternal(
-        state = state,
-        isMockEnabled = mockingState,
-        onToggleMocking = onToggleMocking,
-    )
+    val state by viewModel.state.collectAsState(initial = null)
+    state?.let {
+        HomeScreenInternal(
+            modifier = modifier,
+            state = it,
+        )
+    }
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -88,17 +91,21 @@ fun HomeScreen() {
                 ClipboardUtils.copyToClipboardAndNotifyUser(context, text)
             }
             .launchIn(this)
+
+        viewModel.goToApiKeySettings
+            .onEach { onGoToApiKeysSettings() }
+            .launchIn(this)
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenInternal(
+    modifier: Modifier = Modifier,
     state: HomeScreenUiState,
-    isMockEnabled: Boolean? = false,
-    onToggleMocking: () -> Unit = {},
 ) {
     Scaffold(
+        modifier = modifier,
         contentWindowInsets = WindowInsets(
             bottom = 0.dp,
         ),
@@ -110,7 +117,7 @@ fun HomeScreenInternal(
                 title = {},
                 actions = {
                     var dropdownExpanded by remember { mutableStateOf(false) }
-                    if (isMockEnabled != null) {
+                    if (state.mocking != null) {
                         TooltipBox(
                             state = rememberTooltipState(),
                             positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
@@ -123,11 +130,11 @@ fun HomeScreenInternal(
                                 )
                             }
                         ) {
-                            IconButton(onClick = onToggleMocking) {
+                            IconButton(onClick = state.mocking.onToggle) {
                                 Icon(
                                     imageVector = Icons.Outlined.BugReport,
                                     contentDescription = "Toggle mocking",
-                                    tint = when (isMockEnabled) {
+                                    tint = when (state.mocking.enabled) {
                                         true -> MaterialTheme.colorScheme.primary
                                         false -> MaterialTheme.colorScheme.onSurfaceVariant
                                     }
@@ -152,7 +159,7 @@ fun HomeScreenInternal(
                                             icon = docIcon,
                                             description = "Documentation",
                                             onClick = {
-                                                state.onDocumentationClicked()
+                                                state.appBar.onDocumentationClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -160,7 +167,7 @@ fun HomeScreenInternal(
                                             icon = mailIcon,
                                             description = "Support",
                                             onClick = {
-                                                state.onSupportClicked()
+                                                state.appBar.onSupportClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -170,7 +177,7 @@ fun HomeScreenInternal(
                                             icon = openInNewIcon,
                                             description = "Sign up",
                                             onClick = {
-                                                state.onSignupClicked()
+                                                state.appBar.onSignupClicked()
                                                 dropdownExpanded = false
                                             },
                                         ),
@@ -184,31 +191,34 @@ fun HomeScreenInternal(
             )
         },
     ) { paddingValues: PaddingValues ->
-        val pullToRefreshEnabled by rememberUpdatedState(state.reloadAllowed)
+        val pullToRefreshEnabled by rememberUpdatedState(state.reload.reloadAllowed)
+        var pullToRefreshRefreshing by remember { mutableStateOf(false) }
+        val pullToRefreshState = rememberPullToRefreshState()
 
-        val pullToRefreshState = rememberPullToRefreshStateCustom(
-            enabled = { pullToRefreshEnabled }
-        )
-
-        if (pullToRefreshState.isRefreshing) {
-            LaunchedEffect(true) {
-                state.onReload()
-                delay(500)
-                pullToRefreshState.endRefreshAnimated()
-            }
-        }
+        val scope = rememberCoroutineScope()
 
         val transition = updateTransition(
-            targetState = state,
+            targetState = state.content,
             label = "Home screen state transition",
         )
         transition.Crossfade(
             contentKey = { it::class },
-        ) { state ->
+        ) { contentState ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
+                    .pullToRefresh(
+                        isRefreshing = pullToRefreshRefreshing,
+                        enabled = pullToRefreshEnabled,
+                        state = pullToRefreshState,
+                    ) {
+                        scope.launch {
+                            pullToRefreshRefreshing = true
+                            state.reload.onReload()
+                            delay(500)
+                            pullToRefreshRefreshing = false
+                        }
+                    }
                     // this modifier is needed to ensure that scroll is always available,
                     // so that we can use pull to refresh from anywhere inside this Box
                     .scrollable(
@@ -217,34 +227,35 @@ fun HomeScreenInternal(
                     )
                     .padding(paddingValues),
             ) {
-                when (state) {
-                    is HomeScreenUiState.TapToBegin -> {
+                when (contentState) {
+                    is HomeScreenUiState.Content.TapToBegin -> {
                         HomeTapToBeginScreen(
                             modifier = Modifier.fillMaxSize(),
-                            onTapToBegin = state.onTap,
+                            onTapToBegin = contentState.onTap,
                         )
                     }
 
-                    is HomeScreenUiState.Error -> {
+                    is HomeScreenUiState.Content.Error -> {
                         HomeErrorScreen(
                             modifier = Modifier.fillMaxSize(),
-                            state = state,
+                            state = contentState,
                         )
                     }
 
-                    is HomeScreenUiState.LoadingOrSuccess -> {
+                    is HomeScreenUiState.Content.LoadingOrSuccess -> {
                         HomeLoadingOrSuccessScreen(
                             modifier = Modifier.fillMaxSize(),
-                            state = state,
+                            state = contentState,
                         )
                     }
                 }
 
-                PullToRefreshContainer(
+                Indicator(
                     modifier = Modifier.align(Alignment.TopCenter),
+                    isRefreshing = pullToRefreshRefreshing,
                     state = pullToRefreshState,
                     containerColor = AppTheme.materialTheme.colorScheme.surface,
-                    contentColor = AppTheme.materialTheme.colorScheme.onSurface,
+                    color = AppTheme.materialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -254,23 +265,23 @@ fun HomeScreenInternal(
 @PreviewLightDark
 @Composable
 private fun TapToBegin() {
-    AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.TapToBegin.Mocked)
+    ShowPreview {
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.TapToBegin.Mocked))
     }
 }
 
 @PreviewLightDark
 @Composable
 private fun Success() {
-    AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.LoadingOrSuccess.SuccessMocked)
+    ShowPreview {
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked))
     }
 }
 
 @PreviewLightDark
 @Composable
 private fun Error() {
-    AppTheme {
-        HomeScreenInternal(state = HomeScreenUiState.Error.Mocked)
+    ShowPreview {
+        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.Error.Mocked))
     }
 }

@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.R
 
-object AppColors {
+private object AppColors {
     val Black = Color(0xFF141415)
     val Gray50 = Color(0xFFFAFAFA)
     val Gray100 = Color(0xFFE8E8E8)
@@ -55,8 +55,8 @@ val LightMaterialColorScheme: ColorScheme
         inversePrimary = AppColors.Orange400,
         secondary = AppColors.UndefinedColor,
         onSecondary = AppColors.UndefinedColor,
-        secondaryContainer = AppColors.UndefinedColor,
-        onSecondaryContainer = AppColors.UndefinedColor,
+        secondaryContainer = AppColors.Orange100,
+        onSecondaryContainer = AppColors.Orange400,
         tertiary = AppColors.UndefinedColor,
         onTertiary = AppColors.UndefinedColor,
         tertiaryContainer = AppColors.UndefinedColor,
@@ -97,8 +97,8 @@ val DarkMaterialColorScheme: ColorScheme
         inversePrimary = AppColors.Orange400,
         secondary = AppColors.UndefinedColor,
         onSecondary = AppColors.UndefinedColor,
-        secondaryContainer = AppColors.UndefinedColor,
-        onSecondaryContainer = AppColors.UndefinedColor,
+        secondaryContainer = AppColors.Gray800,
+        onSecondaryContainer = AppColors.Orange400,
         tertiary = AppColors.UndefinedColor,
         onTertiary = AppColors.UndefinedColor,
         tertiaryContainer = AppColors.UndefinedColor,

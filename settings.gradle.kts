@@ -18,7 +18,6 @@ dependencyResolutionManagement {
             }
         }
 
-        maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://maven.fpregistry.io/releases") }
     }
 }
