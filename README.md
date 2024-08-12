@@ -18,6 +18,10 @@
   </a>
 </p>
 
+[Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/native-android-integration) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen. The Fingerprint Pro Demo App for Android allows you to effortlessly experience the capabilities of our device intelligence platform.
+
+# Fingerprint Pro Android Demo in the Play Market
+
 <p align="center">
  	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'>
  		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px"/>
@@ -31,16 +35,15 @@
   <img src="resources/fingerprint-demo-4.webp" width="195">
 </p>
 
-# Fingerprint Pro Android Demo
-[Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/native-android-integration) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen. The Fingerprint Pro Demo App for Android allows you to effortlessly experience the capabilities of our device intelligence platform.
 
-## About
+# About
 
 This repository contains the source code for the Fingerprint Pro Demo App for Android. It shall serve as a good example
 
 - For integrating the Fingerprint Identification SDK in your Android app, complimenting our [Getting Started Guide](https://dev.fingerprint.com/docs/android-sdk);
 - For best practices to follow when using the Fingerprint Identification SDK in your app.
 
+# Getting started
 ## Install the app
 
 You can install the app using one of the following methods:
@@ -73,7 +76,19 @@ You can find the Public API Key in your [dashboard](https://dashboard.fingerprin
 > [!NOTE]
 > There is also `release` variant for the internal use. It's very similar to `releaseLocalSign`, but signs the app with another signature and disables the stubbing functionality described above.
 5. Run the app on the selected device
+# Fingerprint Identification SDK
 
-## License
+Following up on the information provided in our [Getting Started Guide](https://dev.fingerprint.com/docs/android-sdk), you might refer to this repository for an example of:
+
+## Getting the response
+
+The SDK configuration code is located at the `di` [package](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/di) of the App Module (The Dagger di framework is used). The `getVisitorId()` method are abstracted in [IdentificationProvider](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/domain/IdentificationProvider.kt) class.
+
+## Examining the response
+
+The `getVisitorId` method of the `IdentificationProvider` is called in the [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is shown in [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) class either in a prettified or in a raw way.
+
+
+# License
 
 The source code in this repository is licensed under the [MIT license](LICENSE).
