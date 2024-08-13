@@ -81,7 +81,7 @@ Build the app from sources in a few simple steps:
 > The `debug` and `releaseLocalSign` variants of the app contain a button inside the app bar allowing you to stub the response of the Fingerprint Pro SDK. This might be useful in case you don't want to setup your own API key and region, but still want to check out how the UI of the app looks like on your device.
 4. In "Build Variants" tool window, select either `debug` or `releaseLocalSign` build variant
 > [!NOTE]
-> There is also `release` variant for the internal use. It's very similar to `releaseLocalSign`, but signs the app with another signature and disables the stubbing functionality described above.
+> There is also a `release` variant for testing. It's very similar to the `releaseLocalSign`, but signs the app with another signature and disables the stubbing functionality described above.
 5. Run the app on the selected device
 # Fingerprint Identification SDK
 
@@ -94,7 +94,7 @@ Following up on the information provided in our [Getting Started Guide](https://
 
 ## Examining the response
 
-The `getVisitorId` method of the `IdentificationProvider` is called in the [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is shown in the [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) composable either in a prettified or in a raw way.
+The method `IdentificationProvider.getVisitorId()` is called in the file [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is displayed by the [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) composable either in prettified or raw format.
 
 
 # License
