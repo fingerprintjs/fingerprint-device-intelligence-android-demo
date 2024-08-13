@@ -56,20 +56,27 @@ You can install the app using one of the following methods:
 Build the app from sources in a few simple steps:
 
 1. Clone the repository:
-```sh
-git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
-```
-2. Open up the cloned repository in Android Studio
-3. Open up the `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` file and assign your Public API Key and Endpoint URL accordingly:
-```kotlin
-import com.fingerprintjs.android.fpjs_pro.Configuration
-
-object Credentials {
-    val apiKey: String = "your_api_key"
-    val endpointUrl: String = Configuration.Region.US.endpointUrl
-}
-```
-You can find the Public API Key in your [dashboard](https://dashboard.fingerprint.com/) at `App Settings` > `API Keys`.
+    ```sh
+    git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
+    ```
+2. Open the cloned repository in Android Studio.
+3. Open the file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` and replace the value for apiKey with your Public API Key. You can find the Public API Key in your [dashboard](https://dashboard.fingerprint.com/) at `App Settings` > `API Keys`.
+   ```kotlin
+    import com.fingerprintjs.android.fpjs_pro.Configuration
+    
+    object Credentials {
+        val apiKey: String = "your_api_key"
+    }
+    ```
+4. Replace the value for endpointUrl with one of our [endpoints](https://dev.fingerprint.com/docs/android-sdk#region-1) or with your custom endpoint, as applicable.
+    ```kotlin
+    import com.fingerprintjs.android.fpjs_pro.Configuration
+    
+    object Credentials {
+        val endpointUrl: String = Configuration.Region.US.endpointUrl
+    }
+    ```
+    
 > [!NOTE]
 > The `debug` and `releaseLocalSign` variants of the app contain a button inside the app bar allowing you to stub the response of the Fingerprint Pro SDK. This might be useful in case you don't want to setup your own API key and region, but still want to check out how the UI of the app looks like on your device.
 4. In "Build Variants" tool window, select either `debug` or `releaseLocalSign` build variant
@@ -86,7 +93,7 @@ The SDK configuration code is located at the `di` [package](app/src/main/java/co
 
 ## Examining the response
 
-The `getVisitorId` method of the `IdentificationProvider` is called in the [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is shown in [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) class either in a prettified or in a raw way.
+The `getVisitorId` method of the `IdentificationProvider` is called in the [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is shown in the [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) composable either in a prettified or in a raw way.
 
 
 # License
