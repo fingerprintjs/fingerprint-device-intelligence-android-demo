@@ -18,6 +18,10 @@
   </a>
 </p>
 
+[Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/native-android-integration) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen. The Fingerprint Pro Demo App for Android allows you to effortlessly experience the capabilities of our device intelligence platform.
+
+# Fingerprint Pro Android Demo in the Play Market
+
 <p align="center">
  	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'>
  		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px"/>
@@ -31,16 +35,15 @@
   <img src="resources/fingerprint-demo-4.webp" width="195">
 </p>
 
-# Fingerprint Pro Android Demo
-[Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/native-android-integration) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen. The Fingerprint Pro Demo App for Android allows you to effortlessly experience the capabilities of our device intelligence platform.
 
-## About
+# About
 
 This repository contains the source code for the Fingerprint Pro Demo App for Android. It shall serve as a good example
 
 - For integrating the Fingerprint Identification SDK in your Android app, complimenting our [Getting Started Guide](https://dev.fingerprint.com/docs/android-sdk);
 - For best practices to follow when using the Fingerprint Identification SDK in your app.
 
+# Getting started
 ## Install the app
 
 You can install the app using one of the following methods:
@@ -53,27 +56,49 @@ You can install the app using one of the following methods:
 Build the app from sources in a few simple steps:
 
 1. Clone the repository:
-```sh
-git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
-```
-2. Open up the cloned repository in Android Studio
-3. Open up the `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` file and assign your Public API Key and Endpoint URL accordingly:
-```kotlin
-import com.fingerprintjs.android.fpjs_pro.Configuration
+    ```sh
+    git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
+    ```
+2. Open the cloned repository in Android Studio.
+3. Open the file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` and replace the value for `apiKey` with your Public API Key. You can find the Public API Key in your [dashboard](https://dashboard.fingerprint.com/) at App Settings > API Keys.
 
-object Credentials {
-    val apiKey: String = "your_api_key"
-    val endpointUrl: String = Configuration.Region.US.endpointUrl
-}
-```
-You can find the Public API Key in your [dashboard](https://dashboard.fingerprint.com/) at `App Settings` > `API Keys`.
-> [!NOTE]
-> The `debug` and `releaseLocalSign` variants of the app contain a button inside the app bar allowing you to stub the response of the Fingerprint Pro SDK. This might be useful in case you don't want to setup your own API key and region, but still want to check out how the UI of the app looks like on your device.
-4. In "Build Variants" tool window, select either `debug` or `releaseLocalSign` build variant
-> [!NOTE]
-> There is also `release` variant for the internal use. It's very similar to `releaseLocalSign`, but signs the app with another signature and disables the stubbing functionality described above.
+   ```kotlin
+    import com.fingerprintjs.android.fpjs_pro.Configuration
+    
+    object Credentials {
+        val apiKey: String = "your_api_key"
+    }
+    ```
+4. Replace the value for `endpointUrl` with one of our [endpoints](https://dev.fingerprint.com/docs/android-sdk#region-1) or with your custom endpoint, as applicable.
+    ```kotlin
+    import com.fingerprintjs.android.fpjs_pro.Configuration
+    
+    object Credentials {
+        val endpointUrl: String = Configuration.Region.US.endpointUrl
+    }
+    ```
+    
+4. In the "Build Variants" tool window, choose one of debug or releaseLocalSign or release. You can read more about each of these build variants in [file](app/build.gradle.kts)
+
 5. Run the app on the selected device
 
-## License
+> [!NOTE]
+> When the app is built in either the "debug" or "releaseLocalSign" variants, it includes a icon that allows you to test the UI without making an actual request to our Fingerprint servers. And save API calls!
+
+# Fingerprint Identification SDK
+
+Following up on the information provided in our [Getting Started Guide](https://dev.fingerprint.com/docs/android-sdk), you might refer to this repository for an example of:
+
+## Getting the response
+
+* The SDK configuration code is located at the [`di` package](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/di) of the app module. 
+* The method `getVisitorId()` method is abstracted in [IdentificationProvider](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/domain/IdentificationProvider.kt) class.
+
+## Examining the response
+
+The method `IdentificationProvider.getVisitorId()` is called in the file [HomeViewModel.kt](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/viewmodel/HomeViewModel.kt) file. The result is displayed by the [EventDetailsView](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/ui/screens/home/views/event_details_view) composable either in prettified or raw format.
+
+
+# License
 
 The source code in this repository is licensed under the [MIT license](LICENSE).
