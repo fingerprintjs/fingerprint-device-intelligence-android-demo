@@ -55,15 +55,18 @@ android {
     }
 
     buildTypes {
+        // Default build variant, debug symbols are enabled, minification is disabled
         debug {
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
         }
+        // Production release build variant
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
         }
+        // Use this build variant for testing the app locally in a release state with enabled minification and release level of performance. 
         create("releaseLocalSign") {
             isMinifyEnabled = true
             proguardFiles (getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
