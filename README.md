@@ -78,12 +78,13 @@ Build the app from sources in a few simple steps:
     }
     ```
     
-> [!NOTE]
-> The `debug` and `releaseLocalSign` variants of the app contain a button inside the app bar allowing you to stub the response of the Fingerprint Pro SDK. This might be useful in case you don't want to setup your own API key and region, but still want to check out how the UI of the app looks like on your device.
-4. In "Build Variants" tool window, select either `debug` or `releaseLocalSign` build variant
-> [!NOTE]
-> There is also a `release` variant for testing. It's very similar to the `releaseLocalSign`, but signs the app with another signature and disables the stubbing functionality described above.
+4. In the "Build Variants" tool window, choose one of debug or releaseLocalSign or release. You can read more about each of these build variants in [file](app/build.gradle.kts)
+
 5. Run the app on the selected device
+
+> [!NOTE]
+> When the app is built in either the "debug" or "releaseLocalSign" variants, it includes a icon that allows you to test the UI without making an actual request to our Fingerprint servers. And save API calls!
+
 # Fingerprint Identification SDK
 
 Following up on the information provided in our [Getting Started Guide](https://dev.fingerprint.com/docs/android-sdk), you might refer to this repository for an example of:
