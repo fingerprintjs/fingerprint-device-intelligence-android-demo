@@ -20,7 +20,7 @@
 
 [Fingerprint’s Device Intelligence platform for Android](https://dev.fingerprint.com/docs/native-android-integration) helps you to accurately identify the devices on which your mobile app is being used. The platform also provides high-quality [Smart Signals](https://dev.fingerprint.com/docs/smart-signals-overview#smart-signals-for-mobile-devices) that will help you identify risky transactions before they happen. The Fingerprint Pro Demo App for Android allows you to effortlessly experience the capabilities of our device intelligence platform.
 
-# Fingerprint Pro Android Demo in the Play Market
+# Fingerprint Pro Demo App in Google Play
 
 <p align="center">
  	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.fpjs_pro_demo'>
@@ -78,12 +78,12 @@ Build the app from sources in a few simple steps:
     }
     ```
     
-4. In the "Build Variants" tool window, choose a build variant that suits your needs. You can read more about all the available build variants in [file](app/build.gradle.kts)
+4. In the "Build Variants" tool window, choose a build variant that suits your needs. You can read more about all the available build variants in [file app/build.gradle.kts](app/build.gradle.kts)
 
 5. Run the app on the selected device
 
 > [!NOTE]
-> When the app is built in a variant meant for debugging, it includes an icon that allows you to test the UI without making an actual request to our Fingerprint servers. And save API calls!
+> The `debug` and `debugOptimized` variants of the app include an icon that allows you to iteratively build the UI without making an actual request to our Fingerprint servers. And save API calls!
 
 # Fingerprint Identification SDK
 
