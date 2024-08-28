@@ -78,12 +78,12 @@ Build the app from sources in a few simple steps:
     }
     ```
     
-4. In the "Build Variants" tool window, choose one of debug or releaseLocalSign or release. You can read more about each of these build variants in [file](app/build.gradle.kts)
+4. In the "Build Variants" tool window, choose a build variant that suits your needs. You can read more about all the available build variants in [file](app/build.gradle.kts)
 
 5. Run the app on the selected device
 
 > [!NOTE]
-> When the app is built in either the "debug" or "releaseLocalSign" variants, it includes a icon that allows you to test the UI without making an actual request to our Fingerprint servers. And save API calls!
+> When the app is built in a variant meant for debugging, it includes an icon that allows you to test the UI without making an actual request to our Fingerprint servers. And save API calls!
 
 # Fingerprint Identification SDK
 
