@@ -46,16 +46,11 @@ android {
             keyAlias  = System.getenv("RELEASE_SIGN_KEY_ALIAS")
             keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD")
         }
-        create("releaseLocalSign") {
-            storeFile = file("release_local.jks")
-            storePassword = "password"
-            keyAlias = "key0"
-            keyPassword = "password"
-        }
     }
 
     buildTypes {
-        // Default build variant, debug symbols are enabled, minification is disabled
+        // Default build type, debug symbols are enabled, minification is disabled,
+        // includes an option of mocking responses of Fingerprint's servers.
         debug {
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
         }
@@ -66,11 +61,12 @@ android {
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
         }
-        // Use this build variant for testing the app locally in a release state with enabled minification and release level of performance. 
-        create("releaseLocalSign") {
+        // Use this build variant for testing the app locally with minification enabled and release
+        // level of performance, but also with the mocking functionality that the debug build type has.
+        create("debugOptimized") {
             isMinifyEnabled = true
             proguardFiles (getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("releaseLocalSign")
+            signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
         }
