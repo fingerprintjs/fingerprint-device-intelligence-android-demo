@@ -5,7 +5,7 @@ val VERSION_NAME="3.1.0"
 @Suppress("PropertyName")
 val VERSION_CODE=23
 @Suppress("PropertyName")
-val SDK_VERSION_NAME="2.4.0"
+val SDK_VERSION_NAME="2.6.0"
 
 plugins {
     id("com.android.application")
