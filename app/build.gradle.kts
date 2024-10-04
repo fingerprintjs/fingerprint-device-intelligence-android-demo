@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
