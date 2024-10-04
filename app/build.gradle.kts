@@ -1,9 +1,9 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 @Suppress("PropertyName")
-val VERSION_NAME="3.1.0"
+val VERSION_NAME="3.1.1"
 @Suppress("PropertyName")
-val VERSION_CODE=23
+val VERSION_CODE=25
 @Suppress("PropertyName")
 val SDK_VERSION_NAME="2.6.0"
 
