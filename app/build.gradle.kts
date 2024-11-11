@@ -1,11 +1,11 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 @Suppress("PropertyName")
-val VERSION_NAME="3.1.0"
+val VERSION_NAME="3.1.1"
 @Suppress("PropertyName")
-val VERSION_CODE=23
+val VERSION_CODE=25
 @Suppress("PropertyName")
-val SDK_VERSION_NAME="2.4.0"
+val SDK_VERSION_NAME="2.6.0"
 
 plugins {
     id("com.android.application")
@@ -27,7 +27,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
