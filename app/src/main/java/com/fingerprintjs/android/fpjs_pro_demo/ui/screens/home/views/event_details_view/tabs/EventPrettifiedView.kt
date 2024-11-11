@@ -16,10 +16,8 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -27,6 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,12 +37,13 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.LoadingMocked
-import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.SuccessMocked
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
 data class PrettifiedProperty(
     val name: String,
-    val value: String?,
+    val value: String,
+    val isValueFaded: Boolean = false,
+    val isValueItalic: Boolean = false,
     val onLongClick: () -> Unit = {},
     val onLongClickEnabled: Boolean = false,
     val isSmartSignal: Boolean = false,
@@ -64,6 +64,8 @@ fun EventPrettifiedView(
                     modifier = Modifier.fillMaxWidth(),
                     name = property.name,
                     value = property.value,
+                    isValueFaded = property.isValueFaded,
+                    isValueItalic = property.isValueItalic,
                     onLongClick = property.onLongClick,
                     onLongClickEnabled = property.onLongClickEnabled,
                     isSmartSignal = property.isSmartSignal,
@@ -81,7 +83,9 @@ fun EventPrettifiedView(
 private fun PrettifiedPropertyView(
     modifier: Modifier,
     name: String,
-    value: String?,
+    value: String,
+    isValueFaded: Boolean,
+    isValueItalic: Boolean,
     onLongClick: () -> Unit,
     onLongClickEnabled: Boolean,
     isSmartSignal: Boolean,
@@ -89,14 +93,13 @@ private fun PrettifiedPropertyView(
     isLoading: Boolean,
     isLast: Boolean,
 ) {
-    val _onLongClick by rememberUpdatedState(onLongClick)
     Box(
         modifier = modifier
             .combinedClickable(
                 enabled = onLongClickEnabled,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onLongClick = _onLongClick,
+                onLongClick = onLongClick,
                 onClick = {},
             )
     ) {
@@ -110,10 +113,9 @@ private fun PrettifiedPropertyView(
                     bottom = 14.dp,
                 )
         ) {
-            val adjustedValue = (value ?: "N/A")
-            val valueColor = when (value) {
-                null -> AppTheme.materialTheme.colorScheme.onSurfaceVariant
-                else -> AppTheme.materialTheme.colorScheme.onBackground
+            val valueColor = when (isValueFaded) {
+                true -> AppTheme.materialTheme.colorScheme.onSurfaceVariant
+                false -> AppTheme.materialTheme.colorScheme.onBackground
             }
 
 
@@ -129,19 +131,20 @@ private fun PrettifiedPropertyView(
                     .padding(vertical = valuePaddingFromText),
                 state = ShimmableState(
                     isShimmed = isLoading,
-                    data = adjustedValue,
+                    data = value,
                 ),
             ) { state ->
                 Text(
                     color = valueColor,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    style = AppTheme.materialTheme.typography.bodyLarge.merge(
+                    style = valueStyle.merge(
                         lineHeightStyle = LineHeightStyle(
                             alignment = LineHeightStyle.Alignment.Proportional,
                             trim = LineHeightStyle.Trim.Both,
                         ),
                     ),
+                    fontStyle = if (isValueItalic) FontStyle.Italic else FontStyle.Normal,
                     text = state.data,
                 )
             }
@@ -202,8 +205,8 @@ private fun PrettifiedPropertyView(
 @PreviewMultipleConfigurations
 @Composable
 private fun Preview() {
-    AppTheme {
-        with(HomeScreenUiState.LoadingOrSuccess.SuccessMocked) {
+    ShowPreview {
+        with(HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked) {
             EventPrettifiedView(
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
@@ -216,8 +219,8 @@ private fun Preview() {
 @Preview
 @Composable
 private fun PreviewLoading() {
-    AppTheme {
-        with(HomeScreenUiState.LoadingOrSuccess.LoadingMocked) {
+    ShowPreview {
+        with(HomeScreenUiState.Content.LoadingOrSuccess.LoadingMocked) {
             EventPrettifiedView(
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,

@@ -1,79 +1,86 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
-import com.fingerprintjs.android.fpjs_pro_demo.network.SmartSignalsApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
 class SmartSignals(
-    val clonedApp: SmartSignal.ClonedApp?,
-    val emulator: SmartSignal.Emulator?,
-    val factoryReset: SmartSignal.FactoryReset?,
-    val frida: SmartSignal.Frida?,
-    val highActivity: SmartSignal.HighActivity?,
-    val locationSpoofing: SmartSignal.LocationSpoofing?,
-    val root: SmartSignal.Root?,
-    val vpn: SmartSignal.Vpn?,
-) {
-    companion object {
-        val EMPTY = SmartSignals(null, null, null, null, null, null, null, null)
+    val clonedApp: SmartSignalInfo<SmartSignal.ClonedApp>,
+    val emulator: SmartSignalInfo<SmartSignal.Emulator>,
+    val factoryReset: SmartSignalInfo<SmartSignal.FactoryReset>,
+    val frida: SmartSignalInfo<SmartSignal.Frida>,
+    val highActivity: SmartSignalInfo<SmartSignal.HighActivity>,
+    val locationSpoofing: SmartSignalInfo<SmartSignal.LocationSpoofing>,
+    val root: SmartSignalInfo<SmartSignal.Root>,
+    val vpn: SmartSignalInfo<SmartSignal.Vpn>,
+)
+
+sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
+
+    sealed interface WithRawData {
+        val rawData: JsonElement
     }
+
+    class Success<T : SmartSignal>(
+        rawKey: String,
+        val typedData: T,
+        override val rawData: JsonElement
+    ) : SmartSignalInfo<T>(rawKey), WithRawData
+
+    class Error(
+        rawKey: String,
+        override val rawData: JsonElement
+    ) : SmartSignalInfo<Nothing>(rawKey), WithRawData
+
+    class ParseError(
+        rawKey: String,
+        override val rawData: JsonElement
+    ) : SmartSignalInfo<Nothing>(rawKey), WithRawData
+
+    class Disabled(rawKey: String) : SmartSignalInfo<Nothing>(rawKey)
 }
 
-sealed class SmartSignal(
-    val rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-    val rawKey: String,
-) {
-    class ClonedApp(
-        val detected: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+sealed class SmartSignal {
+    @Serializable
+    data class ClonedApp(
+        val result: Boolean
+    ) : SmartSignal()
 
-    class Emulator(
-        val detected: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class Emulator(
+        val result: Boolean
+    ) : SmartSignal()
 
-    class FactoryReset(
+    @Serializable
+    data class FactoryReset(
         val time: String,
         val timestamp: Int,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    ) : SmartSignal()
 
-    class Frida(
-        val detected: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class Frida(
+        val result: Boolean,
+    ) : SmartSignal()
 
-    class HighActivity(
-        val detected: Boolean,
-        val dailyRequests: Int?,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class HighActivity(
+        val result: Boolean,
+        val dailyRequests: Int? = null,
+    ) : SmartSignal()
 
-    class LocationSpoofing(
-        val detected: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class LocationSpoofing(
+        val result: Boolean,
+    ) : SmartSignal()
 
-    class Root(
-        val detected: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class Root(
+        val result: Boolean,
+    ) : SmartSignal()
 
-    class Vpn(
-        val detected: Boolean,
-        val originTimezone: String?,
-        val originCountry: String?,
-        val timezoneMismatch: Boolean,
-        val publicVPN: Boolean,
-        val auxiliaryMobile: Boolean,
-        val osMismatch: Boolean,
-        rawObject: SmartSignalsApi.SmartSignalEntryDto<*>,
-        rawKey: String,
-    ) : SmartSignal(rawObject, rawKey)
+    @Serializable
+    data class Vpn(
+        val result: Boolean,
+        val originTimezone: String? = null,
+        val originCountry: String? = null,
+    ) : SmartSignal()
 }
