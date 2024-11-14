@@ -60,13 +60,13 @@ Build the app from sources in a few simple steps:
     git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
     ```
 2. Open the cloned repository in Android Studio.
-3. Open the file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` and replace the value for `apiKey` with your Public API Key. You can find the Public API Key in your [dashboard](https://dashboard.fingerprint.com/) at App Settings > API Keys.
+3. Open the file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` and replace the value for `apiKey` with your Public API Key. You can find the Public API Key in your [dashboard under API Keys](https://dashboard.fingerprint.com/api-keys).
 
    ```kotlin
     import com.fingerprintjs.android.fpjs_pro.Configuration
     
     object Credentials {
-        val apiKey: String = "your_api_key"
+        val apiKey: String = "YOUR_PUBLIC_API_KEY"
     }
     ```
 4. Replace the value for `endpointUrl` with one of our [endpoints](https://dev.fingerprint.com/docs/android-sdk#region-1) or with your custom endpoint, as applicable.
