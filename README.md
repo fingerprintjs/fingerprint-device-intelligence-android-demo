@@ -92,7 +92,7 @@ Following up on the information provided in our [Getting Started Guide](https://
 ## Getting the response
 
 * The SDK configuration code is located at the [`di` package](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/di) of the app module. 
-* The method `getVisitorId()` method is abstracted in [IdentificationProvider](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/domain/IdentificationProvider.kt) class.
+* The method `getVisitorId()` method is abstracted in [IdentificationProvider](app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/domain/identification/IdentificationProvider.kt) class.
 
 ## Examining the response
 
