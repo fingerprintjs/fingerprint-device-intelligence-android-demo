@@ -70,14 +70,22 @@ Build the app from sources in a few simple steps:
        val apiKey: String = "YOUR_PUBLIC_API_KEY"
      }
      ```
-   * The value of `endpointUrl` should match the [region](https://dev.fingerprint.com/docs/android-sdk#region-1) you specified when registering your app with Fingerprint. It can also be a custom endpoint if you have set up a custom sub-domain or a proxy integration.
+   * If you **do not** have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should match the [region](https://dev.fingerprint.com/docs/android-sdk#region-1) you specified when registering your app with Fingerprint. 
      ```kotlin
      import com.fingerprintjs.android.fpjs_pro.Configuration
      
      object Credentials {
        val endpointUrl: String = Configuration.Region.US.endpointUrl
      }
-     ```   
+     ```
+     * If you have set up a have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should represent the endpoint through which you want to route the requests.
+       ```kotlin
+     import com.fingerprintjs.android.fpjs_pro.Configuration
+     
+     object Credentials {
+       val endpointUrl: String = "https://fingerprint.example.com"
+     }
+     ```
 4. In the "Build Variants" tool window, choose a build variant that suits your needs. All the available build variants are listed under `buildTypes{...}` in file [app/build.gradle.kts](app/build.gradle.kts)
    
    :bulb: The `debug` and `debugOptimized` variants of the app include an icon that allows you to iteratively build the UI without making an actual request to our Fingerprint servers. And save API calls!
