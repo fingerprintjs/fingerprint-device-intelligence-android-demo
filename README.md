@@ -60,30 +60,40 @@ Build the app from sources in a few simple steps:
     git clone https://github.com/fingerprintjs/fingerprint-device-intelligence-android-demo.git
     ```
 2. Open the cloned repository in Android Studio.
-3. Open the file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt` and replace the value for `apiKey` with your Public API Key. You can find the Public API Key in your [dashboard under API Keys](https://dashboard.fingerprint.com/api-keys).
+3. In file `app/src/main/java/com/fingerprintjs/android/fpjs_pro_demo/constants/Credentials.kt`,
+   * Replace the value for `apiKey` with your Public API Key. You can find the Public API Key in your [dashboard under API Keys](https://dashboard.fingerprint.com/api-keys).
 
-   ```kotlin
-    import com.fingerprintjs.android.fpjs_pro.Configuration
-    
-    object Credentials {
-        val apiKey: String = "YOUR_PUBLIC_API_KEY"
-    }
-    ```
-4. Replace the value for `endpointUrl` with one of our [endpoints](https://dev.fingerprint.com/docs/android-sdk#region-1) or with your custom endpoint, as applicable.
-    ```kotlin
-    import com.fingerprintjs.android.fpjs_pro.Configuration
-    
-    object Credentials {
-        val endpointUrl: String = Configuration.Region.US.endpointUrl
-    }
-    ```
-    
-4. In the "Build Variants" tool window, choose a build variant that suits your needs. You can read more about all the available build variants in [file app/build.gradle.kts](app/build.gradle.kts)
+     ```kotlin
+     import com.fingerprintjs.android.fpjs_pro.Configuration
 
-5. Run the app on the selected device
+     object Credentials {
+       val apiKey: String = "YOUR_PUBLIC_API_KEY"
+     }
+     ```
+   * If you **do not** have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should match the [region](https://dev.fingerprint.com/docs/android-sdk#region-1) you specified when registering your app with Fingerprint.
 
-> [!NOTE]
-> The `debug` and `debugOptimized` variants of the app include an icon that allows you to iteratively build the UI without making an actual request to our Fingerprint servers. And save API calls!
+     ```kotlin
+     import com.fingerprintjs.android.fpjs_pro.Configuration
+
+     object Credentials {
+       val endpointUrl: String = Configuration.Region.US.endpointUrl
+     }
+     ```
+   * If you have set up a have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should represent the endpoint through which you want to route the requests.
+
+     ```kotlin
+     import com.fingerprintjs.android.fpjs_pro.Configuration
+
+     object Credentials {
+       val endpointUrl: String = "https://fingerprint.example.com"
+     }
+     ```
+4. In the "Build Variants" tool window, choose a build variant that suits your needs. All the available build variants are listed under `buildTypes{...}` in file [app/build.gradle.kts](app/build.gradle.kts)
+   
+   :bulb: The `debug` and `debugOptimized` variants of the app include an icon that allows you to iteratively build the UI without making an actual request to our Fingerprint servers. And save API calls!
+6. Run the app on the selected device
+
+
 
 # Fingerprint Identification SDK
 
