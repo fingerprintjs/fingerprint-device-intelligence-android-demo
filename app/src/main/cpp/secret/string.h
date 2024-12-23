@@ -5,3 +5,7 @@ const char *string = "DuMbApIkEy\n"
                      "https://dashboard.fingerprint.com/signup\n"
                      "__placeholder__\n"
                      "__placeholder__\n";
+
+const char *getString() {
+    return string;
+}
