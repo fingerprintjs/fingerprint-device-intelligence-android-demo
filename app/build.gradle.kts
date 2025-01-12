@@ -99,8 +99,10 @@ android {
 
 dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.3")
+
     val useFpProDebugVersion = false // switch to true when needed to debug the locally built library
     implementation("com.fingerprint.android:pro:$SDK_VERSION_NAME${if (useFpProDebugVersion) "-debug" else ""}")
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("androidx.activity:activity-compose:1.9.3")
