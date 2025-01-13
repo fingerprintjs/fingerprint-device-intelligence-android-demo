@@ -10,11 +10,11 @@ val VERSION_CODE = 27
 val SDK_VERSION_NAME = "2.7.0"
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("kotlinx-serialization")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jetbrains.kotlin.compose)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.jetbrains.kotlin.kapt)
 }
 
 android {

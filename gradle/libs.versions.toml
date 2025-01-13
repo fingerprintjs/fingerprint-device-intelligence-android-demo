@@ -18,6 +18,8 @@ junitExt = "1.2.1"
 espressoVersion = "1.2.1"
 fingerprintVersion = "2.7.0"
 fingerprintDebugVersion = "2.7.0-debug"
+androidApplicationPlugin = "8.7.1"
+kotlinVersion = "2.0.21"
 
 [libraries]
 androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNaviation" }
@@ -52,5 +54,9 @@ androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-juni
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
-
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidApplicationPlugin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinVersion" }
