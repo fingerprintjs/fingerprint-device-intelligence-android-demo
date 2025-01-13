@@ -1,11 +1,13 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 @Suppress("PropertyName")
-val VERSION_NAME="3.2.1"
+val VERSION_NAME = "3.2.1"
+
 @Suppress("PropertyName")
-val VERSION_CODE=27
+val VERSION_CODE = 27
+
 @Suppress("PropertyName")
-val SDK_VERSION_NAME="2.7.0"
+val SDK_VERSION_NAME = "2.7.0"
 
 plugins {
     id("com.android.application")
@@ -45,7 +47,7 @@ android {
         create("release") {
             storeFile = file("release.jks")
             storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias  = System.getenv("RELEASE_SIGN_KEY_ALIAS")
+            keyAlias = System.getenv("RELEASE_SIGN_KEY_ALIAS")
             keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD")
         }
     }
@@ -59,7 +61,10 @@ android {
         // Production release build variant
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
         }
@@ -67,7 +72,10 @@ android {
         // level of performance, but also with the mocking functionality that the debug build type has.
         create("debugOptimized") {
             isMinifyEnabled = true
-            proguardFiles (getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
@@ -92,44 +100,59 @@ android {
     applicationVariants.all {
         val variant = this
         this.outputs.all {
-            (this as? BaseVariantOutputImpl)?.outputFileName = "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
+            (this as? BaseVariantOutputImpl)?.outputFileName =
+                "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
         }
     }
 }
 
 dependencies {
-    implementation("androidx.navigation:navigation-compose:2.8.3")
+    val useFpProDebugVersion =
+        false // switch to true when needed to debug the locally built library
 
-    val useFpProDebugVersion = false // switch to true when needed to debug the locally built library
-    implementation("com.fingerprint.android:pro:$SDK_VERSION_NAME${if (useFpProDebugVersion) "-debug" else ""}")
+    //core
+    implementation(libs.androidx.ktx.core)
+    implementation(libs.androidx.naviation.compose)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.core.splashscreen)
 
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
-    implementation("androidx.activity:activity-compose:1.9.3")
-    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
-    implementation ("androidx.compose.material:material-icons-extended")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("androidx.compose.animation:animation:1.7.4")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
-    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
-    implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
-    implementation("com.michael-bull.kotlin-result:kotlin-result-coroutines:2.0.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    implementation("androidx.security:security-crypto:1.0.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    //compose
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material.icons)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.preview)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.animation)
 
-    val daggerVersion = "2.51.1"
-    implementation("com.google.dagger:dagger:$daggerVersion")
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+    //shimmer
+    implementation(libs.valentinilk.compose.shimmer)
+
+    //network
+    implementation(libs.squareup.okHttp3)
+
+    //kotlin
+    implementation(libs.michaelbull.kotlin.result)
+    implementation(libs.michaelbull.kotlin.result.coroutine)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+
+    //di
+    implementation(libs.google.dagger)
+    kapt(libs.google.dagger.compiler)
+
+    //security
+    implementation(libs.androidx.security.crypto)
+    if (useFpProDebugVersion) implementation(libs.fingerprint.pro.debug) else implementation(libs.fingerprint.pro)
+
+    //testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.junit.ext)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

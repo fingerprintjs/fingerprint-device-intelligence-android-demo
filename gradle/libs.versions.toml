@@ -13,6 +13,11 @@ composeAnimation = "1.7.4"
 kotlinResult = "2.0.0"
 kotlinSerialization = "1.7.3"
 daggerVersion = "2.51.1"
+junitVersion = "4.13.2"
+junitExt = "1.2.1"
+espressoVersion = "1.2.1"
+fingerprintVersion = "2.7.0"
+fingerprintDebugVersion = "2.7.0-debug"
 
 [libraries]
 androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNaviation" }
@@ -36,5 +41,16 @@ michaelbull-kotlin-result-coroutine = { group = "com.michael-bull.kotlin-result"
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "daggerVersion" }
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "daggerVersion" }
+fingerprint-pro = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprintVersion" }
+fingerprint-pro-debug = { group = "com.fingerprint.android", name = "pro-debug", version.ref = "fingerprintDebugVersion" }
+
+#TESTING
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+androidx-test-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoVersion" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
 
 [plugins]
