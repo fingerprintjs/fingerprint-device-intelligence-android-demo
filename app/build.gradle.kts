@@ -1,13 +1,11 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 
 @Suppress("PropertyName")
-val VERSION_NAME = "3.2.1"
-
+val VERSION_NAME="3.2.1"
 @Suppress("PropertyName")
-val VERSION_CODE = 27
-
+val VERSION_CODE=27
 @Suppress("PropertyName")
-val SDK_VERSION_NAME = "2.7.0"
+val SDK_VERSION_NAME="2.7.0"
 
 plugins {
     alias(libs.plugins.android.application)
@@ -47,7 +45,7 @@ android {
         create("release") {
             storeFile = file("release.jks")
             storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("RELEASE_SIGN_KEY_ALIAS")
+            keyAlias  = System.getenv("RELEASE_SIGN_KEY_ALIAS")
             keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD")
         }
     }
@@ -61,10 +59,7 @@ android {
         // Production release build variant
         release {
             isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
         }
@@ -72,10 +67,7 @@ android {
         // level of performance, but also with the mocking functionality that the debug build type has.
         create("debugOptimized") {
             isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles (getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
@@ -100,8 +92,7 @@ android {
     applicationVariants.all {
         val variant = this
         this.outputs.all {
-            (this as? BaseVariantOutputImpl)?.outputFileName =
-                "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
+            (this as? BaseVariantOutputImpl)?.outputFileName = "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
         }
     }
 }
