@@ -1,0 +1,64 @@
+[versions]
+ktxCore = "1.13.1"
+ktxLifecycleRuntime = "2.8.6"
+composeNavigation = "2.8.3"
+composeActivity = "1.9.3"
+composeViewmodelLifecycle = "2.8.6"
+composeBom = "2024.10.00"
+okHttp3 = "4.12.0"
+androidxSplashScreen = "1.0.1"
+androidxSecurity = "1.0.0"
+composeShimmer = "1.2.0"
+composeAnimation = "1.7.4"
+kotlinResult = "2.0.0"
+kotlinSerialization = "1.7.3"
+dagger = "2.51.1"
+junit = "4.13.2"
+junitExt = "1.2.1"
+espresso = "3.6.1"
+fingerprint = "2.7.0"
+fingerprintDebug = "2.7.0-debug"
+androidApplicationPlugin = "8.7.1"
+kotlin = "2.0.21"
+
+[libraries]
+androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+androidx-ktx-core = { group = "androidx.core", name = "core-ktx", version.ref = "ktxCore" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "ktxLifecycleRuntime" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "composeViewmodelLifecycle" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "androidxSecurity" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplashScreen" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+squareup-okHttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
+valentinilk-compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
+michaelbull-kotlin-result = { group = "com.michael-bull.kotlin-result", name = "kotlin-result", version.ref = "kotlinResult" }
+michaelbull-kotlin-result-coroutine = { group = "com.michael-bull.kotlin-result", name = "kotlin-result-coroutines", version.ref = "kotlinResult" }
+jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+#noinspection SimilarGradleDependency
+fingerprint-pro = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprint" }
+#noinspection SimilarGradleDependency
+fingerprint-pro-debug = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprintDebug" }
+
+#TESTING
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidApplicationPlugin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
