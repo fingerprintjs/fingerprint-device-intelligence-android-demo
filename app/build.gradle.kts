@@ -4,8 +4,9 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 val VERSION_NAME="3.2.1"
 @Suppress("PropertyName")
 val VERSION_CODE=27
-@Suppress("PropertyName")
-val SDK_VERSION_NAME="2.7.0"
+val useFpProDebugVersion =
+    false // switch to true when needed to debug the locally built library
+val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
 
 plugins {
     alias(libs.plugins.android.application)
@@ -38,7 +39,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "SDK_VERSION_NAME", "\"${SDK_VERSION_NAME}\"")
+        buildConfigField("String", "SDK_VERSION_NAME", "\"${fingerprintProLib.get().versionConstraint.requiredVersion}\"")
     }
 
     signingConfigs {
@@ -98,8 +99,6 @@ android {
 }
 
 dependencies {
-    val useFpProDebugVersion =
-        false // switch to true when needed to debug the locally built library
 
     //core
     implementation(libs.androidx.ktx.core)
@@ -136,7 +135,7 @@ dependencies {
 
     //security
     implementation(libs.androidx.security.crypto)
-    if (useFpProDebugVersion) implementation(libs.fingerprint.pro.debug) else implementation(libs.fingerprint.pro)
+    implementation(fingerprintProLib)
 
     //testing
     testImplementation(libs.junit)
