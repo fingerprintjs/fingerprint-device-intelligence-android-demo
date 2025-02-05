@@ -1,7 +1,7 @@
 [versions]
 ktx = "1.13.1"
 ktxRuntime = "2.8.6"
-composeNaviation = "2.8.3"
+composeNavigation = "2.8.3"
 composeVersion = "1.9.3"
 composeLifecycle = "1.9.3"
 composeBom = "2024.10.00"
@@ -22,7 +22,7 @@ androidApplicationPlugin = "8.7.1"
 kotlinVersion = "2.0.21"
 
 [libraries]
-androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNaviation" }
+androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 androidx-ktx-core = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "ktxRuntime" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "composeLifecycle" }
