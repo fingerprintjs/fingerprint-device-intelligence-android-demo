@@ -43,8 +43,10 @@ michaelbull-kotlin-result-coroutine = { group = "com.michael-bull.kotlin-result"
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+#noinspection SimilarGradleDependency
 fingerprint-pro = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprint" }
-fingerprint-pro-debug = { group = "com.fingerprint.android", name = "pro-debug", version.ref = "fingerprintDebug" }
+#noinspection SimilarGradleDependency
+fingerprint-pro-debug = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprintDebug" }
 
 #TESTING
 junit = { group = "junit", name = "junit", version.ref = "junit" }
