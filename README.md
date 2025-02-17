@@ -13,8 +13,8 @@
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
-  <a href="https://github.com/fingerprintjs/fingerprintjs-pro-android-demo/releases/tag/v2.7.0">
-    <img src="https://img.shields.io/badge/SDK-2.7.0-orange" alt="Fingerprint Identification SDK version">
+  <a href="https://github.com/fingerprintjs/fingerprintjs-pro-android-demo/releases/tag/v2.8.0">
+    <img src="https://img.shields.io/badge/SDK-2.8.0-orange" alt="Fingerprint Identification SDK version">
   </a>
 </p>
 
