@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.signup
 
 import com.fingerprintjs.android.fpjs_pro_demo.storage.AppStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey
+import com.github.michaelbull.result.get
 import com.github.michaelbull.result.getOrElse
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -27,13 +28,18 @@ class ShowSignUpPromptUseCase @Inject constructor(
 
     private suspend fun getFingerprintSuccessCount() =
         appStorage.load(StorageKey.FingerprintSuccessCount, Int::class).getOrElse { 0 }
+
     private suspend fun setFingerprintSuccessCount(value: Int) =
-        appStorage.save(value,StorageKey.FingerprintSuccessCount)
+        appStorage.save(value, StorageKey.FingerprintSuccessCount)
 
     private suspend fun getSignupPromptHideTimeMillis() =
         appStorage.load(StorageKey.SignupPromptHideTimeMillis, Long::class).getOrElse { 0 }
+
     private suspend fun setSignupPromptHideTimeMillis(value: Long) =
-        appStorage.save(value,StorageKey.SignupPromptHideTimeMillis)
+        appStorage.save(value, StorageKey.SignupPromptHideTimeMillis)
+
+    private suspend fun getCustomApiKeysEnabled() =
+        appStorage.load(StorageKey.CustomApiKeysEnabled, Boolean::class).get() ?: false
 
     suspend fun onFingerprintSuccess() {
         setFingerprintSuccessCount(getFingerprintSuccessCount() + 1)
@@ -49,6 +55,7 @@ class ShowSignUpPromptUseCase @Inject constructor(
         _showAllowed.emit(
             (System.currentTimeMillis() - getSignupPromptHideTimeMillis() > MILLIS_IN_WEEK)
                     && getFingerprintSuccessCount() >= 2
+                    && !getCustomApiKeysEnabled()
         )
     }
 
