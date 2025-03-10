@@ -20,6 +20,7 @@ fingerprint = "2.8.0"
 fingerprintDebug = "2.8.0-debug"
 androidApplicationPlugin = "8.7.1"
 kotlin = "2.0.21"
+detekt = "1.23.8"
 
 [libraries]
 androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
@@ -62,3 +63,4 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
