@@ -5,13 +5,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 
 @Composable
 fun DRNScreen(modifier: Modifier) {
+    val viewModel = injectedViewModel { drnViewModel }
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        Text("DRN")
+        Text("vm: ${viewModel.state}")
     }
 }
