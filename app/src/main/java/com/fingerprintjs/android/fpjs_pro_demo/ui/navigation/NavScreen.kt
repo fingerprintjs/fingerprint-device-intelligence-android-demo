@@ -11,7 +11,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,10 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -65,12 +64,7 @@ fun NavScreen() {
                     Tab.entries.forEach { tab ->
                         val route = tab.route
                         NavigationBarItem(
-                            icon = {
-                                Icon(
-                                    imageVector = tab.icon,
-                                    contentDescription = tab.title,
-                                )
-                            },
+                            icon = { TabIcon(tab) },
                             label = { Text(tab.title) },
                             selected = currentDestination?.hierarchy?.any { it.route == route } == true,
                             onClick = { navController.openTab(tab) },
@@ -147,6 +141,21 @@ fun NavScreen() {
             }
         }
     }
+}
+
+@Composable
+private fun TabIcon(tab: Tab) = when (tab.icon) {
+    is Tab.Icon.Resource ->
+        Icon(
+            painter = painterResource(tab.icon.resId),
+            contentDescription = tab.title,
+        )
+
+    is Tab.Icon.Vector ->
+        Icon(
+            imageVector = tab.icon.value,
+            contentDescription = tab.title,
+        )
 }
 
 private fun NavController.openTab(tab: Tab) {
