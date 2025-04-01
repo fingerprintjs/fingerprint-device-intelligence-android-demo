@@ -5,13 +5,13 @@ import java.util.Date
 
 data class DRN(
     @SerializedName("regionalActivity")
-    val regionalActivity: RegionalActivity,
+    val regionalActivity: RegionalActivity?,
 
     @SerializedName("suspectScore")
-    val suspectScore: SuspectScore,
+    val suspectScore: SuspectScore?,
 
     @SerializedName("timestamps")
-    val timestamps: Timestamps,
+    val timestamps: Timestamps?,
 ) {
     data class RegionalActivity(
         @SerializedName("startDate")
