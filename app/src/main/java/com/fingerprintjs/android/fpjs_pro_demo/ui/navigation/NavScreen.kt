@@ -8,10 +8,9 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,13 +22,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,6 +37,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalExpandTransition
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalShrinkTransition
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn.DRNScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.HomeScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.details.SettingsDetailsScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.main.SettingsScreen
@@ -48,7 +49,7 @@ fun NavScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    var navigationBarHeight by remember { mutableIntStateOf(0) }
+    var navbarHeight by remember { mutableIntStateOf(0) }
 
     Scaffold(
         bottomBar = {
@@ -58,19 +59,13 @@ fun NavScreen() {
                 exit = verticalShrinkTransition(),
             ) {
                 NavigationBar(
-                    modifier = Modifier
-                        .onGloballyPositioned { navigationBarHeight = it.size.height },
+                    modifier = Modifier.onGloballyPositioned { navbarHeight = it.size.height },
                     containerColor = AppTheme.materialTheme.colorScheme.surfaceContainerLow,
                 ) {
                     Tab.entries.forEach { tab ->
                         val route = tab.route
                         NavigationBarItem(
-                            icon = {
-                                Icon(
-                                    imageVector = tab.icon,
-                                    contentDescription = tab.title,
-                                )
-                            },
+                            icon = { TabIcon(tab) },
                             label = { Text(tab.title) },
                             selected = currentDestination?.hierarchy?.any { it.route == route } == true,
                             onClick = { navController.openTab(tab) },
@@ -97,29 +92,34 @@ fun NavScreen() {
                 fun Modifier.respectNavBarSizeAccordingTo(screen: Screen): Modifier {
                     return if (screen.withNavBar) {
                         padding(bottom = with(LocalDensity.current) {
-                            navigationBarHeight.toDp()
+                            navbarHeight.toDp()
                         })
                     } else this
                 }
 
-                navigation(
-                    route = Tab.Home.route,
-                    startDestination = Screen.Home.absoluteRoute
+                simpleScreen(
+                    tab = Tab.Home,
+                    screen = Screen.Home,
                 ) {
-                    composable(Screen.Home.absoluteRoute) {
-                        Column(
-                            modifier = Modifier
-                                .respectNavBarSizeAccordingTo(Screen.Home)
-                        ) {
-                            HomeScreen(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f),
-                                onGoToApiKeysSettings = { navController.openScreen(Screen.SettingsDetails) }
-                            )
-                        }
-                    }
+                    HomeScreen(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .respectNavBarSizeAccordingTo(Screen.Home),
+                        onGoToApiKeysSettings = { navController.openScreen(Screen.SettingsDetails) }
+                    )
                 }
+
+                simpleScreen(
+                    tab = Tab.DRN,
+                    screen = Screen.DRN,
+                ) {
+                    DRNScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .respectNavBarSizeAccordingTo(Screen.DRN)
+                    )
+                }
+
                 navigation(
                     route = Tab.Settings.route,
                     startDestination = Screen.Settings.absoluteRoute,
@@ -137,7 +137,8 @@ fun NavScreen() {
                         route = Screen.SettingsDetails.absoluteRoute,
                     ) {
                         SettingsDetailsScreen(
-                            modifier = Modifier.respectNavBarSizeAccordingTo(Screen.SettingsDetails),
+                            modifier = Modifier
+                                .respectNavBarSizeAccordingTo(Screen.SettingsDetails),
                             onGoBack = { navController.popBackStack() },
                             sharedTransitionScope = this@SharedTransitionLayout,
                             animatedContentScope = this,
@@ -147,6 +148,36 @@ fun NavScreen() {
             }
         }
     }
+}
+
+private fun NavGraphBuilder.simpleScreen(
+    tab: Tab,
+    screen: Screen,
+    content: @Composable () -> Unit
+) {
+    navigation(
+        route = tab.route,
+        startDestination = screen.absoluteRoute
+    ) {
+        composable(screen.absoluteRoute) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun TabIcon(tab: Tab) = when (tab.icon) {
+    is Tab.Icon.Resource ->
+        Icon(
+            painter = painterResource(tab.icon.resId),
+            contentDescription = tab.title,
+        )
+
+    is Tab.Icon.Vector ->
+        Icon(
+            imageVector = tab.icon.value,
+            contentDescription = tab.title,
+        )
 }
 
 private fun NavController.openTab(tab: Tab) {

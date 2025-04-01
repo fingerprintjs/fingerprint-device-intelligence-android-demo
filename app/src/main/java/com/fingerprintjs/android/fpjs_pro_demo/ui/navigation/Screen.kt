@@ -6,6 +6,7 @@ enum class Screen(
     val withNavBar: Boolean,
 ) {
     Home(Tab.Home, "main", true),
+    DRN(Tab.DRN, "main", true),
     Settings(Tab.Settings, "main", true),
     SettingsDetails(Tab.Settings, "details", false);
 
