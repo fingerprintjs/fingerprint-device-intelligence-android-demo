@@ -50,14 +50,14 @@ import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.error.HomeErrorScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success.HomeLoadingOrSuccessScreen
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin.HomeTapToBeginScreen
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.TapToBegin
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropdown_menu.AppBarDropdownMenu
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropdown_menu.AppBarDropdownMenuItem
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.ClipboardUtils
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -229,7 +229,7 @@ fun HomeScreenInternal(
             ) {
                 when (contentState) {
                     is HomeScreenUiState.Content.TapToBegin -> {
-                        HomeTapToBeginScreen(
+                        TapToBegin(
                             modifier = Modifier.fillMaxSize(),
                             onTapToBegin = contentState.onTap,
                         )

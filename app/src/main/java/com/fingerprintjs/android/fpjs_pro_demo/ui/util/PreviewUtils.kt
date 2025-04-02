@@ -1,10 +1,12 @@
-package com.fingerprintjs.android.fpjs_pro_demo.utils
+package com.fingerprintjs.android.fpjs_pro_demo.ui.util
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks
+import com.fingerprintjs.android.fpjs_pro_demo.utils.stateMocks
 
 @Retention(AnnotationRetention.BINARY)
 @Target(
