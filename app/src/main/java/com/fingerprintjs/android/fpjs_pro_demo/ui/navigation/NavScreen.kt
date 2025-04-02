@@ -37,7 +37,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalExpandTransition
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalShrinkTransition
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn.DRNScreen
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn.DrnScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.HomeScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.details.SettingsDetailsScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.main.SettingsScreen
@@ -113,7 +113,7 @@ fun NavScreen() {
                     tab = Tab.DRN,
                     screen = Screen.DRN,
                 ) {
-                    DRNScreen(
+                    DrnScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .respectNavBarSizeAccordingTo(Screen.DRN)

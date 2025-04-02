@@ -10,27 +10,27 @@ import com.github.michaelbull.result.mapError
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class DRNProvider @Inject constructor(
+class DrnProvider @Inject constructor(
     private val httpClient: HttpClient,
     private val customApiKeysUseCase: CustomApiKeysUseCase,
     private val identificationProvider: IdentificationProvider,
 ) {
-    suspend fun getDRN(): DRNResponse {
+    suspend fun getDRN(): DrnResponse {
         val keys = customApiKeysUseCase.state.first()
         return if (!keys.enabled) {
-            Err(DRNError.EndpointInfoNotSetInApp)
+            Err(DrnError.EndpointInfoNotSetInApp)
         } else {
             identificationProvider.getVisitorId()
-                .mapError { DRNError.Unknown }
+                .mapError { DrnError.Unknown }
                 .flatMap { getDRN(it.visitorId, keys.secret) }
         }
     }
 
-    private suspend fun getDRN(visitorId: String, secret: String): DRNResponse {
+    private suspend fun getDRN(visitorId: String, secret: String): DrnResponse {
         val headers = mutableMapOf<String, String>()
         val url = URL.format(visitorId).toUri().toString()
-        headers["Authorization"] = "Bearer $secret"
-        headers["X-API-Version"] = "2024-09-01"
+        headers[HEADER_AUTHORIZATION] = BEARER.format(secret)
+        headers[HEADER_API_VERSION] = API_VERSION
 
         return httpClient.request(
             url = url,
@@ -41,5 +41,9 @@ class DRNProvider @Inject constructor(
     companion object {
         private const val URL =
             "https://drn-api.fpjs.io/drn/%s?signals=regional_activity,suspect_score,timestamps"
+        private const val HEADER_AUTHORIZATION = "Authorization"
+        private const val HEADER_API_VERSION = "X-API-Version"
+        private const val BEARER = "Bearer %s"
+        private const val API_VERSION = "2024-09-01"
     }
 }

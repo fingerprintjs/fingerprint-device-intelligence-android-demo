@@ -3,12 +3,12 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.drn
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
-data class DRNData(
+data class DrnData(
     @SerializedName("data")
-    val data: DRN
+    val data: Drn
 )
 
-data class DRN(
+data class Drn(
     @SerializedName("regionalActivity")
     val regionalActivity: RegionalActivity?,
 
@@ -67,12 +67,12 @@ data class DRN(
         val maximum: Maximum,
     ) {
         sealed class Signal {
-            data class VPN(
+            data class Vpn(
                 @SerializedName("timezoneMismatch")
                 val timezoneMismatch: Int? = null,
 
                 @SerializedName("publicVPN")
-                val publicVPN: Int? = null,
+                val publicVpn: Int? = null,
 
                 @SerializedName("auxiliaryMobile")
                 val auxiliaryMobile: Int? = null,

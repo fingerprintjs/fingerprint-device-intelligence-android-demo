@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 
 @Composable
-fun DRNScreen(modifier: Modifier) {
+fun DrnScreen(modifier: Modifier) {
     val viewModel = injectedViewModel { drnViewModel }
     val drn = viewModel.drn.collectAsState()
 
