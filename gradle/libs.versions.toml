@@ -13,6 +13,7 @@ composeAnimation = "1.7.4"
 kotlinResult = "2.0.0"
 kotlinSerialization = "1.7.3"
 dagger = "2.51.1"
+gson = "2.12.1"
 junit = "4.13.2"
 junitExt = "1.2.1"
 espresso = "3.6.1"
@@ -44,6 +45,7 @@ michaelbull-kotlin-result-coroutine = { group = "com.michael-bull.kotlin-result"
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 #noinspection SimilarGradleDependency
 fingerprint-pro = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprint" }
 #noinspection SimilarGradleDependency
