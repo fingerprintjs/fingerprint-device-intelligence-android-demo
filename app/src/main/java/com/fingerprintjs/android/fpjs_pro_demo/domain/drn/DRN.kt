@@ -3,6 +3,11 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.drn
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
+data class DRNData(
+    @SerializedName("data")
+    val data: DRN
+)
+
 data class DRN(
     @SerializedName("regionalActivity")
     val regionalActivity: RegionalActivity?,
@@ -88,21 +93,13 @@ data class DRN(
         }
 
         data class Minimum(
-            @SerializedName("value")
             val value: Int,
-
-            @SerializedName("signals")
             val signals: List<Signal>,
         )
 
         data class Maximum(
-            @SerializedName("percentile")
             val percentile: Float,
-
-            @SerializedName("value")
             val value: Int,
-
-            @SerializedName("signals")
             val signals: List<Signal>,
         )
     }

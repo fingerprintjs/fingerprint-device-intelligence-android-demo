@@ -22,6 +22,7 @@ class DRNViewModel @Inject constructor(
         drnProvider.getDRN().fold({ data ->
             drn.value = data
         }, { err ->
+            // TODO
             Log.d("DRN", "error: $err")
         })
     }

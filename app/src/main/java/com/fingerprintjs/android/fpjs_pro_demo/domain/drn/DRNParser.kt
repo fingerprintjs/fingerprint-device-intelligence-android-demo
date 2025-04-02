@@ -22,40 +22,92 @@ private const val CODE_VISITOR_ID_NOT_FOUND = 404
 private val gson: Gson = GsonBuilder()
     .setDateFormat(DATE_FORMAT)
     .registerTypeAdapter(
-        object : TypeToken<List<DRN.SuspectScore.Signal>>() {}.type,
-        SignalListAdapter()
-    ).create()
+        object : TypeToken<DRN.SuspectScore.Minimum>() {}.type,
+        MinimumDeserializer()
+    )
+    .registerTypeAdapter(
+        object : TypeToken<DRN.SuspectScore.Maximum>() {}.type,
+        MaximumDeserializer()
+    )
+    .create()
 
 private fun parseBody(body: String): Result<DRN, Unit> {
     return runCatching {
-        gson.fromJson(body, DRN::class.java)
+        gson.fromJson(body, DRNData::class.java).data
     }.mapError { }
 }
 
-fun Result<Response, Error<*>>.parseDRN(): DRNResponse = mapError {
+fun Result<Response, Error<*>>.parseDRN(): DRNResponse =
+    mapError {
         when (it) {
             is Error.IO -> DRNError.NetworkError(cause = it.cause)
             is Error.Unknown -> DRNError.Unknown
         }
-    }
-        .andThen {
-            if (it.isSuccessful) {
-                val body = it.body
-                if (body == null) {
-                    Err(DRNError.ParseError)
-                } else {
-                    parseBody(body).mapError { DRNError.ParseError }
-                }
+    }.andThen {
+        if (it.isSuccessful) {
+            val body = it.body
+            if (body == null) {
+                Err(DRNError.ParseError)
             } else {
-                if (it.code == CODE_VISITOR_ID_NOT_FOUND) {
-                    Err(DRNError.VisitorNotFound)
-                } else {
-                    Err(DRNError.UnknownApiError)
-                }
+                parseBody(body).mapError { DRNError.ParseError }
+            }
+        } else {
+            if (it.code == CODE_VISITOR_ID_NOT_FOUND) {
+                Err(DRNError.VisitorNotFound)
+            } else {
+                Err(DRNError.UnknownApiError)
             }
         }
+    }
 
-class SignalListAdapter : JsonDeserializer<List<DRN.SuspectScore.Signal>> {
+class MinimumDeserializer : JsonDeserializer<DRN.SuspectScore.Minimum> {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): DRN.SuspectScore.Minimum {
+        val jsonObject = json?.asJsonObject
+            ?: throw NullPointerException("MinimumDeserializer cannot parse null object")
+        if (context == null) {
+            throw NullPointerException("context cannot be null")
+        }
+
+        val value = jsonObject.get("value").asInt
+        val signals: List<DRN.SuspectScore.Signal> = SignalListDeserializer().deserialize(
+            json = jsonObject.get("signals"),
+            typeOfT = List::class.java,
+            context = context
+        )
+
+        return DRN.SuspectScore.Minimum(value, signals)
+    }
+}
+
+class MaximumDeserializer : JsonDeserializer<DRN.SuspectScore.Maximum> {
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): DRN.SuspectScore.Maximum {
+        val jsonObject = json?.asJsonObject
+            ?: throw NullPointerException("MinimumDeserializer cannot parse null object")
+        if (context == null) {
+            throw NullPointerException("context cannot be null")
+        }
+
+        val value = jsonObject.get("value").asInt
+        val percentile = jsonObject.get("percentile").asFloat
+        val signals: List<DRN.SuspectScore.Signal> = SignalListDeserializer().deserialize(
+            json = jsonObject.get("signals"),
+            typeOfT = List::class.java,
+            context = context
+        )
+
+        return DRN.SuspectScore.Maximum(percentile, value, signals)
+    }
+}
+
+class SignalListDeserializer : JsonDeserializer<List<DRN.SuspectScore.Signal>> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
@@ -81,7 +133,7 @@ class SignalListAdapter : JsonDeserializer<List<DRN.SuspectScore.Signal>> {
 
                 else -> DRN.SuspectScore.Signal.SimpleSignal(
                     key = key,
-                    value = jsonObject.get("value").asInt
+                    value = jsonObject.get(key).asInt
                 )
             }
         }
