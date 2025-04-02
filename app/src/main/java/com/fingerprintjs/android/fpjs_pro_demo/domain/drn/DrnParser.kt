@@ -53,9 +53,9 @@ fun Result<Response, Error<*>>.parseDRN(): DrnResponse =
             }
         } else {
             if (it.code == CODE_VISITOR_ID_NOT_FOUND) {
-                Err(DrnError.VisitorNotFound)
+                Err(DrnError.ApiError.VisitorNotFound)
             } else {
-                Err(DrnError.UnknownApiError)
+                Err(DrnError.ApiError.UnknownApiError)
             }
         }
     }

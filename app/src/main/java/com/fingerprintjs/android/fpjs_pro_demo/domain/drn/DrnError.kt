@@ -8,8 +8,8 @@ sealed interface DrnError {
     data object ParseError : DrnError
     data object Unknown : DrnError
 
-
-    sealed interface ApiError : DrnError
-    data object VisitorNotFound : ApiError
-    data object UnknownApiError : ApiError
+    sealed interface ApiError : DrnError {
+        data object VisitorNotFound : ApiError
+        data object UnknownApiError : ApiError
+    }
 }
