@@ -22,6 +22,7 @@ fingerprintDebug = "2.8.0-debug"
 androidApplicationPlugin = "8.7.1"
 kotlin = "2.0.21"
 detekt = "1.23.8"
+orbitMvi = "9.0.0"
 
 [libraries]
 androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
@@ -38,6 +39,9 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbitMvi" }
+orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbitMvi" }
+orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitMvi" }
 squareup-okHttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
 valentinilk-compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
 michaelbull-kotlin-result = { group = "com.michael-bull.kotlin-result", name = "kotlin-result", version.ref = "kotlinResult" }

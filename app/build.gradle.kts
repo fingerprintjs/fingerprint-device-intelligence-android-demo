@@ -108,6 +108,11 @@ detekt {
 dependencies {
     implementation(libs.google.gson)
 
+    // Orbit MVI
+    implementation(libs.orbit.viewmodel)
+    implementation(libs.orbit.compose)
+    testImplementation(libs.orbit.test)
+
     //core
     implementation(libs.androidx.ktx.core)
     implementation(libs.androidx.naviation.compose)
