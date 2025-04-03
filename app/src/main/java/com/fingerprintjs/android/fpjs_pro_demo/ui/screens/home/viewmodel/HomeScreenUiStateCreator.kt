@@ -29,6 +29,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalI
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsResponse
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.UiError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
@@ -45,6 +46,7 @@ class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
 ) {
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "ReturnCount")
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsResponse: SmartSignalsResponse,
@@ -58,17 +60,38 @@ class HomeScreenUiStateCreator @Inject constructor(
         onGotoApiKeysSettings: () -> Unit = {},
     ): HomeScreenUiState.Content {
 
-        val unknownError = HomeScreenUiState.Content.Error.Unknown(onSupportClicked = onSupportClicked, onReload = onReload)
-        val networkError = HomeScreenUiState.Content.Error.Network(onReload = onReload)
-        val secretApiKeyMismatchError = HomeScreenUiState.Content.Error.SecretApiKeyMismatch(onGotoApiKeysSettings = onGotoApiKeysSettings)
+        val unknownError = HomeScreenUiState.Content.Error(
+            error = UiError.Unknown(onSupportClicked),
+            onBtnCLick = onReload,
+        )
+        val networkError = HomeScreenUiState.Content.Error(
+            error = UiError.Network,
+            onBtnCLick = onReload
+        )
+        val secretApiKeyMismatchError = HomeScreenUiState.Content.Error(
+            error = UiError.SecretApiKeyMismatch,
+            onBtnCLick = onGotoApiKeysSettings
+        )
 
         val fingerprintSuccessResult = fingerprintSdkResponse
             .getOrElse { error ->
                 return when (error) {
                     is NetworkError -> networkError
-                    is TooManyRequest -> HomeScreenUiState.Content.Error.TooManyRequests(onReload = onReload)
-                    is ApiKeyExpired -> HomeScreenUiState.Content.Error.PublicApiKeyExpired(onGotoApiKeysSettings = onGotoApiKeysSettings)
-                    is ApiKeyNotFound -> HomeScreenUiState.Content.Error.PublicApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is TooManyRequest -> HomeScreenUiState.Content.Error(
+                        error = UiError.TooManyRequests,
+                        onBtnCLick = onReload
+                    )
+
+                    is ApiKeyExpired -> HomeScreenUiState.Content.Error(
+                        error = UiError.PublicApiKeyExpired,
+                        onBtnCLick = onGotoApiKeysSettings
+                    )
+
+                    is ApiKeyNotFound -> HomeScreenUiState.Content.Error(
+                        error = UiError.PublicApiKeyInvalid,
+                        onBtnCLick = onGotoApiKeysSettings
+                    )
+
                     is ApiKeyRequired -> unknownError
                     is Failed -> unknownError
                     is HeaderRestricted -> unknownError
@@ -80,10 +103,18 @@ class HomeScreenUiStateCreator @Inject constructor(
                     is RequestCannotBeParsed -> unknownError
                     is RequestTimeout -> unknownError
                     is ResponseCannotBeParsed -> unknownError
-                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error(
+                        error = UiError.SubscriptionNotActive,
+                        onBtnCLick = onGotoApiKeysSettings
+                    )
+
                     is UnknownError -> unknownError
                     is UnsupportedVersion -> unknownError
-                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is WrongRegion -> HomeScreenUiState.Content.Error(
+                        error = UiError.WrongRegion,
+                        onBtnCLick = onGotoApiKeysSettings
+                    )
+
                     is ClientTimeout -> networkError
                 }
             }
@@ -99,7 +130,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                     SmartSignalsError.FeatureNotEnabled -> unknownError
                     SmartSignalsError.RequestNotFound -> secretApiKeyMismatchError
                     SmartSignalsError.SubscriptionNotActive -> secretApiKeyMismatchError
-                    SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error.SecretApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error(
+                        error = UiError.SecretApiKeyInvalid,
+                        onBtnCLick = onGotoApiKeysSettings
+                    )
+
                     SmartSignalsError.TokenRequired -> unknownError
                     SmartSignalsError.UnknownApiError -> unknownError
                     SmartSignalsError.WrongRegion -> secretApiKeyMismatchError
@@ -288,8 +323,10 @@ class HomeScreenUiStateCreator @Inject constructor(
                         !result -> NOT_DETECTED_STRING
                         originCountry != null ->
                             "${DETECTED_STRING}. Device location is $originCountry"
+
                         originTimezone != null ->
                             "${DETECTED_STRING}. Device timezone is $originTimezone"
+
                         else -> DETECTED_STRING
                     }
                 },

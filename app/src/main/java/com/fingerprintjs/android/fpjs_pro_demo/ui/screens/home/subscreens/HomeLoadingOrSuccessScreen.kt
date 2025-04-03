@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success
+package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
