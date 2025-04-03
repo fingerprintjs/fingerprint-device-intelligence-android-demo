@@ -19,7 +19,7 @@ class DrnViewModel @Inject constructor(
     ))
 
     suspend fun loadData() {
-        drnProvider.getDRN().fold({ data ->
+        drnProvider.getDrn().fold({ data ->
             drn.value = data
         }, { err ->
             // TODO
