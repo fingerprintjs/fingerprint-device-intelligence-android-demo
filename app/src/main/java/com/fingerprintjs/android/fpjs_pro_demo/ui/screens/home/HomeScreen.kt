@@ -240,6 +240,7 @@ fun HomeScreenInternal(
                             modifier = Modifier.fillMaxSize(),
                             error = contentState.error,
                             onBtnClick = contentState.onBtnCLick,
+                            onLinkClick = contentState.onLinkClick ?: {}
                         )
                     }
 

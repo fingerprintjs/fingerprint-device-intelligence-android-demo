@@ -35,14 +35,14 @@ sealed class UiError {
     abstract val image: ImageVector
     abstract val title: String
     abstract val description: String
-    abstract val links: List<LinkableText.Link>
+    abstract val linkMasks: List<String>
     abstract val buttonTitle: String
 
     data object PublicApiKeyExpired : UiError() {
         override val image = Icons.Outlined.ErrorOutline
         override val title = "Failed to Fingerprint"
         override val description = "The public key has expired."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
@@ -51,7 +51,7 @@ sealed class UiError {
         override val title = "Failed to Fingerprint"
         override val description =
             "The public API key is missing or invalid. Ensure the key was entered correctly."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
@@ -59,7 +59,7 @@ sealed class UiError {
         override val image = Icons.Outlined.ErrorOutline
         override val title = "Failed to Fingerprint"
         override val description = "The application is not active for the provided public API key."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
@@ -68,7 +68,7 @@ sealed class UiError {
         override val title = "Failed to Fingerprint"
         override val description =
             "The public API key is not intended for the selected region. Visit Settings to change the region."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
@@ -77,7 +77,7 @@ sealed class UiError {
         override val title = "Failed to fetch Smart Signals"
         override val description =
             "The provided secret API key is invalid. Make sure that provided public and secret API keys belong to the same application."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
@@ -86,20 +86,15 @@ sealed class UiError {
         override val title = "Failed to fetch Smart Signals"
         override val description =
             "The provided secret API key is either missing or invalid. Please double-check that the key was entered correctly."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Go to API Keys"
     }
 
-    class Unknown(onSupportClicked: () -> Unit) : UiError() {
+    data object Unknown : UiError() {
         override val image = Icons.Outlined.ErrorOutline
         override val title = "An unexpected error occurred..."
         override val description = " Please contact support if this issue persists."
-        override val links = listOf(
-            LinkableText.Link(
-                mask = "contact support",
-                handler = onSupportClicked,
-            )
-        )
+        override val linkMasks = listOf("contact support")
         override val buttonTitle = "Try again"
     }
 
@@ -107,7 +102,7 @@ sealed class UiError {
         override val image = Icons.Outlined.CloudOff
         override val title = "Server cannot be reached"
         override val description = "Please check your network settings and try again."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Try again"
     }
 
@@ -116,7 +111,7 @@ sealed class UiError {
         override val title = "Too many requests"
         override val description =
             " The request rate limit set for the public API key was exceeded."
-        override val links = emptyList<LinkableText.Link>()
+        override val linkMasks = emptyList<String>()
         override val buttonTitle = "Try again"
     }
 }
@@ -128,7 +123,8 @@ private const val CONTENT_WEIGHT = 0.66f
 fun UiError(
     modifier: Modifier,
     error: UiError,
-    onBtnClick: () -> Unit
+    onBtnClick: () -> Unit,
+    onLinkClick: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Spacer(Modifier.weight(TOP_SPACER_WEIGHT))
@@ -159,7 +155,7 @@ fun UiError(
             }
             LinkableText(
                 text = description,
-                links = error.links,
+                links = makeLinks(error, onLinkClick),
                 style = AppTheme.materialTheme.typography.bodyLarge,
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -182,9 +178,19 @@ private fun Preview() {
         Surface {
             UiError(
                 modifier = Modifier.fillMaxSize(),
-                error = UiError.Unknown({}),
+                error = UiError.Unknown,
                 onBtnClick = {},
+                onLinkClick = {},
             )
         }
     }
 }
+
+private fun makeLinks(error: UiError, onLinkClick: () -> Unit): List<LinkableText.Link> =
+    when (error) {
+        UiError.Unknown -> listOf(
+            LinkableText.Link(mask = error.linkMasks[0], handler = onLinkClick)
+        )
+
+        else -> emptyList()
+    }
