@@ -153,7 +153,7 @@ class StateMocks @Inject constructor(
     @Suppress("VariableNaming")
     val HomeScreenUiState.Content.Error.Companion.Mocked by lazy {
         HomeScreenUiState.Content.Error(
-            error = UiError.Unknown {},
+            error = UiError.Unknown,
             onBtnCLick = {},
         )
     }

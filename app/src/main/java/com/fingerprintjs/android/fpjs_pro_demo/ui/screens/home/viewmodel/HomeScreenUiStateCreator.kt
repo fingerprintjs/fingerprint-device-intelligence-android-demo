@@ -61,8 +61,9 @@ class HomeScreenUiStateCreator @Inject constructor(
     ): HomeScreenUiState.Content {
 
         val unknownError = HomeScreenUiState.Content.Error(
-            error = UiError.Unknown(onSupportClicked),
+            error = UiError.Unknown,
             onBtnCLick = onReload,
+            onLinkClick = onSupportClicked,
         )
         val networkError = HomeScreenUiState.Content.Error(
             error = UiError.Network,

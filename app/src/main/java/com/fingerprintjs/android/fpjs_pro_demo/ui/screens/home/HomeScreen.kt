@@ -239,7 +239,8 @@ fun HomeScreenInternal(
                         UiError(
                             modifier = Modifier.fillMaxSize(),
                             error = contentState.error,
-                            onBtnClick = contentState.onBtnCLick,
+                            onBtnClicked = contentState.onBtnCLick,
+                            onLinkClicked = contentState.onLinkClick ?: {}
                         )
                     }
 

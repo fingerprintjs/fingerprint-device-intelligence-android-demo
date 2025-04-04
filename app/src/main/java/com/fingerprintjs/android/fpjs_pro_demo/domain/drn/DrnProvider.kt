@@ -15,18 +15,18 @@ class DrnProvider @Inject constructor(
     private val customApiKeysUseCase: CustomApiKeysUseCase,
     private val identificationProvider: IdentificationProvider,
 ) {
-    suspend fun getDRN(): DrnResponse {
+    suspend fun getDrn(): DrnResponse {
         val keys = customApiKeysUseCase.state.first()
         return if (!keys.enabled) {
             Err(DrnError.EndpointInfoNotSetInApp)
         } else {
             identificationProvider.getVisitorId()
                 .mapError { DrnError.Unknown }
-                .flatMap { getDRN(it.visitorId, keys.secret) }
+                .flatMap { getDrn(it.visitorId, keys.secret) }
         }
     }
 
-    private suspend fun getDRN(visitorId: String, secret: String): DrnResponse {
+    private suspend fun getDrn(visitorId: String, secret: String): DrnResponse {
         val headers = mutableMapOf<String, String>()
         val url = URL.format(visitorId).toUri().toString()
         headers[HEADER_AUTHORIZATION] = BEARER.format(secret)
