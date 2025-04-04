@@ -1,4 +1,5 @@
 [versions]
+coroutines = "1.10.1"
 ktxCore = "1.13.1"
 ktxLifecycleRuntime = "2.8.6"
 composeNavigation = "2.8.3"
@@ -39,6 +40,8 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 orbit-compose = { module = "org.orbit-mvi:orbit-compose", version.ref = "orbitMvi" }
 orbit-test = { module = "org.orbit-mvi:orbit-test", version.ref = "orbitMvi" }
 orbit-viewmodel = { module = "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitMvi" }

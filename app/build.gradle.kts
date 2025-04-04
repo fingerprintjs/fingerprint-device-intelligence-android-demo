@@ -106,6 +106,8 @@ detekt {
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.google.gson)
 
     // Orbit MVI

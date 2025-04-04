@@ -15,13 +15,8 @@ sealed class DrnUiState {
     ) : DrnUiState()
 }
 
-sealed class DrnSideEffect {
-
-}
-
 sealed class DrnUserAction {
     data object OnTapToBeginClicked : DrnUserAction()
-    data object OnContactSupportClicked : DrnUserAction()
     data object OnTryAgainClicked : DrnUserAction()
 }
 
