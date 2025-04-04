@@ -15,13 +15,13 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
     initialUiState: UiState
 ) : ContainerHost<UiState, SideEffect>, ViewModel() {
 
-    private val _userActions = Channel<UserAction>(Channel.BUFFERED)
+    private val userActions = Channel<UserAction>(Channel.BUFFERED)
 
     override val container = container<UiState, SideEffect>(
         initialState = initialUiState,
         onCreate = {
             intent {
-                _userActions.consumeEach { action ->
+                userActions.consumeEach { action ->
                     processUserAction(action)
                 }
             }
@@ -37,7 +37,7 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
     }
 
     fun act(action: UserAction) = intent {
-        _userActions.send(action)
+        userActions.send(action)
     }
 
     protected fun sendEffect(effect: SideEffect) {
