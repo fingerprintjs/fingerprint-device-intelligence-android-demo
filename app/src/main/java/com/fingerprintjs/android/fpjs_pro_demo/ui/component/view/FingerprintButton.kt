@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.fingerprint_button
+package com.fingerprintjs.android.fpjs_pro_demo.ui.component.view
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOut
@@ -39,8 +39,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun FingerprintButton(
-    onClick: () -> Unit,
     modifier: Modifier,
+    onClick: () -> Unit,
 ) {
     val buttonInteractionSource = remember { MutableInteractionSource() }
     val isButtonPressed by buttonInteractionSource.collectIsPressedAsState()
@@ -120,8 +120,8 @@ private fun updateButtonScaleAnimation(isPressed: Boolean): State<Float> {
 private fun Preview() {
     AppTheme {
         FingerprintButton(
-            onClick = {},
             modifier = Modifier.size(136.dp),
+            onClick = {},
         )
     }
 }

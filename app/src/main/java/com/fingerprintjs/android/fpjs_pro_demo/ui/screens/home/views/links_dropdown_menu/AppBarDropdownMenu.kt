@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 
 data class AppBarDropdownMenuItem(
     val icon: ImageVector,

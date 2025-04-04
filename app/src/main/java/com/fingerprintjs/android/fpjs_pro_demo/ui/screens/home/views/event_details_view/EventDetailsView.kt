@@ -21,8 +21,8 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_detai
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.EventRawJsonView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.PreviewMultipleConfigurations
 import kotlinx.coroutines.launch
 
 private enum class EventDetailsViewTabs(

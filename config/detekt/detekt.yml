@@ -32,3 +32,7 @@ style:
     excludeRawStrings: true
   WildcardImport:
     active: true
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated:
+      - 'PreviewMultipleConfigurations'

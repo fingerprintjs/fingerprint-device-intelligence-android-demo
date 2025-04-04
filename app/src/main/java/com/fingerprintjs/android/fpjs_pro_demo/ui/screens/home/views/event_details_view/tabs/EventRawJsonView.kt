@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 
 @Composable
 fun EventRawJsonView(

@@ -1,6 +1,5 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin
+package com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen
 
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,11 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
-import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.fingerprint_button.FingerprintButton
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.FingerprintButton
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.PreviewMultipleConfigurations
 
 @Composable
-fun HomeTapToBeginScreen(
+fun TapToBegin(
     modifier: Modifier,
     onTapToBegin: () -> Unit,
 ) {
@@ -34,10 +34,10 @@ fun HomeTapToBeginScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
         FingerprintButton(
-            onClick = onTapToBegin,
             modifier = Modifier
                 .size(136.dp)
                 .align(Alignment.CenterHorizontally),
+            onClick = onTapToBegin,
         )
         Spacer(modifier = Modifier.height(40.dp))
         Text(
@@ -58,7 +58,7 @@ fun HomeTapToBeginScreen(
 private fun Preview() {
     AppTheme {
         Surface {
-            HomeTapToBeginScreen(
+            TapToBegin(
                 modifier = Modifier.fillMaxSize(),
                 onTapToBegin = {},
             )
