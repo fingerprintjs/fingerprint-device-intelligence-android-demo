@@ -32,7 +32,9 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
 
     protected abstract fun processUserAction(action: UserAction)
 
-    protected fun onCreate() {}
+    protected fun onCreate() {
+        // can be overloaded
+    }
 
     fun act(action: UserAction) = intent {
         _userActions.send(action)
@@ -49,7 +51,8 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
     ) {
         intent {
             (state as? T)?.let { callback(it) }
-                ?: throw IllegalStateException("unexpected state: ${state.javaClass.name}")
+                ?: error("unexpected state: ${state.javaClass.name}")
+
         }
     }
 
@@ -58,8 +61,7 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
     ) {
         intent {
             reduceState { state ->
-                (state as? T)?.let(reducer)
-                    ?: throw IllegalStateException("unexpected state: ${state.javaClass.name}")
+                (state as? T)?.let(reducer) ?: error("unexpected state: ${state.javaClass.name}")
             }
         }
     }
