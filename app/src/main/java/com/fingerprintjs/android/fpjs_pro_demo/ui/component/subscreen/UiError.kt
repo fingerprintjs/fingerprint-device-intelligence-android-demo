@@ -123,8 +123,8 @@ private const val CONTENT_WEIGHT = 0.66f
 fun UiError(
     modifier: Modifier,
     error: UiError,
-    onBtnClick: () -> Unit,
-    onLinkClick: () -> Unit,
+    onBtnClicked: () -> Unit,
+    onLinkClicked: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Spacer(Modifier.weight(TOP_SPACER_WEIGHT))
@@ -155,7 +155,7 @@ fun UiError(
             }
             LinkableText(
                 text = description,
-                links = makeLinks(error, onLinkClick),
+                links = makeLinks(error, onLinkClicked),
                 style = AppTheme.materialTheme.typography.bodyLarge,
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -163,7 +163,7 @@ fun UiError(
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = onBtnClick,
+                onClick = onBtnClicked,
             ) {
                 Text(error.buttonTitle)
             }
@@ -179,8 +179,8 @@ private fun Preview() {
             UiError(
                 modifier = Modifier.fillMaxSize(),
                 error = UiError.Unknown,
-                onBtnClick = {},
-                onLinkClick = {},
+                onBtnClicked = {},
+                onLinkClicked = {},
             )
         }
     }

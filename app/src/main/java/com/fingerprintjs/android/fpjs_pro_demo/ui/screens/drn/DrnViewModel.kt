@@ -15,7 +15,7 @@ class DrnViewModel @Inject constructor(
         DrnUserAction.OnTryAgainClicked -> launch { loadData() }
     }
 
-    suspend fun loadData() {
+    private suspend fun loadData() {
         reduce(DrnUiState.Main(loading = true, drn = null))
 
         drnProvider.getDrn().fold({ data ->

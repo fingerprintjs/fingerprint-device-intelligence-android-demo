@@ -34,6 +34,10 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
 
     protected fun onCreate() {}
 
+    fun act(action: UserAction) = intent {
+        _userActions.send(action)
+    }
+
     protected fun sendEffect(effect: SideEffect) {
         intent {
             postSideEffect(effect)

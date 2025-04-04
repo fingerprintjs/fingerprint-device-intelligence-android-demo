@@ -3,17 +3,15 @@ package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.domain.drn.Drn
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.TapToBegin
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.UiError
+import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
@@ -24,24 +22,17 @@ fun DrnScreen(modifier: Modifier) {
 
 @Composable
 private fun ViewState(modifier: Modifier, viewModel: DrnViewModel) {
-    // temp code - start
-    var loadData by remember { mutableStateOf(false) }
-    if (loadData) {
-        LaunchedEffect(Unit) {
-            viewModel.loadData()
-        }
-    }
-    // temp code - end
-
+    val context = LocalContext.current
     when (val state = viewModel.collectAsState().value) {
-        DrnUiState.Initial -> InitialState(modifier) {
-            loadData = true
-        }
-
-        is DrnUiState.Error -> ErrorState(
+        DrnUiState.Initial -> TapToBegin(
             modifier = modifier,
-            error = state.error
-        )
+            onTapToBegin = { viewModel.act(DrnUserAction.OnTryAgainClicked) })
+
+        is DrnUiState.Error -> UiError(
+            modifier = modifier,
+            error = state.error,
+            onBtnClicked = { viewModel.act(DrnUserAction.OnTryAgainClicked) },
+            onLinkClicked = {  IntentUtils.openUrl(context, URLs.support) })
 
         is DrnUiState.Main -> MainState(
             modifier = modifier,
@@ -49,23 +40,6 @@ private fun ViewState(modifier: Modifier, viewModel: DrnViewModel) {
             drn = state.drn,
         )
     }
-}
-
-@Composable
-private fun InitialState(modifier: Modifier, onBtnClicked: () -> Unit) {
-    TapToBegin(modifier = modifier, onTapToBegin = onBtnClicked)
-}
-
-@Composable
-private fun ErrorState(modifier: Modifier, error: UiError) {
-    UiError(
-        modifier = modifier,
-        error = error,
-        onBtnClick = {
-            // TODO
-        }, onLinkClick = {
-            // TODO
-        })
 }
 
 @Composable
