@@ -106,6 +106,7 @@ detekt {
 }
 
 dependencies {
+    implementation(libs.google.gson)
 
     //core
     implementation(libs.androidx.ktx.core)

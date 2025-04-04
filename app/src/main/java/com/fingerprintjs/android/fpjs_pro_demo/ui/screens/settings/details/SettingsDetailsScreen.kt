@@ -56,7 +56,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ValuePickerTextField
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.animatedAppBar
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 import com.fingerprintjs.android.fpjs_pro_demo.utils.description
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

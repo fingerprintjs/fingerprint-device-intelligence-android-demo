@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.loading_or_success
+package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -27,8 +27,8 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScr
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.EventDetailsView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.signup_prompt_view.SignupPromptView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 import com.fingerprintjs.android.fpjs_pro_demo.utils.copyOnLongPress
 
 @Composable

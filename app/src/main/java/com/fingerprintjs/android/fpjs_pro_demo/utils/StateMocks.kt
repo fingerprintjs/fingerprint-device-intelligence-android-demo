@@ -14,6 +14,7 @@ import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysState
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsBodyParser
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.UiError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiStateCreator
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.links_dropdown_menu.AppBarDropdownMenuItem
@@ -149,8 +150,12 @@ class StateMocks @Inject constructor(
         HomeScreenUiState.Content.TapToBegin(onTap = {})
     }
 
-    val HomeScreenUiState.Content.Error.Companion.Mocked: HomeScreenUiState.Content.Error by lazy {
-        HomeScreenUiState.Content.Error.Unknown({}, {})
+    @Suppress("VariableNaming")
+    val HomeScreenUiState.Content.Error.Companion.Mocked by lazy {
+        HomeScreenUiState.Content.Error(
+            error = UiError.Unknown {},
+            onBtnCLick = {},
+        )
     }
 
     val appBarDropdownMenuItems: List<List<AppBarDropdownMenuItem>> = listOf(
