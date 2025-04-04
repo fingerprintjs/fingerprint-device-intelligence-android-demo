@@ -80,8 +80,6 @@ abstract class BaseViewModel<UiState : Any, SideEffect : Any, UserAction : Any>(
         viewModelScope.launch { block() }
     }
 
-    // === util functions
-
     /**
      * Observe latest value from target Flow
      *
