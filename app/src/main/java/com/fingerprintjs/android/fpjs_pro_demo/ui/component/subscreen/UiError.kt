@@ -188,9 +188,12 @@ private fun Preview() {
 
 private fun makeLinks(error: UiError, onLinkClick: () -> Unit): List<LinkableText.Link> =
     when (error) {
-        UiError.Unknown -> listOf(
-            LinkableText.Link(mask = error.linkMasks[0], handler = onLinkClick)
-        )
+        UiError.Unknown ->
+            if (error.linkMasks.isEmpty()) {
+                emptyList()
+            } else {
+                listOf(LinkableText.Link(mask = error.linkMasks[0], handler = onLinkClick))
+            }
 
         else -> emptyList()
     }
