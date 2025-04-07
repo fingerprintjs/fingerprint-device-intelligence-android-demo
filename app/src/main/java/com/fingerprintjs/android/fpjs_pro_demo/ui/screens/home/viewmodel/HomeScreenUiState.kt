@@ -56,6 +56,7 @@ data class HomeScreenUiState(
         data class Error(
             val error: UiError,
             val onBtnCLick: () -> Unit,
+            val onLinkClick: (() -> Unit)? = null,
         ) : Content {
             companion object
         }
