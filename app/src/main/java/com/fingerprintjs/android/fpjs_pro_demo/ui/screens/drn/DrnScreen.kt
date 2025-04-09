@@ -26,7 +26,7 @@ private fun ViewState(modifier: Modifier, viewModel: DrnViewModel) {
     when (val state = viewModel.collectAsState().value) {
         DrnUiState.Initial -> TapToBegin(
             modifier = modifier,
-            onTapToBegin = { viewModel.act(DrnUserAction.OnTryAgainClicked) })
+            onTapToBegin = { viewModel.act(DrnUserAction.OnTapToBeginClicked) })
 
         is DrnUiState.Error -> UiError(
             modifier = modifier,
