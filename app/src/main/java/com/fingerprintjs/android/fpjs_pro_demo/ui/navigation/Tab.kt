@@ -20,7 +20,7 @@ enum class Tab(
     DRN(
         route = "drn",
         title = "DRN",
-        icon = Icon.Resource(R.drawable.drn),
+        icon = Icon.Resource(R.drawable.ic_drn),
     ),
     Settings(
         "settings",

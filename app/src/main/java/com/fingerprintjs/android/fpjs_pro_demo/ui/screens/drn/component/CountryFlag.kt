@@ -218,11 +218,12 @@ enum class Country(
  * @param countryCode capitalized country code as defined in the ISO 3166-1 alpha 2 standard
  */
 @Composable
-fun Flag(countryCode: String) {
+fun CountryFlag(countryCode: String) {
     val spriteIndex = Country.getIndex(countryCode)
     if (spriteIndex == null) {
         // draw emoji
     } else {
         // draw sprite
+
     }
 }
