@@ -21,7 +21,7 @@ fun DrnScreen(modifier: Modifier) {
     // ViewState(modifier, viewModel) TODO temp
     Flag(
         spriteManager = viewModel.flagSpriteManager,
-        countryCode = "UA"
+        countryCode = "BS"
     )
 }
 
