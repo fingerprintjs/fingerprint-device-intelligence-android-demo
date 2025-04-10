@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,18 +12,14 @@ import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.domain.drn.Drn
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.TapToBegin
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.UiError
-import com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag.Flag
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn.component.RegionalActivity
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun DrnScreen(modifier: Modifier) {
     val viewModel = injectedViewModel { drnViewModel }
-    // ViewState(modifier, viewModel) TODO temp
-    Flag(
-        spriteManager = viewModel.flagSpriteManager,
-        countryCode = "BS"
-    )
+    ViewState(modifier, viewModel)
 }
 
 @Composable
@@ -37,10 +34,11 @@ private fun ViewState(modifier: Modifier, viewModel: DrnViewModel) {
             modifier = modifier,
             error = state.error,
             onBtnClicked = { viewModel.act(DrnUserAction.OnTryAgainClicked) },
-            onLinkClicked = {  IntentUtils.openUrl(context, URLs.support) })
+            onLinkClicked = { IntentUtils.openUrl(context, URLs.support) })
 
         is DrnUiState.Main -> MainState(
             modifier = modifier,
+            viewModel = viewModel,
             loading = state.loading,
             drn = state.drn,
         )
@@ -48,7 +46,12 @@ private fun ViewState(modifier: Modifier, viewModel: DrnViewModel) {
 }
 
 @Composable
-private fun MainState(modifier: Modifier, loading: Boolean, drn: Drn?) {
+private fun MainState(
+    modifier: Modifier,
+    viewModel: DrnViewModel,
+    loading: Boolean,
+    drn: Drn?
+) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -58,6 +61,15 @@ private fun MainState(modifier: Modifier, loading: Boolean, drn: Drn?) {
         } else {
             "Loaded: $drn"
         }
-        Text("state: $state")
+
+        Column {
+            Text("state: $state")
+            drn?.let { drn ->
+                RegionalActivity(
+                    flagSpriteManager = viewModel.flagSpriteManager,
+                    ra = drn.regionalActivity
+                )
+            }
+        }
     }
 }

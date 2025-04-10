@@ -10,13 +10,13 @@ data class DrnData(
 
 data class Drn(
     @SerializedName("regionalActivity")
-    val regionalActivity: RegionalActivity?,
+    val regionalActivity: RegionalActivity,
 
     @SerializedName("suspectScore")
-    val suspectScore: SuspectScore?,
+    val suspectScore: SuspectScore,
 
     @SerializedName("timestamps")
-    val timestamps: Timestamps?,
+    val timestamps: Timestamps,
 ) {
     data class RegionalActivity(
         @SerializedName("startDate")
