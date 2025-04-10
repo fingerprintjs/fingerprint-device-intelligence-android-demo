@@ -11,13 +11,18 @@ import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.domain.drn.Drn
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.TapToBegin
 import com.fingerprintjs.android.fpjs_pro_demo.ui.component.subscreen.UiError
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag.Flag
 import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun DrnScreen(modifier: Modifier) {
     val viewModel = injectedViewModel { drnViewModel }
-    ViewState(modifier, viewModel)
+    // ViewState(modifier, viewModel) TODO temp
+    Flag(
+        spriteManager = viewModel.flagSpriteManager,
+        countryCode = "UA"
+    )
 }
 
 @Composable

@@ -1,7 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.drn.component
-
-import androidx.compose.runtime.Composable
-
+package com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag
 
 enum class Country(
     val code: String,
@@ -17,7 +14,7 @@ enum class Country(
     ARGENTINA(code = "AR", index = 7),
     ARMENIA(code = "AM", index = 8),
     ARUBA(code = "AW", index = 9),
-    // EUROPE(countryCode = "", index = -1), // Not a country
+    EUROPE(code = "", index = -1), // Not a country
     AUSTRIA(code = "AT", index = 11),
     AZERBAIJAN(code = "AZ", index = 12),
     BAHAMAS(code = "BS", index = 13),
@@ -204,26 +201,15 @@ enum class Country(
     VANUATU(code = "VU", index = 194),
     VENEZUELA(code = "VE", index = 195),
     VIETNAM(code = "VN", index = 196),
-    // VIRGIN_ISLANDS(countryCode = "", index = -1), // Ambiguous (could be British VI-VG or US VI-VI)
+    VIRGIN_ISLANDS(code = "", index = -1), // TODO Ambiguous (could be British VI-VG or US VI-VI)
     YEMEN(code = "YE", index = 198),
     ZAMBIA(code = "ZM", index = 199),
     ZIMBABWE(code = "ZW", index = 200);
 
     companion object {
+        val count: Int
+            get() = entries.size
+
         fun getIndex(code: String): Int? = entries.find { it.code == code }?.index
-    }
-}
-
-/**
- * @param countryCode capitalized country code as defined in the ISO 3166-1 alpha 2 standard
- */
-@Composable
-fun CountryFlag(countryCode: String) {
-    val spriteIndex = Country.getIndex(countryCode)
-    if (spriteIndex == null) {
-        // draw emoji
-    } else {
-        // draw sprite
-
     }
 }
