@@ -36,8 +36,8 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.Shimmable
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.ui.util.ShowPreview
 
 data class PrettifiedProperty(
     val name: String,

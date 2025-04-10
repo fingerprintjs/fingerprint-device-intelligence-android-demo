@@ -1,6 +1,9 @@
 package com.fingerprintjs.android.fpjs_pro_demo.di.modules
 
+import android.content.Context
 import com.fingerprintjs.android.fpjs_pro_demo.di.AppScope
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag.Country
+import com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag.FlagSpriteManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -29,4 +32,12 @@ class AppModule {
             .readTimeout(timeout, timeUnit)
             .build()
     }
+
+    @Provides
+    @AppScope
+    fun provideFlagSpriteManager(context: Context): FlagSpriteManager =
+        FlagSpriteManager(
+            context = context,
+            flagsCount = Country.count
+        )
 }
