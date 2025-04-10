@@ -1,5 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.component.view.flag
 
+private const val ERR_INDEX = -1
+
 enum class Country(
     val code: String,
     val index: Int
@@ -14,7 +16,7 @@ enum class Country(
     ARGENTINA(code = "AR", index = 7),
     ARMENIA(code = "AM", index = 8),
     ARUBA(code = "AW", index = 9),
-    EUROPE(code = "", index = -1), // Not a country
+    EUROPE(code = "", index = ERR_INDEX), // Not a country
     AUSTRIA(code = "AT", index = 11),
     AZERBAIJAN(code = "AZ", index = 12),
     BAHAMAS(code = "BS", index = 13),
@@ -201,7 +203,7 @@ enum class Country(
     VANUATU(code = "VU", index = 194),
     VENEZUELA(code = "VE", index = 195),
     VIETNAM(code = "VN", index = 196),
-    VIRGIN_ISLANDS(code = "", index = -1), // TODO Ambiguous (could be British VI-VG or US VI-VI)
+    VIRGIN_ISLANDS(code = "VI", index = 197), // US Virgin Islands
     YEMEN(code = "YE", index = 198),
     ZAMBIA(code = "ZM", index = 199),
     ZIMBABWE(code = "ZW", index = 200);
@@ -210,6 +212,9 @@ enum class Country(
         val count: Int
             get() = entries.size
 
-        fun getIndex(code: String): Int? = entries.find { it.code == code }?.index
+        fun getIndex(code: String): Int? {
+            val index = entries.find { it.code == code }?.index
+            return if (index == ERR_INDEX) null else index
+        }
     }
 }
