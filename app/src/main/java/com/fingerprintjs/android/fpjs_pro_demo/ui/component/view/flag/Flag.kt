@@ -32,11 +32,14 @@ fun Flag(
     }
 }
 
+private const val UNICODE_FLAG_OFFSET = 0x1F1E6
+private const val UNICODE_LATIN_A = 0x41
+
 private fun String.toEmojiFlag(): String {
     if (length != 2) return this
 
-    val firstLetter = Character.codePointAt(this, 0) - 0x41 + 0x1F1E6
-    val secondLetter = Character.codePointAt(this, 1) - 0x41 + 0x1F1E6
+    val firstLetter = Character.codePointAt(this, 0) - UNICODE_LATIN_A + UNICODE_FLAG_OFFSET
+    val secondLetter = Character.codePointAt(this, 1) - UNICODE_LATIN_A + UNICODE_FLAG_OFFSET
 
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
 }
