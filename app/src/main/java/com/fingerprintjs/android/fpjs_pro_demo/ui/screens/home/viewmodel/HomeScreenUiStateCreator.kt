@@ -9,6 +9,8 @@ import com.fingerprintjs.android.fpjs_pro.Failed
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
 import com.fingerprintjs.android.fpjs_pro.HeaderRestricted
 import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
+import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
+import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
 import com.fingerprintjs.android.fpjs_pro.NetworkError
 import com.fingerprintjs.android.fpjs_pro.NotAvailableForCrawlBots
 import com.fingerprintjs.android.fpjs_pro.NotAvailableWithoutUA
@@ -85,6 +87,8 @@ class HomeScreenUiStateCreator @Inject constructor(
                     is UnsupportedVersion -> unknownError
                     is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(onGotoApiKeysSettings = onGotoApiKeysSettings)
                     is ClientTimeout -> networkError
+                    is InvalidProxyIntegrationHeaders -> unknownError
+                    is InvalidProxyIntegrationSecret -> unknownError
                 }
             }
 

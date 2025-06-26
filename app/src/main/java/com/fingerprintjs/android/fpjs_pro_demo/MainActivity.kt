@@ -1,6 +1,9 @@
 package com.fingerprintjs.android.fpjs_pro_demo
 
+import android.Manifest
 import android.animation.ObjectAnimator
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -8,6 +11,7 @@ import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.animation.doOnEnd
+import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
@@ -27,7 +31,10 @@ class MainActivity : ComponentActivity() {
                 )
                 slideUp.interpolator = AccelerateInterpolator()
                 slideUp.duration = 200L
-                slideUp.doOnEnd { splashScreenView.remove() }
+                slideUp.doOnEnd {
+                    splashScreenView.remove()
+                    checkLocationPermissions()
+                }
                 slideUp.start()
             }
         }
@@ -37,5 +44,79 @@ class MainActivity : ComponentActivity() {
                 NavScreen()
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_PERMISSIONS_REQUEST_CODE) {
+            if (isAnyLocationPermissionGranted()) {
+                startLocationCollection()
+            } else if (isRationaleNeeded()) {
+                showRationaleDialog()
+            }
+        }
+    }
+
+    private fun checkLocationPermissions() {
+        if (isFinePermissionGranted()) {
+            startLocationCollection()
+        } else {
+            if (isRationaleNeeded()) {
+                showRationaleDialog()
+            } else {
+                requestLocationPermissions()
+            }
+        }
+    }
+
+    private fun isFinePermissionGranted() =
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED
+
+    private fun isAnyLocationPermissionGranted() =
+        listOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ).any { ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED }
+
+    private fun isRationaleNeeded() =
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+    private fun showRationaleDialog() =
+        AlertDialog.Builder(this)
+            .setTitle("Fine location permissions needed")
+            .setMessage("Fine location permission needed, tap \"Allow all the time\" on the next screen")
+            .setPositiveButton(
+                "OK"
+            ) { _, _ ->
+                requestLocationPermissions()
+            }
+            .create()
+            .show()
+
+    private fun requestLocationPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
+            LOCATION_PERMISSIONS_REQUEST_CODE
+        )
+    }
+
+    private fun startLocationCollection() {
+        // TODO start location collection
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSIONS_REQUEST_CODE = 1843
     }
 }
