@@ -42,7 +42,6 @@ object IdentificationInstance {
     }
 
     fun startGatheringDeviceIntelligence() {
-        stopGatheringDeviceIntelligence()
         fingerprint.get()?.startGatheringDeviceIntelligence()
         dataCollectionAllowed.set(true)
     }
