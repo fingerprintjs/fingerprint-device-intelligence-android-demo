@@ -11,9 +11,9 @@ import com.github.michaelbull.result.get
 import com.github.michaelbull.result.runCatching
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +21,8 @@ import javax.inject.Inject
 class CustomApiKeysUseCase @Inject constructor(
     private val appStorage: AppStorage,
 ) {
-    private val _state = MutableSharedFlow<CustomApiKeysState>(replay = 1)
-    val state: Flow<CustomApiKeysState> = _state.distinctUntilChanged()
+    private val _state = MutableStateFlow(CustomApiKeysState.Default)
+    val state: StateFlow<CustomApiKeysState> = _state.asStateFlow()
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
