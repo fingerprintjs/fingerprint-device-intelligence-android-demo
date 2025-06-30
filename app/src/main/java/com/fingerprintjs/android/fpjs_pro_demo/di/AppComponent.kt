@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.di
 
 import com.fingerprintjs.android.fpjs_pro_demo.App
+import com.fingerprintjs.android.fpjs_pro_demo.MainActivity
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponent
 import com.fingerprintjs.android.fpjs_pro_demo.di.modules.AppBindingModule
 import com.fingerprintjs.android.fpjs_pro_demo.di.modules.AppModule
@@ -19,6 +20,8 @@ import dagger.Component
     ]
 )
 interface AppComponent: ViewModelProvidingComponent {
+
+    fun inject(activity: MainActivity)
 
     @Component.Builder
     interface Builder {

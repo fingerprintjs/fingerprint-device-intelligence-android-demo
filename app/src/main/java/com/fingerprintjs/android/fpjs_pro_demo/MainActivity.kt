@@ -13,11 +13,19 @@ import androidx.activity.compose.setContent
 import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.IdentificationProvider
 import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var identificationProvider: IdentificationProvider
+    private var locationGatheringPermitted = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as App).appComponent.inject(this)
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
@@ -44,6 +52,18 @@ class MainActivity : ComponentActivity() {
                 NavScreen()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (locationGatheringPermitted) {
+            identificationProvider.startGatheringDeviceIntelligence()
+        }
+    }
+
+    override fun onPause() {
+        identificationProvider.stopGatheringDeviceIntelligence()
+        super.onPause()
     }
 
     override fun onRequestPermissionsResult(
@@ -73,26 +93,29 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun isFinePermissionGranted() =
-        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+    private fun isFinePermissionGranted(): Boolean {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED
+    }
 
-    private fun isAnyLocationPermissionGranted() =
-        listOf(
+    private fun isAnyLocationPermissionGranted(): Boolean {
+        return listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION
         ).any { ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED }
+    }
 
-    private fun isRationaleNeeded() =
-        ActivityCompat.shouldShowRequestPermissionRationale(
+    private fun isRationaleNeeded(): Boolean {
+        return ActivityCompat.shouldShowRequestPermissionRationale(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
         )
+    }
 
-    private fun showRationaleDialog() =
+    private fun showRationaleDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Fine location permissions needed")
-            .setMessage("Fine location permission needed, tap \"Allow all the time\" on the next screen")
+            .setTitle("Location permissions needed")
+            .setMessage("Precise location permission needed, tap \"While using the app\" on the next screen")
             .setPositiveButton(
                 "OK"
             ) { _, _ ->
@@ -100,6 +123,7 @@ class MainActivity : ComponentActivity() {
             }
             .create()
             .show()
+    }
 
     private fun requestLocationPermissions() {
         ActivityCompat.requestPermissions(
@@ -113,7 +137,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startLocationCollection() {
-        // TODO start location collection
+        locationGatheringPermitted = true
+        identificationProvider.startGatheringDeviceIntelligence()
     }
 
     companion object {
