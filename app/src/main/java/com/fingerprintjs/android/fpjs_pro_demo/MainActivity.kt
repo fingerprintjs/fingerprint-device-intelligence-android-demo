@@ -115,7 +115,7 @@ class MainActivity : ComponentActivity() {
     private fun showRationaleDialog() {
         AlertDialog.Builder(this)
             .setTitle("Location permissions needed")
-            .setMessage("Precise location permission needed, tap \"Allow all the time\" on the next screen")
+            .setMessage("Precise location permission needed, tap \"While using the app\" on the next screen")
             .setPositiveButton(
                 "OK"
             ) { _, _ ->
