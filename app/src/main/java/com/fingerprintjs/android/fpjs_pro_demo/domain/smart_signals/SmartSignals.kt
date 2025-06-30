@@ -12,7 +12,8 @@ class SmartSignals(
     val locationSpoofing: SmartSignalInfo<SmartSignal.LocationSpoofing>,
     val root: SmartSignalInfo<SmartSignal.Root>,
     val vpn: SmartSignalInfo<SmartSignal.Vpn>,
-    val tampering: SmartSignalInfo<SmartSignal.Tampering>
+    val tampering: SmartSignalInfo<SmartSignal.Tampering>,
+    val mitm: SmartSignalInfo<SmartSignal.Mitm>,
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -89,5 +90,10 @@ sealed class SmartSignal {
     data class Tampering(
         val result: Boolean,
         val anomalyScore: Float,
+    ) : SmartSignal()
+
+    @Serializable
+    data class Mitm(
+        val result: Boolean,
     ) : SmartSignal()
 }
