@@ -41,6 +41,7 @@ class SmartSignalsBodyParser @Inject constructor(
                         )
                     }
                 ),
+                tampering = products.getSmartSignal(key = "tampering"),
             )
         }.mapError { }
     }
