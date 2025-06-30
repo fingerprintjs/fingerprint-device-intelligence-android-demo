@@ -60,17 +60,27 @@ class HomeScreenUiStateCreator @Inject constructor(
         onGotoApiKeysSettings: () -> Unit = {},
     ): HomeScreenUiState.Content {
 
-        val unknownError = HomeScreenUiState.Content.Error.Unknown(onSupportClicked = onSupportClicked, onReload = onReload)
+        val unknownError = HomeScreenUiState.Content.Error.Unknown(
+            onSupportClicked = onSupportClicked,
+            onReload = onReload
+        )
         val networkError = HomeScreenUiState.Content.Error.Network(onReload = onReload)
-        val secretApiKeyMismatchError = HomeScreenUiState.Content.Error.SecretApiKeyMismatch(onGotoApiKeysSettings = onGotoApiKeysSettings)
+        val secretApiKeyMismatchError =
+            HomeScreenUiState.Content.Error.SecretApiKeyMismatch(onGotoApiKeysSettings = onGotoApiKeysSettings)
 
         val fingerprintSuccessResult = fingerprintSdkResponse
             .getOrElse { error ->
                 return when (error) {
                     is NetworkError -> networkError
                     is TooManyRequest -> HomeScreenUiState.Content.Error.TooManyRequests(onReload = onReload)
-                    is ApiKeyExpired -> HomeScreenUiState.Content.Error.PublicApiKeyExpired(onGotoApiKeysSettings = onGotoApiKeysSettings)
-                    is ApiKeyNotFound -> HomeScreenUiState.Content.Error.PublicApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is ApiKeyExpired -> HomeScreenUiState.Content.Error.PublicApiKeyExpired(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
+                    is ApiKeyNotFound -> HomeScreenUiState.Content.Error.PublicApiKeyInvalid(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
                     is ApiKeyRequired -> unknownError
                     is Failed -> unknownError
                     is HeaderRestricted -> unknownError
@@ -82,10 +92,16 @@ class HomeScreenUiStateCreator @Inject constructor(
                     is RequestCannotBeParsed -> unknownError
                     is RequestTimeout -> unknownError
                     is ResponseCannotBeParsed -> unknownError
-                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
                     is UnknownError -> unknownError
                     is UnsupportedVersion -> unknownError
-                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
                     is ClientTimeout -> networkError
                     is InvalidProxyIntegrationHeaders -> unknownError
                     is InvalidProxyIntegrationSecret -> unknownError
@@ -103,7 +119,10 @@ class HomeScreenUiStateCreator @Inject constructor(
                     SmartSignalsError.FeatureNotEnabled -> unknownError
                     SmartSignalsError.RequestNotFound -> secretApiKeyMismatchError
                     SmartSignalsError.SubscriptionNotActive -> secretApiKeyMismatchError
-                    SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error.SecretApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)
+                    SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error.SecretApiKeyInvalid(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
                     SmartSignalsError.TokenRequired -> unknownError
                     SmartSignalsError.UnknownApiError -> unknownError
                     SmartSignalsError.WrongRegion -> secretApiKeyMismatchError
@@ -277,9 +296,23 @@ class HomeScreenUiStateCreator @Inject constructor(
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
+                    from = { mitm },
+                    name = "MITM Attack",
+                    docUrl = URLs.SmartSignalsOverview.mitm
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
                     from = { root },
                     name = "Rooted Device",
                     docUrl = URLs.SmartSignalsOverview.root,
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
+                    from = { tampering },
+                    name = "Tampered Request",
+                    docUrl = URLs.SmartSignalsOverview.tampering
                 ) {
                     result.detectionStatusString()
                 },
@@ -292,8 +325,10 @@ class HomeScreenUiStateCreator @Inject constructor(
                         !result -> NOT_DETECTED_STRING
                         originCountry != null ->
                             "${DETECTED_STRING}. Device location is $originCountry"
+
                         originTimezone != null ->
                             "${DETECTED_STRING}. Device timezone is $originTimezone"
+
                         else -> DETECTED_STRING
                     }
                 },

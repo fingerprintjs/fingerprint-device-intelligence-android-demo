@@ -41,6 +41,8 @@ class SmartSignalsBodyParser @Inject constructor(
                         )
                     }
                 ),
+                tampering = products.getSmartSignal(key = "tampering"),
+                mitm = products.getSmartSignal(key = "mitmAttack"),
             )
         }.mapError { }
     }
