@@ -303,6 +303,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
+                    from = { tampering },
+                    name = "Tampered Request",
+                    docUrl = URLs.SmartSignalsOverview.tampering
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
                     from = { vpn },
                     name = "VPN",
                     docUrl = URLs.SmartSignalsOverview.vpn,
@@ -317,13 +324,6 @@ class HomeScreenUiStateCreator @Inject constructor(
 
                         else -> DETECTED_STRING
                     }
-                },
-                smartSignalProperty(
-                    from = { tampering },
-                    name = "Tampering",
-                    docUrl = URLs.SmartSignalsOverview.tampering
-                ) {
-                    result.detectionStatusString()
                 },
             )
                 .map {
