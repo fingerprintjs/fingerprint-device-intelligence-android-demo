@@ -301,9 +301,23 @@ class HomeScreenUiStateCreator @Inject constructor(
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
+                    from = { mitm },
+                    name = "MITM Attack",
+                    docUrl = URLs.SmartSignalsOverview.mitm
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
                     from = { root },
                     name = "Rooted Device",
                     docUrl = URLs.SmartSignalsOverview.root,
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
+                    from = { tampering },
+                    name = "Tampered Request",
+                    docUrl = URLs.SmartSignalsOverview.tampering
                 ) {
                     result.detectionStatusString()
                 },
