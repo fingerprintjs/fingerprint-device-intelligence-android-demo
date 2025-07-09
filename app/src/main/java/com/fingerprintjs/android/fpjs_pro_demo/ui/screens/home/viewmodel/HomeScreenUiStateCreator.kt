@@ -16,6 +16,7 @@ import com.fingerprintjs.android.fpjs_pro.NotAvailableForCrawlBots
 import com.fingerprintjs.android.fpjs_pro.NotAvailableWithoutUA
 import com.fingerprintjs.android.fpjs_pro.OriginNotAvailable
 import com.fingerprintjs.android.fpjs_pro.PackageNotAuthorized
+import com.fingerprintjs.android.fpjs_pro.ProxyIntegrationSecretEnvironmentMismatch
 import com.fingerprintjs.android.fpjs_pro.RequestCannotBeParsed
 import com.fingerprintjs.android.fpjs_pro.RequestTimeout
 import com.fingerprintjs.android.fpjs_pro.ResponseCannotBeParsed
@@ -103,8 +104,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                     )
 
                     is ClientTimeout -> networkError
-                    is InvalidProxyIntegrationHeaders -> unknownError
-                    is InvalidProxyIntegrationSecret -> unknownError
+                    is InvalidProxyIntegrationHeaders,
+                    is InvalidProxyIntegrationSecret,
+                    is ProxyIntegrationSecretEnvironmentMismatch -> HomeScreenUiState.Content.Error.Generic(
+                        error = error,
+                        onReload = onReload,
+                    )
                 }
             }
 
