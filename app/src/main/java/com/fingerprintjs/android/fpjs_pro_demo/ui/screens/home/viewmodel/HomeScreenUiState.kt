@@ -48,6 +48,7 @@ data class HomeScreenUiState(
         data class LoadingOrSuccess(
             val visitorId: String,
             val isLoading: Boolean,
+            val isSmartSignalsLoading: Boolean,
             val isSignupPromptShown: Boolean,
             val rawJson: String?,
             val prettifiedProps: List<PrettifiedProperty>,
