@@ -63,7 +63,7 @@ fun EventRawJsonView(
                         style = AppTheme.extendedTheme.typography.codeNormal,
                         softWrap = false,
                         lineHeight = 18.sp,
-                        text = highlightedCode,
+                        text = highlightSyntax(code),
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
