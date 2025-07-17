@@ -17,14 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.fingerprintjs.android.fpjs_pro_demo.R
+import androidx.compose.ui.unit.sp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
@@ -36,7 +31,7 @@ fun EventRawJsonView(
     modifier: Modifier,
     code: String,
 ) {
-    val spannedCode = addSpan(code)
+    val hightlightedCode = highlightSyntax(code)
     Column(modifier = modifier.padding(start = 16.dp)) {
         Spacer(
             modifier = Modifier
@@ -63,10 +58,10 @@ fun EventRawJsonView(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
-                        //style = AppTheme.extendedTheme.typography.codeNormal,
+                        style = AppTheme.extendedTheme.typography.codeNormal,
                         softWrap = false,
                         lineHeight = 18.sp,
-                        text = spannedCode,
+                        text = hightlightedCode,
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
@@ -81,45 +76,39 @@ fun EventRawJsonView(
     }
 }
 
-private fun addSpan(s: String): AnnotatedString  {
-    var colorString = AnnotatedString("")
+/**
+ * This handles the basic highlighting we need. If we start to get other requests,
+ * this function should change to something that does precise JSON parsing.
+ */
+private fun highlightSyntax(s: String): AnnotatedString  {
+    var finalString = AnnotatedString("")
     val startOfObjectOrArray = Regex("^\\s*[{\\[].*")
-    val jetbrainsMonoNoWeight = FontFamily(
-        Font(R.font.jetbrainsmono_normal),
-    )
-
-    val normalStyle = SpanStyle(
-        fontFamily = jetbrainsMonoNoWeight,
-        color = AppColors.Gray500,
-        fontWeight = FontWeight.W400,
-        fontSize = 12.sp,
-    )
-
     val highlightStyle = SpanStyle(
-        fontFamily = jetbrainsMonoNoWeight,
         color = AppColors.Orange400,
-        fontWeight = FontWeight.W600,
-        fontSize = 12.sp
     )
 
     s.lines().forEach {
         val splits = it.split("\":", limit = 2)
-        colorString += AnnotatedString(splits[0], normalStyle)
+        // Add the first part of the line
+        finalString += AnnotatedString(splits[0])
         if (splits.size > 1) {
-            colorString += AnnotatedString("\":", normalStyle)
+            // Add what was removed in the split
+            finalString += AnnotatedString("\":")
             val part2 = splits[1]
+            // If this is pointing to an object or array, don't highlight that
             if (part2.matches(startOfObjectOrArray)) {
-                colorString += AnnotatedString(part2, normalStyle)
+                finalString += AnnotatedString(part2)
             } else {
-                colorString += AnnotatedString(part2.removeSuffix(","), highlightStyle)
+                finalString += AnnotatedString(part2.removeSuffix(","), highlightStyle)
                 if (part2.endsWith(',')) {
-                    colorString += AnnotatedString(",", normalStyle)
+                    finalString += AnnotatedString(",")
                 }
             }
         }
-        colorString += AnnotatedString("\n", normalStyle)
+        finalString += AnnotatedString("\n")
     }
-    return colorString
+
+    return finalString
 }
 private fun lineNumbersString(from: String): String =
     (1..from.lines().count())
