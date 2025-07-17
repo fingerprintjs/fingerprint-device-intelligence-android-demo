@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -34,7 +33,7 @@ fun EventRawJsonView(
     modifier: Modifier,
     code: String,
 ) {
-    val highlightedCode = highlightSyntax2(code)
+    val highlightedCode = highlightSyntax(code)
     Column(modifier = modifier.padding(start = 16.dp)) {
         Spacer(
             modifier = Modifier
@@ -83,38 +82,7 @@ fun EventRawJsonView(
  * This handles the basic highlighting we need. If we start to get other requests,
  * this function should change to something that does precise JSON parsing.
  */
-private fun highlightSyntax(s: String): AnnotatedString  {
-    var finalString = AnnotatedString("")
-    val startOfObjectOrArray = Regex("^\\s*[{\\[].*")
-    val highlightStyle = SpanStyle(
-        color = AppColors.Orange400,
-    )
-
-    s.lines().forEach {
-        val splits = it.split("\":", limit = 2)
-        // Add the first part of the line
-        finalString += AnnotatedString(splits[0])
-        if (splits.size > 1) {
-            // Add what was removed in the split
-            finalString += AnnotatedString("\":")
-            val part2 = splits[1]
-            // If this is pointing to an object or array, don't highlight that
-            if (part2.matches(startOfObjectOrArray)) {
-                finalString += AnnotatedString(part2)
-            } else {
-                finalString += AnnotatedString(part2.removeSuffix(","), highlightStyle)
-                if (part2.endsWith(',')) {
-                    finalString += AnnotatedString(",")
-                }
-            }
-        }
-        finalString += AnnotatedString("\n")
-    }
-
-    return finalString
-}
-
-private fun highlightSyntax2(s: String): AnnotatedString {
+private fun highlightSyntax(s: String): AnnotatedString {
     val startOfObjectOrArray = Regex("^\\s*[{\\[].*")
     val highlightStyle = SpanStyle(
         color = AppColors.Orange400,
