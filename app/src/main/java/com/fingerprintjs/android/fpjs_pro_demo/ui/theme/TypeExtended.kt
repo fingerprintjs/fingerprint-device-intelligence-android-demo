@@ -11,6 +11,10 @@ private val JetbrainsMono = FontFamily(
     Font(R.font.jetbrainsmono_normal, weight = FontWeight.W400),
 )
 
+private val JetbrainsMonoNoWeight = FontFamily(
+    Font(R.font.jetbrainsmono_normal),
+)
+
 object TypographyExtended {
     val codeNormal: TextStyle = TextStyle(
         fontFamily = JetbrainsMono,

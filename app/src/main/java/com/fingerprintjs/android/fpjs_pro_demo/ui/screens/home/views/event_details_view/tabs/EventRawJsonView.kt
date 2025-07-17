@@ -17,9 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.fingerprintjs.android.fpjs_pro_demo.R
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
@@ -58,8 +63,9 @@ fun EventRawJsonView(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
-                        style = AppTheme.extendedTheme.typography.codeNormal,
+                        //style = AppTheme.extendedTheme.typography.codeNormal,
                         softWrap = false,
+                        lineHeight = 18.sp,
                         text = spannedCode,
                     )
                 }
@@ -78,32 +84,40 @@ fun EventRawJsonView(
 private fun addSpan(s: String): AnnotatedString  {
     var colorString = AnnotatedString("")
     val startOfObjectOrArray = Regex("^\\s*[{\\[].*")
+    val jetbrainsMonoNoWeight = FontFamily(
+        Font(R.font.jetbrainsmono_normal),
+    )
+
+    val normalStyle = SpanStyle(
+        fontFamily = jetbrainsMonoNoWeight,
+        color = AppColors.Gray500,
+        fontWeight = FontWeight.W400,
+        fontSize = 12.sp,
+    )
+
+    val highlightStyle = SpanStyle(
+        fontFamily = jetbrainsMonoNoWeight,
+        color = AppColors.Orange400,
+        fontWeight = FontWeight.W600,
+        fontSize = 12.sp
+    )
+
     s.lines().forEach {
         val splits = it.split("\":", limit = 2)
-        colorString += AnnotatedString(splits[0])
-
-        if (it.contains("subdivision")) {
-            if (it.contains("asjkldfklasdfjkl")) {
-                return colorString
-            }
-        }
-
+        colorString += AnnotatedString(splits[0], normalStyle)
         if (splits.size > 1) {
-            colorString += AnnotatedString("\":")
+            colorString += AnnotatedString("\":", normalStyle)
             val part2 = splits[1]
             if (part2.matches(startOfObjectOrArray)) {
-                colorString += AnnotatedString(part2)
+                colorString += AnnotatedString(part2, normalStyle)
             } else {
-                colorString += AnnotatedString(part2.removeSuffix(","), SpanStyle(
-                    color = AppColors.Orange400,
-                    fontWeight = FontWeight.ExtraBold
-                ))
+                colorString += AnnotatedString(part2.removeSuffix(","), highlightStyle)
                 if (part2.endsWith(',')) {
-                    colorString += AnnotatedString(",")
+                    colorString += AnnotatedString(",", normalStyle)
                 }
             }
         }
-        colorString += AnnotatedString("\n")
+        colorString += AnnotatedString("\n", normalStyle)
     }
     return colorString
 }
