@@ -33,7 +33,6 @@ fun EventRawJsonView(
     modifier: Modifier,
     code: String,
 ) {
-    val highlightedCode = highlightSyntax(code)
     Column(modifier = modifier.padding(start = 16.dp)) {
         Spacer(
             modifier = Modifier
