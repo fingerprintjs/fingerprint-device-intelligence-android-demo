@@ -2,6 +2,8 @@ package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 
 class JSONSyntaxHighlighter(private val json: String) {
@@ -11,6 +13,7 @@ class JSONSyntaxHighlighter(private val json: String) {
         try {
             val highlightStyle = SpanStyle(
                 color = AppColors.Orange400,
+                fontWeight = FontWeight.W600
             )
 
             val spans = mutableListOf<AnnotatedString.Range<SpanStyle>>()
@@ -35,8 +38,7 @@ class JSONSyntaxHighlighter(private val json: String) {
                 previousToken = token
                 token = jsonTokenizer.nextToken()
             }
-
-            return AnnotatedString(json, spans)
+            return AnnotatedString(text = json, spanStyles = spans)
         } catch(_: Exception) {
             return AnnotatedString(json)
         }
