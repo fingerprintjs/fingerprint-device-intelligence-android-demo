@@ -69,6 +69,24 @@ class JSONSyntaxHighlighterTests {
         assertEquals(jsonEntry, result.text)
     }
 
+    @Test
+    fun givenJsonWithEmojis_spansMatchAsExpected() {
+        // Checking unicode support
+        val jsonEntry = """
+            {
+                "🏢": "🫆"
+            }
+            """
+        val result = JSONSyntaxHighlighter(jsonEntry).highlighted()
+        assertEquals(jsonEntry, result.text)
+        validateSpans(
+            result,
+            listOf(
+                "\"🫆\"",
+            )
+        )
+    }
+
     fun validateSpans(s: AnnotatedString, expectedSpans: List<String>) {
         assertEquals(expectedSpans.size, s.spanStyles.size)
         s.spanStyles.forEachIndexed { i, span ->
