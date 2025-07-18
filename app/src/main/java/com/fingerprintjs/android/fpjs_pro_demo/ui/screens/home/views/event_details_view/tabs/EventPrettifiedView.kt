@@ -55,6 +55,7 @@ fun EventPrettifiedView(
     modifier: Modifier,
     properties: List<PrettifiedProperty>,
     isLoading: Boolean,
+    isSmartSignalsLoading: Boolean
 ) {
 
     Column(modifier = modifier) {
@@ -70,8 +71,12 @@ fun EventPrettifiedView(
                     onLongClickEnabled = property.onLongClickEnabled,
                     isSmartSignal = property.isSmartSignal,
                     onSmartSignalClick = property.onSmartSignalClick,
-                    isLoading = isLoading,
                     isLast = index == properties.lastIndex,
+                    isLoading = if (property.isSmartSignal) {
+                        isSmartSignalsLoading
+                    } else {
+                        isLoading
+                    }
                 )
             }
         }
@@ -211,6 +216,7 @@ private fun Preview() {
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
                 isLoading = isLoading,
+                isSmartSignalsLoading = isSmartSignalsLoading
             )
         }
     }
@@ -225,6 +231,7 @@ private fun PreviewLoading() {
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
                 isLoading = isLoading,
+                isSmartSignalsLoading = isSmartSignalsLoading
             )
         }
     }

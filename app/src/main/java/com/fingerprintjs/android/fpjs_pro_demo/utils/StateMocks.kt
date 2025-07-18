@@ -135,6 +135,7 @@ class StateMocks @Inject constructor(
                 fingerprintJSProResponse = fingerprintJSResponse,
                 smartSignals = smartSignals,
                 isLoading = false,
+                isSmartSignalsLoading = false
             )
         }
     }

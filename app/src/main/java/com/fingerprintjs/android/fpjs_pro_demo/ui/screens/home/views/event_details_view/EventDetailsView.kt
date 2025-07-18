@@ -43,6 +43,7 @@ fun EventDetailsView(
     prettifiedProperties: List<PrettifiedProperty>,
     rawJson: String?,
     isLoading: Boolean,
+    isSmartSignalsLoading: Boolean,
 ) {
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -106,6 +107,7 @@ fun EventDetailsView(
                         modifier = Modifier.wrapContentSize(),
                         properties = prettifiedProperties,
                         isLoading = isLoading,
+                        isSmartSignalsLoading = isSmartSignalsLoading
                     )
                 }
 
@@ -129,6 +131,7 @@ private fun EventDetailsViewPreview() {
             rawJson = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.rawJson,
             prettifiedProperties = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.prettifiedProps,
             isLoading = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.isLoading,
+            isSmartSignalsLoading = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.isSmartSignalsLoading
         )
     }
 }
