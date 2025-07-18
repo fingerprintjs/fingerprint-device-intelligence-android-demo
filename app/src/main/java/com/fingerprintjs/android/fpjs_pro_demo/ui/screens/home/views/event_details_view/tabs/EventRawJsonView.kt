@@ -15,16 +15,12 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
-import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.JSONSyntaxHighlighter
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
@@ -62,7 +58,7 @@ fun EventRawJsonView(
                         style = AppTheme.extendedTheme.typography.codeNormal,
                         softWrap = false,
                         lineHeight = 18.sp,
-                        text = highlightSyntax(code),
+                        text = JSONSyntaxHighlighter(code).highlighted(),
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
@@ -76,43 +72,6 @@ fun EventRawJsonView(
         )
     }
 }
-
-/**
- * This handles the basic highlighting we need. If we start to get other requests,
- * this function should change to something that does precise JSON parsing.
- */
-private fun highlightSyntax(s: String): AnnotatedString {
-    val startOfObjectOrArray = Regex("^\\s*[{\\[].*")
-    val highlightStyle = SpanStyle(
-        color = AppColors.Orange400,
-    )
-
-    return buildAnnotatedString {
-        s.lines().forEach {
-            val splits = it.split("\":", limit = 2)
-            // Add the first part of the line
-            append(splits[0])
-            if (splits.size > 1) {
-                // Add what was removed in the split
-                append("\":")
-                val part2 = splits[1]
-                // If this is pointing to an object or array, don't highlight that
-                if (part2.matches(startOfObjectOrArray)) {
-                    append(part2)
-                } else {
-                    withStyle(highlightStyle) {
-                        append(part2.removeSuffix(","))
-                    }
-                    if (part2.endsWith(',')) {
-                        append(",")
-                    }
-                }
-            }
-            append("\n")
-        }
-    }
-}
-
 
 private fun lineNumbersString(from: String): String =
     (1..from.lines().count())
