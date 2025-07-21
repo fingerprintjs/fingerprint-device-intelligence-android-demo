@@ -45,6 +45,8 @@ class MainActivity : ComponentActivity() {
                 }
                 slideUp.start()
             }
+        } else {
+            checkLocationPermissions()
         }
 
         setContent {
