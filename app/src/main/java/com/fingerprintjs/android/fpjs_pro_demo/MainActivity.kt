@@ -73,10 +73,10 @@ class MainActivity : ComponentActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSIONS_REQUEST_CODE) {
-            if (isAnyLocationPermissionGranted()) {
-                startLocationCollection()
-            } else if (isRationaleNeeded()) {
+            if (isRationaleNeeded()) {
                 showRationaleDialog()
+            } else {
+                startLocationCollection()
             }
         }
     }
@@ -96,13 +96,6 @@ class MainActivity : ComponentActivity() {
     private fun isFinePermissionGranted(): Boolean {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun isAnyLocationPermissionGranted(): Boolean {
-        return listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ).any { ActivityCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED }
     }
 
     private fun isRationaleNeeded(): Boolean {
