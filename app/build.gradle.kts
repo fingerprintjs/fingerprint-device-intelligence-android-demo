@@ -3,7 +3,7 @@ import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 @Suppress("PropertyName")
 val VERSION_NAME="3.4.0"
 @Suppress("PropertyName")
-val VERSION_CODE=30
+val VERSION_CODE=31
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
