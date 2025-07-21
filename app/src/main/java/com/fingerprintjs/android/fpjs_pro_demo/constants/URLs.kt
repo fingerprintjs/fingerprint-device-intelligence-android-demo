@@ -17,6 +17,8 @@ object URLs {
         val locationSpoofing = smartSignalOverviewUrl("geolocation-spoofing-detection")
         val root = smartSignalOverviewUrl("rooted-device-detection")
         val vpn = smartSignalOverviewUrl("vpn-detection-for-mobile-devices")
+        val tampering = smartSignalOverviewUrl("tampered-request-detection-for-mobile-apps")
+        val mitm = smartSignalOverviewUrl("mitm-attack-detection")
 
         private fun smartSignalOverviewUrl(forAnchor: String): String {
             return "https://dev.fingerprint.com/docs/smart-signals-overview#$forAnchor"

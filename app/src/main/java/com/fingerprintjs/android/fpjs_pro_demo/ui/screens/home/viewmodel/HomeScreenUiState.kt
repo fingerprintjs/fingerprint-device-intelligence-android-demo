@@ -171,6 +171,18 @@ data class HomeScreenUiState(
                 override val onButtonCLick = onReload
             }
 
+            class Generic(
+                error: com.fingerprintjs.android.fpjs_pro.Error,
+                onReload: () -> Unit,
+            ) : Error {
+                override val image = Icons.Outlined.ErrorOutline
+                override val title = error.javaClass.simpleName
+                override val description = error.description ?: "An unexpected error occurred..."
+                override val links = emptyList<LinkableText.Link>()
+                override val buttonTitle: String = "Try again"
+                override val onButtonCLick = onReload
+            }
+
             companion object
         }
 
