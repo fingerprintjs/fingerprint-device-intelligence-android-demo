@@ -1,8 +1,7 @@
-package com.fingerprintjs.android.fpjs_pro_demo
+package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import androidx.compose.ui.text.AnnotatedString
-import com.fingerprintjs.android.fpjs_pro_demo.utils.JSONSyntaxHighlighter
-import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase
 import org.junit.Test
 
 class JSONSyntaxHighlighterTests {
@@ -25,7 +24,7 @@ class JSONSyntaxHighlighterTests {
             }
             """
         val result = JSONSyntaxHighlighter(jsonEntry).highlighted()
-        assertEquals(jsonEntry, result.text)
+        TestCase.assertEquals(jsonEntry, result.text)
         validateSpans(
             result,
             listOf(
@@ -55,7 +54,7 @@ class JSONSyntaxHighlighterTests {
             """
 
         val result = JSONSyntaxHighlighter(jsonEntry).highlighted()
-        assertEquals(jsonEntry, result.text)
+        TestCase.assertEquals(jsonEntry, result.text)
         validateSpans(result, listOf())
     }
 
@@ -66,7 +65,7 @@ class JSONSyntaxHighlighterTests {
             """
 
         val result = JSONSyntaxHighlighter(jsonEntry).highlighted()
-        assertEquals(jsonEntry, result.text)
+        TestCase.assertEquals(jsonEntry, result.text)
     }
 
     @Test
@@ -78,7 +77,7 @@ class JSONSyntaxHighlighterTests {
             }
             """
         val result = JSONSyntaxHighlighter(jsonEntry).highlighted()
-        assertEquals(jsonEntry, result.text)
+        TestCase.assertEquals(jsonEntry, result.text)
         validateSpans(
             result,
             listOf(
@@ -88,10 +87,10 @@ class JSONSyntaxHighlighterTests {
     }
 
     fun validateSpans(s: AnnotatedString, expectedSpans: List<String>) {
-        assertEquals(expectedSpans.size, s.spanStyles.size)
+        TestCase.assertEquals(expectedSpans.size, s.spanStyles.size)
         s.spanStyles.forEachIndexed { i, span ->
             val text = s.text.substring(span.start, span.end).trimStart()
-            assertEquals(expectedSpans[i], text)
+            TestCase.assertEquals(expectedSpans[i], text)
         }
     }
 }
