@@ -155,10 +155,11 @@ class HomeViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             if (mockingState.value?.enabled == true) {
                 delay(2000)
-                if (++reloadCount % 4 == 0)
+                if (++reloadCount % 4 == 0) {
                     Err(stateMocks.fingerprintJSOtherError)
-                else
+                } else {
                     Ok(stateMocks.fingerprintJSResponse)
+                }
             } else {
                 identificationProvider.getVisitorId()
             }
@@ -169,10 +170,11 @@ class HomeViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             if (mockingState.value?.enabled == true) {
                 delay(2000)
-                if (++reloadCount % 4 == 0)
-                Err(SmartSignalsError.Unknown)
-                else
+                if (++reloadCount % 4 == 0) {
+                    Err(SmartSignalsError.Unknown)
+                } else {
                     Ok(stateMocks.smartSignals)
+                }
             } else {
                 fingerprintSdkResponse
                     // if fingerprintSdkResponse is error, consider smart signals response as
