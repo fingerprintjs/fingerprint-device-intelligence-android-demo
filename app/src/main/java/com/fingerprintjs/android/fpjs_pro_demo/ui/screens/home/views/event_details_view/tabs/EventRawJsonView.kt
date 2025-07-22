@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.JSONSyntaxHighlighter
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
@@ -55,7 +57,8 @@ fun EventRawJsonView(
                         color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                         style = AppTheme.extendedTheme.typography.codeNormal,
                         softWrap = false,
-                        text = code,
+                        lineHeight = 18.sp,
+                        text = JSONSyntaxHighlighter(code).highlighted(),
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))

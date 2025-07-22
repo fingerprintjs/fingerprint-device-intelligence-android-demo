@@ -1,9 +1,6 @@
-package com.fingerprintjs.android.fpjs_pro_demo
+package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
-import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignal
-import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalInfo
-import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.github.michaelbull.result.get
 import junit.framework.TestCase
 import kotlinx.serialization.encodeToString
