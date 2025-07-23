@@ -31,7 +31,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignal
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalInfo
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
-import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsResponse
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
@@ -50,7 +49,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
-        smartSignalsResponse: SmartSignalsResponse,
+        smartSignalsData: SmartSignalsData,
         isLoading: Boolean,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
@@ -60,6 +59,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         onSupportClicked: () -> Unit = {},
         onGotoApiKeysSettings: () -> Unit = {},
     ): HomeScreenUiState.Content {
+        val isSmartSignalsLoading = smartSignalsData is SmartSignalsData.Loading
 
         val unknownError = HomeScreenUiState.Content.Error.Unknown(
             onSupportClicked = onSupportClicked,
@@ -113,34 +113,40 @@ class HomeScreenUiStateCreator @Inject constructor(
                 }
             }
 
-        val smartSignalsSuccessResult = smartSignalsResponse
-            .recoverIf(
-                predicate = { it is SmartSignalsError.EndpointInfoNotSetInApp },
-                transform = { null }
-            )
-            .getOrElse { error ->
-                return when (error) {
-                    SmartSignalsError.EndpointInfoNotSetInApp -> unknownError // unreachable
-                    SmartSignalsError.FeatureNotEnabled -> unknownError
-                    SmartSignalsError.RequestNotFound -> secretApiKeyMismatchError
-                    SmartSignalsError.SubscriptionNotActive -> secretApiKeyMismatchError
-                    SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error.SecretApiKeyInvalid(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
+        val smartSignalsSuccessResult: SmartSignals? =
+            if (smartSignalsData is SmartSignalsData.Data) {
+                smartSignalsData.smartSignalsResponse
+                    .recoverIf(
+                        predicate = { it is SmartSignalsError.EndpointInfoNotSetInApp },
+                        transform = { null }
                     )
+                    .getOrElse { error ->
+                        return when (error) {
+                            SmartSignalsError.EndpointInfoNotSetInApp -> unknownError // unreachable
+                            SmartSignalsError.FeatureNotEnabled -> unknownError
+                            SmartSignalsError.RequestNotFound -> secretApiKeyMismatchError
+                            SmartSignalsError.SubscriptionNotActive -> secretApiKeyMismatchError
+                            SmartSignalsError.TokenNotFound -> HomeScreenUiState.Content.Error.SecretApiKeyInvalid(
+                                onGotoApiKeysSettings = onGotoApiKeysSettings
+                            )
 
-                    SmartSignalsError.TokenRequired -> unknownError
-                    SmartSignalsError.UnknownApiError -> unknownError
-                    SmartSignalsError.WrongRegion -> secretApiKeyMismatchError
-                    is SmartSignalsError.NetworkError -> networkError
-                    SmartSignalsError.ParseError -> unknownError
-                    SmartSignalsError.Unknown -> unknownError
-                }
+                            SmartSignalsError.TokenRequired -> unknownError
+                            SmartSignalsError.UnknownApiError -> unknownError
+                            SmartSignalsError.WrongRegion -> secretApiKeyMismatchError
+                            is SmartSignalsError.NetworkError -> networkError
+                            SmartSignalsError.ParseError -> unknownError
+                            SmartSignalsError.Unknown -> unknownError
+                        }
+                    }
+            } else {
+                null
             }
 
         return HomeScreenUiState.Content.LoadingOrSuccess.create(
             fingerprintJSProResponse = fingerprintSuccessResult,
             smartSignals = smartSignalsSuccessResult,
             isLoading = isLoading,
+            isSmartSignalsLoading = isSmartSignalsLoading,
             onHideSignupPrompt = onHideSignupPrompt,
             onPutToClipboard = onPutToClipboard,
             onSmartSignalDocClicked = onSmartSignalDocClicked,
@@ -152,6 +158,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         fingerprintJSProResponse: FingerprintJSProResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
         isLoading: Boolean,
+        isSmartSignalsLoading: Boolean,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
         onPutToClipboard: (String) -> Unit = {},
@@ -215,6 +222,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                 createRawJson(fingerprintJSProResponse, smartSignals)
             }.getOrNull(),
             isLoading = isLoading,
+            isSmartSignalsLoading = isSmartSignalsLoading,
             isSignupPromptShown = false,
             prettifiedProps = listOfNotNull(
                 identificationProperty(

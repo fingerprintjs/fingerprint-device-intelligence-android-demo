@@ -129,6 +129,7 @@ fun HomeLoadingOrSuccessScreen(
             prettifiedProperties = state.prettifiedProps,
             rawJson = state.rawJson,
             isLoading = state.isLoading,
+            isSmartSignalsLoading = state.isSmartSignalsLoading
         )
     }
 }
