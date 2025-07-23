@@ -156,7 +156,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
         fingerprintJSProResponse: FingerprintJSProResponse,
-        smartSignals: SmartSignals?,
+        smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
         onSmartSignalDocClicked: (url: String) -> Unit = {},

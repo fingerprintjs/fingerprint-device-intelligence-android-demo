@@ -21,12 +21,14 @@ android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
     compileSdk = 34
 
+
     externalNativeBuild {
         cmake {
             path = File("src/main/cpp/CMakeLists.txt")
         }
     }
-    
+
+
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 21
