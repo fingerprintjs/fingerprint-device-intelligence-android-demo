@@ -8,7 +8,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.di.modules.AppModule
 import dagger.BindsInstance
 import dagger.Component
 
-
 @AppScope
 @Component(
     modules = [
@@ -19,7 +18,7 @@ import dagger.Component
         CommonComponent::class
     ]
 )
-interface AppComponent: ViewModelProvidingComponent {
+interface AppComponent : ViewModelProvidingComponent {
 
     fun inject(activity: MainActivity)
 

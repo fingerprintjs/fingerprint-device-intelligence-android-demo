@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
 
     private fun isFinePermissionGranted(): Boolean {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
+            PackageManager.PERMISSION_GRANTED
     }
 
     private fun isRationaleNeeded(): Boolean {

@@ -6,6 +6,10 @@ naming:
   FunctionNaming:
     ignoreAnnotated: ['Composable']
 
+formatting:
+  PackageName:
+    active: false # This formatting option has no parameters to adjust, so we just disable it
+
 style:
   active: true
   MagicNumber:

@@ -64,8 +64,8 @@ fun AppBarDropdownMenu(
                         )
                     },
                 )
-                if (innerIndex == items.lastIndex
-                    && outerIndex != sections.lastIndex
+                if (innerIndex == items.lastIndex &&
+                    outerIndex != sections.lastIndex
                 ) {
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 8.dp)

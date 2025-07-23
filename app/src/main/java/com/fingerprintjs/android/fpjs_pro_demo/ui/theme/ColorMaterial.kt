@@ -18,10 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fingerprintjs.android.fpjs_pro_demo.R
 
 internal object AppColors {
     val Black = Color(0xFF141415)
@@ -85,7 +83,6 @@ val LightMaterialColorScheme: ColorScheme
         surfaceContainerLowest = AppColors.White,
         surfaceDim = AppColors.Gray50,
     )
-
 
 val DarkMaterialColorScheme: ColorScheme
     @Composable

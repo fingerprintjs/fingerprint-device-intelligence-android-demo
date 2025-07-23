@@ -9,7 +9,7 @@ enum class Tab(
     val route: String,
     val title: String,
     val icon: ImageVector,
-    ) {
+) {
     Home(
         route = "home",
         title = "Home",

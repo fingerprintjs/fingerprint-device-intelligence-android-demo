@@ -26,7 +26,8 @@ data class SettingsDetailsUiState(
                 onContinue: suspend () -> Unit,
             ) = ValidationPromptState(
                 title = "Invalid keys!",
-                description = "Your changes will not be saved. The app will continue to use the previously saved API keys.",
+                description = "Your changes will not be saved. The app will continue to use the " +
+                    "previously saved API keys.",
                 cancelButtonTitle = "Continue editing",
                 continueButtonTitle = "Discard changes",
                 onCancel = onCancel,

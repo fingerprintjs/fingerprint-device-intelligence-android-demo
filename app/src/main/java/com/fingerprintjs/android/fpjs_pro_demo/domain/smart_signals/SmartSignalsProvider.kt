@@ -28,8 +28,9 @@ class SmartSignalsProvider @Inject constructor(
         if (!customKeysState.enabled) {
             val baseUrl = Protected.smartSignalsBaseUrl
             val origin = Protected.smartSignalsOrigin
-            if (baseUrl == null || origin == null)
+            if (baseUrl == null || origin == null) {
                 return Err(SmartSignalsError.EndpointInfoNotSetInApp)
+            }
             url = Uri.parse(baseUrl)
                 .buildUpon()
                 .appendPath("event")
