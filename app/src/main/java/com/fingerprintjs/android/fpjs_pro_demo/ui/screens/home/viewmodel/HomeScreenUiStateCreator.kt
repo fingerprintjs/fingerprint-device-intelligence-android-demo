@@ -384,7 +384,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                 })
             }
         }
-        return json.encodeToString(map.toJsonObject())
+        return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
     }
 
 
