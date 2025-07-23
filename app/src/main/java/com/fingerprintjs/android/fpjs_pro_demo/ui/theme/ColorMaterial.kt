@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.fingerprintjs.android.fpjs_pro_demo.ui.theme
 
 import androidx.compose.foundation.background
