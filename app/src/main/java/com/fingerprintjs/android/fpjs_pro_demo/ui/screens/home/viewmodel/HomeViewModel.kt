@@ -161,9 +161,9 @@ class HomeViewModel @Inject constructor(
                 } else {
                     Ok(stateMocks.fingerprintJSResponse)
                 }
-            } else {
+            } else
                 identificationProvider.getVisitorId()
-            }
+            
         }
     }
 
