@@ -1,0 +1,31 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "MOBILE-679/detekt" ]
+  pull_request:
+    branches: [ "MOBILE-679/detekt" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: detekt
+        run: ./gradlew detekt
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        
