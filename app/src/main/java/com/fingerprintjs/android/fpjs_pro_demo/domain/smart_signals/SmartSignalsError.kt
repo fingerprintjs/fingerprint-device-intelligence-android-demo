@@ -8,7 +8,6 @@ sealed interface SmartSignalsError {
     data object ParseError : SmartSignalsError
     data object Unknown : SmartSignalsError
 
-
     sealed interface APIError : SmartSignalsError
     data object FeatureNotEnabled : SmartSignalsError, APIError
     data object RequestNotFound : SmartSignalsError, APIError

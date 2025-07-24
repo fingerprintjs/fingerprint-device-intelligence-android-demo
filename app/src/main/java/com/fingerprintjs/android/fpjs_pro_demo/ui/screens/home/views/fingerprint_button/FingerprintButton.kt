@@ -81,7 +81,6 @@ fun FingerprintButton(
             Spacer(modifier = Modifier.weight(0.22f))
         }
     }
-
 }
 
 @Composable

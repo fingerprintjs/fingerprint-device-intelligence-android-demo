@@ -5,4 +5,3 @@ import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
 import com.github.michaelbull.result.Result
 
 typealias FingerprintJSProResult = Result<FingerprintJSProResponse, Error>
-
