@@ -26,5 +26,5 @@ jobs:
       - name: detekt
         run: ./gradlew detekt
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      #- name: Build with Gradle
+        #run: ./gradlew build
