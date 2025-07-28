@@ -85,7 +85,6 @@ fun HomeScreen(
             }
             .launchIn(this)
 
-
         viewModel.textToCopy
             .onEach { text ->
                 ClipboardUtils.copyToClipboardAndNotifyUser(context, text)
@@ -274,7 +273,9 @@ private fun TapToBegin() {
 @Composable
 private fun Success() {
     ShowPreview {
-        HomeScreenInternal(state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked))
+        HomeScreenInternal(
+            state = HomeScreenUiState.Mocked.copy(content = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked)
+        )
     }
 }
 

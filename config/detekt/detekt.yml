@@ -3,6 +3,12 @@ naming:
   PackageNaming:
     active: true
     packagePattern: '[a-z]+(\.[a-z][A-Za-z0-9_]*)*'
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+
+formatting:
+  PackageName:
+    active: false # This formatting option has no parameters to adjust, so we just disable it
 
 style:
   active: true

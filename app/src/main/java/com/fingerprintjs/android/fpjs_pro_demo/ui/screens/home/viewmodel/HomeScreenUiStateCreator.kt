@@ -167,9 +167,9 @@ class HomeScreenUiStateCreator @Inject constructor(
         // Checking the values from FingerprintJSProResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
-            it.isNotEmpty()
-                    && it != "n\\a"
-                    && !it.contentEquals("null", ignoreCase = true)
+            it.isNotEmpty() &&
+                it != "n\\a" &&
+                !it.contentEquals("null", ignoreCase = true)
         }
 
         val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
@@ -296,10 +296,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "High Activity",
                     docUrl = URLs.SmartSignalsOverview.highActivity,
                 ) {
-                    if (result && dailyRequests != null)
+                    if (result && dailyRequests != null) {
                         "${DETECTED_STRING}. $dailyRequests per day"
-                    else
+                    } else {
                         result.detectionStatusString()
+                    }
                 },
                 smartSignalProperty(
                     from = { locationSpoofing },
@@ -365,28 +366,30 @@ class HomeScreenUiStateCreator @Inject constructor(
         val map = buildMap {
             this.put("identification", fingerprintJSProResponse.toJsonMap())
             if (smartSignals != null) {
-                this.put("smartSignals", buildMap {
-                    listOfNotNull(
-                        smartSignals.clonedApp,
-                        smartSignals.emulator,
-                        smartSignals.factoryReset,
-                        smartSignals.frida,
-                        smartSignals.highActivity,
-                        smartSignals.locationSpoofing,
-                        smartSignals.root,
-                        smartSignals.vpn,
-                    )
-                        .forEach {
-                            if (it is SmartSignalInfo.WithRawData) {
-                                this.put(it.rawKey, it.rawData)
+                this.put(
+                    "smartSignals",
+                    buildMap {
+                        listOfNotNull(
+                            smartSignals.clonedApp,
+                            smartSignals.emulator,
+                            smartSignals.factoryReset,
+                            smartSignals.frida,
+                            smartSignals.highActivity,
+                            smartSignals.locationSpoofing,
+                            smartSignals.root,
+                            smartSignals.vpn,
+                        )
+                            .forEach {
+                                if (it is SmartSignalInfo.WithRawData) {
+                                    this.put(it.rawKey, it.rawData)
+                                }
                             }
-                        }
-                })
+                    }
+                )
             }
         }
         return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
     }
-
 
     private fun Boolean.detectionStatusString(): String {
         return if (this) DETECTED_STRING else NOT_DETECTED_STRING

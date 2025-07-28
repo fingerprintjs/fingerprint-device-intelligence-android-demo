@@ -27,12 +27,12 @@ class SharedPreferencesStorage @Inject constructor(
 
     private val sharedPrefsFileNameHistory = if (encryptedSharedPreferencesSupported) {
         listOf(
-            // old shared prefs
-            "fpjs_prefs",
+
+            "fpjs_prefs", // old shared prefs
             "fpjs_prefs_v1",
-            "fpjs_prefs_v2_legacy", // if device has been updated from api levels 21-22, let's delete unencrypted shared preferences
-            // current shared prefs
-            "fpjs_prefs_v2",
+            "fpjs_prefs_v2_legacy", // if device has been updated from api levels 21-22,
+            // let's delete unencrypted shared preferences
+            "fpjs_prefs_v2", // current shared prefs
         )
     } else {
         listOf(
@@ -65,7 +65,6 @@ class SharedPreferencesStorage @Inject constructor(
         }
     }
 
-
     // for now, let's not bother with migration, there is no important information to migrate
     // from the previous released version of the app
     @SuppressLint("ApplySharedPref")
@@ -86,7 +85,6 @@ class SharedPreferencesStorage @Inject constructor(
                 }
         }
     }
-
 
     override suspend fun writeData(bytes: ByteArray, key: StorageKey): Result<*, *> {
         return withContext(Dispatchers.IO) {

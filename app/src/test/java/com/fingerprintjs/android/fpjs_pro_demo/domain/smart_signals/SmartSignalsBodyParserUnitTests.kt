@@ -85,7 +85,6 @@ class SmartSignalsBodyParserUnitTests {
         }
     }
 
-
     @Test
     fun givenSmartSignalNotPresent_whenGetSmartSignal_thenSmartSignalDisabledReturned() {
         testSmartSignalParsing<SmartSignal.Emulator>(
@@ -104,7 +103,7 @@ class SmartSignalsBodyParserUnitTests {
                     "unexpected_prop1": "string",
                     "unexpected_prop2": 1
                 }
-            """.trimIndent()
+        """.trimIndent()
         testSmartSignalParsing<SmartSignal.Emulator>(
             jsonEntry = entry,
             expectedKey = "emulator"
@@ -151,14 +150,16 @@ class SmartSignalsBodyParserUnitTests {
 
     @Test
     fun givenCorrentErrorBody_whenParseSmartSignalsError_thenCorrectErrorReturned() {
-        val result = parser.parseSmartSignalsError("""
+        val result = parser.parseSmartSignalsError(
+            """
         {
             "error": {
                 "message": "some_value",
                 "code": "TokenRequired"
             }
         }
-        """.trimIndent())
+            """.trimIndent()
+        )
         TestCase.assertEquals(SmartSignalsError.TokenRequired, result.get())
     }
 

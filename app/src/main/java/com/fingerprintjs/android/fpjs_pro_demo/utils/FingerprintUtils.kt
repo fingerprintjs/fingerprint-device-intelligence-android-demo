@@ -63,7 +63,7 @@ fun FingerprintJSProResponse.toJsonMap() = mapOf(
 ).filterValues { it != null }
 
 val Configuration.Region.description: String
-    get() = when(this) {
+    get() = when (this) {
         Configuration.Region.US -> "Global (US)"
         Configuration.Region.EU -> "EU"
         Configuration.Region.AP -> "Asia (Mumbai)"

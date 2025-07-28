@@ -8,14 +8,14 @@ import kotlin.reflect.KClass
 class AppStorage @Inject constructor(
     private val backingStorage: BackingStorage,
     private val serializer: Serializer,
-)  {
+) {
 
     suspend fun save(data: Any, key: StorageKey): Result<*, *> {
         return serializer.serialize(data)
             .andThen { backingStorage.writeData(it, key) }
     }
 
-    suspend fun <T: Any> load(key: StorageKey, classOfT: KClass<T>) : Result<T, *> {
+    suspend fun <T : Any> load(key: StorageKey, classOfT: KClass<T>): Result<T, *> {
         return backingStorage.readData(key)
             .andThen { serializer.deserialize(it, classOfT) }
     }

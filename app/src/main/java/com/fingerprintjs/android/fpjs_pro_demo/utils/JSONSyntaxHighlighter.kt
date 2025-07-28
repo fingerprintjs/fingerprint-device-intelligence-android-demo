@@ -3,7 +3,6 @@ package com.fingerprintjs.android.fpjs_pro_demo.utils
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 
 class JSONSyntaxHighlighter(private val json: String) {
@@ -39,7 +38,7 @@ class JSONSyntaxHighlighter(private val json: String) {
                 token = jsonTokenizer.nextToken()
             }
             return AnnotatedString(text = json, spanStyles = spans)
-        } catch(_: Exception) {
+        } catch (_: Exception) {
             return AnnotatedString(json)
         }
     }
@@ -69,7 +68,13 @@ class JSONSyntaxHighlighter(private val json: String) {
         private val quote = '"'
         private val escape = '\\'
         private val literalSeparators = setOf(
-            curlyBracketOpen, curlyBracketClose, squareBracketOpen, squareBracketClose, comma, colon, quote
+            curlyBracketOpen,
+            curlyBracketClose,
+            squareBracketOpen,
+            squareBracketClose,
+            comma,
+            colon,
+            quote
         )
 
         private var index = 0
@@ -91,8 +96,14 @@ class JSONSyntaxHighlighter(private val json: String) {
                             squareBracketClose -> return Token(TokenType.ARRAY_END, currentIndex..currentIndex)
                             comma -> return Token(TokenType.COMMA, currentIndex..currentIndex)
                             colon -> return Token(TokenType.COLON, currentIndex..currentIndex)
-                            quote -> { state = State.STRING; startIndex = currentIndex }
-                            else -> { state = State.LITERAL; startIndex = currentIndex }
+                            quote -> {
+                                state = State.STRING
+                                startIndex = currentIndex
+                            }
+                            else -> {
+                                state = State.LITERAL
+                                startIndex = currentIndex
+                            }
                         }
                     }
                     State.LITERAL -> {

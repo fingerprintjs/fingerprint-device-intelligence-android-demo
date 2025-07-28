@@ -44,7 +44,6 @@ object IntentUtils {
             }
     }
 
-
     private fun openUrlInternal(context: Context, url: String): Result<*, Throwable> {
         return runCatching {
             val uri = Uri.parse(url)!!

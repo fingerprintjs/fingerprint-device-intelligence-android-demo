@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import org.gradle.kotlin.dsl.detektPlugins
 
 @Suppress("PropertyName")
 val VERSION_NAME="3.3.0"
@@ -152,4 +153,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    detektPlugins(libs.detekt.formatting)
 }

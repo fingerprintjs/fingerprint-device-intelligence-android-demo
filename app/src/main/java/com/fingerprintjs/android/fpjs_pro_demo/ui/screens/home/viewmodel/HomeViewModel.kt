@@ -65,7 +65,7 @@ class HomeViewModel @Inject constructor(
     private val contentState: StateFlow<HomeScreenUiState.Content> =
         fingerprintData
             .map {
-                val data: FingerprintData.Data = when(it) {
+                val data: FingerprintData.Data = when (it) {
                     is Loading -> {
                         // todo (minor): consider using the latest loaded data to minimize UI transitions between loading and success states
                         FingerprintData.Data(
@@ -91,8 +91,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .onEach {
-                if (it is HomeScreenUiState.Content.LoadingOrSuccess && !it.isLoading)
+                if (it is HomeScreenUiState.Content.LoadingOrSuccess && !it.isLoading) {
                     showSignUpPromptUseCase.onFingerprintSuccess()
+                }
             }
             .combine(showSignUpPromptUseCase.showAllowed) { uiState, showAllowed ->
                 if (uiState is HomeScreenUiState.Content.LoadingOrSuccess && !uiState.isLoading) {
@@ -134,12 +135,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onReload() = viewModelScope.launch {
-            fingerprintData.emit(Loading)
-            val response = getRealOrStubbedFingerprintData()
-            fingerprintData.emit(FingerprintData.Data(response))
-            val smartSignals = getSmartSignalData(response)
-            fingerprintData.emit(FingerprintData.Data(response, SmartSignalsData.Data(smartSignals)))
-        }
+        fingerprintData.emit(Loading)
+        val response = getRealOrStubbedFingerprintData()
+        fingerprintData.emit(FingerprintData.Data(response))
+        val smartSignals = getSmartSignalData(response)
+        fingerprintData.emit(FingerprintData.Data(response, SmartSignalsData.Data(smartSignals)))
+    }
 
     private fun onSupportClicked() = onLaunchUrl(URLs.support)
     private fun onDocumentationClicked() = onLaunchUrl(URLs.documentation)
@@ -181,23 +182,22 @@ class HomeViewModel @Inject constructor(
                     // error too for simplicity
                     .mapError { SmartSignalsError.Unknown }
                     .flatMap { smartSignalsProvider.getSmartSignals(it.requestId) }
-
             }
         }
     }
 }
 
 private sealed class FingerprintData {
-    data object Loading: FingerprintData()
+    data object Loading : FingerprintData()
     data class Data(
         val fingerprintSdkResponse: FingerprintJSProResult,
         val smartSignalsResponse: SmartSignalsData = SmartSignalsData.Loading,
-    ): FingerprintData()
+    ) : FingerprintData()
 }
 
 sealed class SmartSignalsData {
-    data object Loading: SmartSignalsData()
+    data object Loading : SmartSignalsData()
     data class Data(
         val smartSignalsResponse: SmartSignalsResponse,
-    ): SmartSignalsData()
+    ) : SmartSignalsData()
 }

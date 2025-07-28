@@ -116,7 +116,8 @@ private fun SettingsDetailsScreenInternal(
                     ),
                     onClick = {
                         scope.launch { it.onContinue() }
-                    }) {
+                    }
+                ) {
                     Text(it.continueButtonTitle)
                 }
             },
@@ -186,7 +187,8 @@ private fun SettingsDetailsScreenInternal(
                         style = AppTheme.materialTheme.typography.bodyLarge,
                     )
                     Text(
-                        text = "When enabled, the app will use your API keys to make all the requests. These requests will count towards your monthly allowance.",
+                        text = "When enabled, the app will use your API keys to make all the requests. " +
+                            "These requests will count towards your monthly allowance.",
                         style = AppTheme.materialTheme.typography.bodyMedium,
                         color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                     )
