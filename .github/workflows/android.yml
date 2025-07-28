@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ "MOBILE-679/detekt" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "MOBILE-679/detekt" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -25,6 +25,3 @@ jobs:
 
       - name: detekt
         run: ./gradlew detekt
-
-      #- name: Build with Gradle
-        #run: ./gradlew build
