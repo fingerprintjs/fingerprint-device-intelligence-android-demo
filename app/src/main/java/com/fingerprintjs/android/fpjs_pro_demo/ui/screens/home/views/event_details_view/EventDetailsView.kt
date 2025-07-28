@@ -21,8 +21,8 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_detai
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.EventRawJsonView
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
+import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 import kotlinx.coroutines.launch
 
 private enum class EventDetailsViewTabs(
@@ -33,7 +33,7 @@ private enum class EventDetailsViewTabs(
     ),
     Raw(
         title = "Raw",
-    );
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -74,8 +74,11 @@ fun EventDetailsView(
                             color = when (isTabActive) {
                                 true -> AppTheme.materialTheme.colorScheme.onBackground
                                 false -> AppTheme.materialTheme.colorScheme.onSurfaceVariant.let {
-                                    if (!isLoading) it
-                                    else it.copy(alpha = 0.5f)
+                                    if (!isLoading) {
+                                        it
+                                    } else {
+                                        it.copy(alpha = 0.5f)
+                                    }
                                 }
                             },
                             text = tab.title,

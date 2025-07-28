@@ -93,7 +93,7 @@ private fun SettingsScreenInternal(
                     .fillMaxWidth(),
                 icon = Icons.Outlined.VpnKey,
                 text = "API Keys",
-                supportingText = when(state.customKeysEnabled) {
+                supportingText = when (state.customKeysEnabled) {
                     true -> "Enabled"
                     false -> "Disabled"
                 },
@@ -114,7 +114,7 @@ private fun SettingsScreenInternal(
                 icon = Icons.Outlined.BackHand,
                 text = "Privacy policy",
                 supportingText = null,
-                onClick = { IntentUtils.openUrl(context, URLs.privacyPolicy)},
+                onClick = { IntentUtils.openUrl(context, URLs.privacyPolicy) },
             )
             SettingsSeparator()
             AppVersionsInfo()
@@ -193,6 +193,7 @@ private fun Preview() {
     AppTheme {
         SettingsScreenInternal(
             state = SettingsUiState(customKeysEnabled = false),
-            onGoToDetails = {})
+            onGoToDetails = {}
+        )
     }
 }

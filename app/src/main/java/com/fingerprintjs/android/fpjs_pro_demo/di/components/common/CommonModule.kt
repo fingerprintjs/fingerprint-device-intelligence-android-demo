@@ -7,7 +7,6 @@ import kotlinx.serialization.json.ClassDiscriminatorMode
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
-
 @Module
 class CommonModule {
 

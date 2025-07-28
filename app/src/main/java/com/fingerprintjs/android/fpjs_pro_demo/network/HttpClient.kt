@@ -14,20 +14,19 @@ import okhttp3.Request
 import java.io.IOException
 import javax.inject.Inject
 
-
 @AppScope
 class HttpClient @Inject constructor(private val client: OkHttpClient) {
 
-    sealed class Error <T: Throwable> (val cause: T) {
-        class IO(error: IOException): Error<IOException>(error)
-        class Unknown(error: Throwable): Error<Throwable>(error)
+    sealed class Error<T : Throwable> (val cause: T) {
+        class IO(error: IOException) : Error<IOException>(error)
+        class Unknown(error: Throwable) : Error<Throwable>(error)
 
-       companion object {
-           fun from(t: Throwable): Error<*> = when (t) {
-               is IOException -> IO(t)
-               else -> Unknown(t)
-           }
-       }
+        companion object {
+            fun from(t: Throwable): Error<*> = when (t) {
+                is IOException -> IO(t)
+                else -> Unknown(t)
+            }
+        }
     }
 
     data class Response(

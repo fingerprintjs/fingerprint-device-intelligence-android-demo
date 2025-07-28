@@ -2,97 +2,26 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
-    <ID>CyclomaticComplexMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.Companion.create( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsResponse: SmartSignalsResponse, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, ): HomeScreenUiState.Content</ID>
-    <ID>CyclomaticComplexMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, ): HomeScreenUiState.Content.LoadingOrSuccess</ID>
-    <ID>FunctionNaming:AppBarDropdownMenu.kt$@Composable fun AppBarDropdownMenu( expanded: Boolean, sections: List&lt;List&lt;AppBarDropdownMenuItem&gt;&gt;, onDismiss: () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:AppBarDropdownMenu.kt$@Preview @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:ColorMaterial.kt$@Composable private fun List&lt;PreviewColor&gt;.Preview()</ID>
-    <ID>FunctionNaming:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors1()</ID>
-    <ID>FunctionNaming:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors2()</ID>
-    <ID>FunctionNaming:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors3()</ID>
-    <ID>FunctionNaming:EventDetailsView.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun EventDetailsView( modifier: Modifier, prettifiedProperties: List&lt;PrettifiedProperty&gt;, rawJson: String?, isLoading: Boolean, )</ID>
-    <ID>FunctionNaming:EventDetailsView.kt$@PreviewMultipleConfigurations @Composable private fun EventDetailsViewPreview()</ID>
-    <ID>FunctionNaming:EventPrettifiedView.kt$@Composable fun EventPrettifiedView( modifier: Modifier, properties: List&lt;PrettifiedProperty&gt;, isLoading: Boolean, )</ID>
-    <ID>FunctionNaming:EventPrettifiedView.kt$@OptIn(ExperimentalFoundationApi::class) @Composable private fun PrettifiedPropertyView( modifier: Modifier, name: String, value: String, isValueFaded: Boolean, isValueItalic: Boolean, onLongClick: () -&gt; Unit, onLongClickEnabled: Boolean, isSmartSignal: Boolean, onSmartSignalClick: () -&gt; Unit = {}, isLoading: Boolean, isLast: Boolean, )</ID>
-    <ID>FunctionNaming:EventPrettifiedView.kt$@Preview @Composable private fun PreviewLoading()</ID>
-    <ID>FunctionNaming:EventPrettifiedView.kt$@PreviewMultipleConfigurations @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:EventRawJsonView.kt$@Composable fun EventRawJsonView( modifier: Modifier, code: String, )</ID>
-    <ID>FunctionNaming:EventRawJsonView.kt$@PreviewMultipleConfigurations @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:FingerprintButton.kt$@Composable fun FingerprintButton( onClick: () -&gt; Unit, modifier: Modifier, )</ID>
-    <ID>FunctionNaming:FingerprintButton.kt$@PreviewLightDark @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:HomeErrorScreen.kt$@Composable fun HomeErrorScreen( modifier: Modifier, state: HomeScreenUiState.Content.Error, )</ID>
-    <ID>FunctionNaming:HomeErrorScreen.kt$@PreviewMultipleConfigurations @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:HomeLoadingOrSuccessScreen.kt$@Composable fun HomeLoadingOrSuccessScreen( modifier: Modifier, state: HomeScreenUiState.Content.LoadingOrSuccess, )</ID>
-    <ID>FunctionNaming:HomeLoadingOrSuccessScreen.kt$@PreviewMultipleConfigurations @Composable private fun Loading()</ID>
-    <ID>FunctionNaming:HomeLoadingOrSuccessScreen.kt$@PreviewMultipleConfigurations @Composable private fun Success()</ID>
-    <ID>FunctionNaming:HomeScreen.kt$@Composable fun HomeScreen( modifier: Modifier = Modifier, onGoToApiKeysSettings: () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:HomeScreen.kt$@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class) @Composable fun HomeScreenInternal( modifier: Modifier = Modifier, state: HomeScreenUiState, )</ID>
-    <ID>FunctionNaming:HomeScreen.kt$@PreviewLightDark @Composable private fun Error()</ID>
-    <ID>FunctionNaming:HomeScreen.kt$@PreviewLightDark @Composable private fun Success()</ID>
-    <ID>FunctionNaming:HomeScreen.kt$@PreviewLightDark @Composable private fun TapToBegin()</ID>
-    <ID>FunctionNaming:HomeTapToBeginScreen.kt$@Composable fun HomeTapToBeginScreen( modifier: Modifier, onTapToBegin: () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:HomeTapToBeginScreen.kt$@PreviewMultipleConfigurations @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:IgnoringLocalMinimumInteractiveComponentEnforcement.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun IgnoringLocalMinimumInteractiveComponentEnforcement( content: @Composable () -&gt; Unit )</ID>
-    <ID>FunctionNaming:LinkableText.kt$@Composable fun LinkableText( text: AnnotatedString, modifier: Modifier = Modifier, links: List&lt;LinkableText.Link&gt; = emptyList(), style: TextStyle = LocalTextStyle.current, color: Color = Color.Unspecified, linkColor: Color = MaterialTheme.colorScheme.primary, textAlign: TextAlign = TextAlign.Unspecified, overflow: TextOverflow = TextOverflow.Clip, maxLines: Int = Int.MAX_VALUE, inlineContent: Map&lt;String, InlineTextContent&gt; = mapOf(), )</ID>
-    <ID>FunctionNaming:LinkableText.kt$@Preview @Composable private fun WithLink()</ID>
-    <ID>FunctionNaming:NavScreen.kt$@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") @Composable fun NavScreen()</ID>
-    <ID>FunctionNaming:PreviewUtils.kt$@Composable fun ShowPreview( block: @Composable StateMocks.() -&gt; Unit )</ID>
-    <ID>FunctionNaming:SettingsDetailsScreen.kt$@Composable fun SettingsDetailsScreen( onGoBack: () -&gt; Unit, modifier: Modifier = Modifier, sharedTransitionScope: SharedTransitionScope? = null, animatedContentScope: AnimatedContentScope? = null, )</ID>
-    <ID>FunctionNaming:SettingsDetailsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun SettingsDetailsScreenInternal( state: SettingsDetailsUiState, modifier: Modifier = Modifier, sharedTransitionScope: SharedTransitionScope? = null, animatedContentScope: AnimatedContentScope? = null, )</ID>
-    <ID>FunctionNaming:SettingsDetailsScreen.kt$@Preview @Composable private fun PreviewWithDialog()</ID>
-    <ID>FunctionNaming:SettingsDetailsScreen.kt$@PreviewLightDark @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:SettingsDetailsScreen.kt$@PreviewLightDark @Composable private fun PreviewDisabled()</ID>
+    <ID>CyclomaticComplexMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.Companion.create( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsData: SmartSignalsData, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, ): HomeScreenUiState.Content</ID>
+    <ID>CyclomaticComplexMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, isSmartSignalsLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, ): HomeScreenUiState.Content.LoadingOrSuccess</ID>
+    <ID>CyclomaticComplexMethod:JSONSyntaxHighlighter.kt$JSONSyntaxHighlighter.JSONTokenizer$fun nextToken(): Token?</ID>
     <ID>FunctionNaming:SettingsDetailsUiState.kt$SettingsDetailsUiState.ValidationPromptState.Companion$fun InvalidKeysState( onCancel: () -&gt; Unit, onContinue: suspend () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@Composable fun SettingsScreen( onGoToDetails: () -&gt; Unit, modifier: Modifier = Modifier, sharedTransitionScope: SharedTransitionScope? = null, animatedContentScope: AnimatedContentScope? = null, )</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@Composable private fun AppVersionsInfo()</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@Composable private fun SettingsEntry( modifier: Modifier, icon: ImageVector, text: String, supportingText: String?, onClick: () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@Composable private fun SettingsScreenInternal( state: SettingsUiState, onGoToDetails: () -&gt; Unit, modifier: Modifier = Modifier, sharedTransitionScope: SharedTransitionScope? = null, animatedContentScope: AnimatedContentScope? = null, )</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@Composable private fun SettingsSeparator()</ID>
-    <ID>FunctionNaming:SettingsScreen.kt$@OptIn(ExperimentalSharedTransitionApi::class) @PreviewLightDark @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:Shimmable.kt$@Composable fun &lt;T&gt; Shimmable( state: ShimmableState&lt;T&gt;, modifier: Modifier = Modifier, content: @Composable (ShimmableState&lt;T&gt;) -&gt; Unit, )</ID>
-    <ID>FunctionNaming:Shimmable.kt$@PreviewLightDark @Composable private fun ShimmedText()</ID>
-    <ID>FunctionNaming:SingupPromptView.kt$@Composable fun SignupPromptView( modifier: Modifier = Modifier, onHideClicked: () -&gt; Unit, onSignUpClicked: () -&gt; Unit, )</ID>
-    <ID>FunctionNaming:SingupPromptView.kt$@PreviewLightDark @Composable private fun Preview()</ID>
-    <ID>FunctionNaming:Theme.kt$@Composable fun AppTheme( darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -&gt; Unit )</ID>
-    <ID>FunctionNaming:ValuePickerTextField.kt$@Composable fun &lt;T&gt; ValuePickerTextField( label: String, supportingText: String, values: List&lt;T&gt;, currentValue: T, valueDescription: T.() -&gt; String, onValueChanged: (T) -&gt; Unit, modifier: Modifier = Modifier, enabled: Boolean = true, )</ID>
-    <ID>FunctionNaming:ValuePickerTextField.kt$@Preview @Composable private fun Preview()</ID>
     <ID>FunctionOnlyReturningConstant:AppModule.kt$AppModule$@Provides @AppScope @Named("networkTimeoutMillis") fun provideNetworkCallTimeoutMillis(): Int</ID>
-    <ID>LongMethod:EventDetailsView.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun EventDetailsView( modifier: Modifier, prettifiedProperties: List&lt;PrettifiedProperty&gt;, rawJson: String?, isLoading: Boolean, )</ID>
+    <ID>LongMethod:EventDetailsView.kt$@OptIn(ExperimentalFoundationApi::class) @Composable fun EventDetailsView( modifier: Modifier, prettifiedProperties: List&lt;PrettifiedProperty&gt;, rawJson: String?, isLoading: Boolean, isSmartSignalsLoading: Boolean, )</ID>
     <ID>LongMethod:EventPrettifiedView.kt$@OptIn(ExperimentalFoundationApi::class) @Composable private fun PrettifiedPropertyView( modifier: Modifier, name: String, value: String, isValueFaded: Boolean, isValueItalic: Boolean, onLongClick: () -&gt; Unit, onLongClickEnabled: Boolean, isSmartSignal: Boolean, onSmartSignalClick: () -&gt; Unit = {}, isLoading: Boolean, isLast: Boolean, )</ID>
     <ID>LongMethod:HomeLoadingOrSuccessScreen.kt$@Composable fun HomeLoadingOrSuccessScreen( modifier: Modifier, state: HomeScreenUiState.Content.LoadingOrSuccess, )</ID>
     <ID>LongMethod:HomeScreen.kt$@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class) @Composable fun HomeScreenInternal( modifier: Modifier = Modifier, state: HomeScreenUiState, )</ID>
-    <ID>LongMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, ): HomeScreenUiState.Content.LoadingOrSuccess</ID>
+    <ID>LongMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.Companion.create( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsData: SmartSignalsData, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, ): HomeScreenUiState.Content</ID>
+    <ID>LongMethod:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, isSmartSignalsLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, ): HomeScreenUiState.Content.LoadingOrSuccess</ID>
     <ID>LongMethod:NavScreen.kt$@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter") @Composable fun NavScreen()</ID>
     <ID>LongMethod:SettingsDetailsScreen.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable private fun SettingsDetailsScreenInternal( state: SettingsDetailsUiState, modifier: Modifier = Modifier, sharedTransitionScope: SharedTransitionScope? = null, animatedContentScope: AnimatedContentScope? = null, )</ID>
     <ID>LongMethod:Shimmable.kt$@Composable fun &lt;T&gt; Shimmable( state: ShimmableState&lt;T&gt;, modifier: Modifier = Modifier, content: @Composable (ShimmableState&lt;T&gt;) -&gt; Unit, )</ID>
     <ID>LongParameterList:EventPrettifiedView.kt$( modifier: Modifier, name: String, value: String, isValueFaded: Boolean, isValueItalic: Boolean, onLongClick: () -&gt; Unit, onLongClickEnabled: Boolean, isSmartSignal: Boolean, onSmartSignalClick: () -&gt; Unit = {}, isLoading: Boolean, isLast: Boolean, )</ID>
-    <ID>LongParameterList:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, )</ID>
-    <ID>LongParameterList:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsResponse: SmartSignalsResponse, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, )</ID>
+    <ID>LongParameterList:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$( fingerprintJSProResponse: FingerprintJSProResponse, smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app isLoading: Boolean, isSmartSignalsLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, )</ID>
+    <ID>LongParameterList:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsData: SmartSignalsData, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, )</ID>
     <ID>LongParameterList:LinkableText.kt$( text: AnnotatedString, modifier: Modifier = Modifier, links: List&lt;LinkableText.Link&gt; = emptyList(), style: TextStyle = LocalTextStyle.current, color: Color = Color.Unspecified, linkColor: Color = MaterialTheme.colorScheme.primary, textAlign: TextAlign = TextAlign.Unspecified, overflow: TextOverflow = TextOverflow.Clip, maxLines: Int = Int.MAX_VALUE, inlineContent: Map&lt;String, InlineTextContent&gt; = mapOf(), )</ID>
-    <ID>LongParameterList:SmartSignals.kt$SmartSignals$( val clonedApp: SmartSignalInfo&lt;SmartSignal.ClonedApp&gt;, val emulator: SmartSignalInfo&lt;SmartSignal.Emulator&gt;, val factoryReset: SmartSignalInfo&lt;SmartSignal.FactoryReset&gt;, val frida: SmartSignalInfo&lt;SmartSignal.Frida&gt;, val highActivity: SmartSignalInfo&lt;SmartSignal.HighActivity&gt;, val locationSpoofing: SmartSignalInfo&lt;SmartSignal.LocationSpoofing&gt;, val root: SmartSignalInfo&lt;SmartSignal.Root&gt;, val vpn: SmartSignalInfo&lt;SmartSignal.Vpn&gt;, )</ID>
+    <ID>LongParameterList:SmartSignals.kt$SmartSignals$( val clonedApp: SmartSignalInfo&lt;SmartSignal.ClonedApp&gt;, val emulator: SmartSignalInfo&lt;SmartSignal.Emulator&gt;, val factoryReset: SmartSignalInfo&lt;SmartSignal.FactoryReset&gt;, val frida: SmartSignalInfo&lt;SmartSignal.Frida&gt;, val highActivity: SmartSignalInfo&lt;SmartSignal.HighActivity&gt;, val locationSpoofing: SmartSignalInfo&lt;SmartSignal.LocationSpoofing&gt;, val root: SmartSignalInfo&lt;SmartSignal.Root&gt;, val vpn: SmartSignalInfo&lt;SmartSignal.Vpn&gt;, val tampering: SmartSignalInfo&lt;SmartSignal.Tampering&gt;, val mitm: SmartSignalInfo&lt;SmartSignal.Mitm&gt;, )</ID>
     <ID>LongParameterList:ValuePickerTextField.kt$( label: String, supportingText: String, values: List&lt;T&gt;, currentValue: T, valueDescription: T.() -&gt; String, onValueChanged: (T) -&gt; Unit, modifier: Modifier = Modifier, enabled: Boolean = true, )</ID>
-    <ID>MagicNumber:ColorExtended.kt$ColorSchemeExtended$0xFFF5614B</ID>
-    <ID>MagicNumber:ColorExtended.kt$ColorSchemeExtended$0xFFFA7545</ID>
-    <ID>MagicNumber:ColorMaterial.kt$11</ID>
-    <ID>MagicNumber:ColorMaterial.kt$12</ID>
-    <ID>MagicNumber:ColorMaterial.kt$23</ID>
-    <ID>MagicNumber:ColorMaterial.kt$24</ID>
-    <ID>MagicNumber:ColorMaterial.kt$35</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF141415</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF202021</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF434344</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF5B5B5B</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF727273</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFF89898A</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFA1A1A1</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFB9B9B9</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFD0D0D0</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFE8E8E8</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFF42020</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFFAFAFA</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFFFEB3B</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFFFF1EC</ID>
-    <ID>MagicNumber:ColorMaterial.kt$AppColors$0xFFFFFFFF</ID>
     <ID>MagicNumber:FingerprintButton.kt$0.22f</ID>
     <ID>MagicNumber:FingerprintButton.kt$0.56f</ID>
     <ID>MagicNumber:HomeErrorScreen.kt$0.34f</ID>
@@ -113,6 +42,7 @@
     <ID>MagicNumber:Shimmable.kt$90</ID>
     <ID>MatchingDeclarationName:AppBarDropdownMenu.kt$AppBarDropdownMenuItem</ID>
     <ID>MatchingDeclarationName:ColorExtended.kt$ColorSchemeExtended</ID>
+    <ID>MatchingDeclarationName:ColorMaterial.kt$AppColors</ID>
     <ID>MatchingDeclarationName:EventPrettifiedView.kt$PrettifiedProperty</ID>
     <ID>MatchingDeclarationName:PreviewUtils.kt$PreviewMultipleConfigurations</ID>
     <ID>MatchingDeclarationName:Shimmable.kt$ShimmableState&lt;T&gt;</ID>
@@ -121,32 +51,15 @@
     <ID>MaxLineLength:HomeScreenUiState.kt$HomeScreenUiState.Content.Error.SecretApiKeyInvalid$override val description = "The provided secret API key is either missing or invalid. Please double-check that the key was entered correctly."</ID>
     <ID>MaxLineLength:HomeScreenUiState.kt$HomeScreenUiState.Content.Error.SecretApiKeyMismatch$override val description = "The provided secret API key is invalid. Make sure that provided public and secret API keys belong to the same application."</ID>
     <ID>MaxLineLength:HomeScreenUiState.kt$HomeScreenUiState.Content.Error.WrongRegion$override val description = "The public API key is not intended for the selected region. Visit Settings to change the region."</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$SmartSignalsError.TokenNotFound -&gt; HomeScreenUiState.Content.Error.SecretApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$is ApiKeyExpired -&gt; HomeScreenUiState.Content.Error.PublicApiKeyExpired(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$is ApiKeyNotFound -&gt; HomeScreenUiState.Content.Error.PublicApiKeyInvalid(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$is SubscriptionNotActive -&gt; HomeScreenUiState.Content.Error.SubscriptionNotActive(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$is WrongRegion -&gt; HomeScreenUiState.Content.Error.WrongRegion(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$val secretApiKeyMismatchError = HomeScreenUiState.Content.Error.SecretApiKeyMismatch(onGotoApiKeysSettings = onGotoApiKeysSettings)</ID>
-    <ID>MaxLineLength:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$val unknownError = HomeScreenUiState.Content.Error.Unknown(onSupportClicked = onSupportClicked, onReload = onReload)</ID>
     <ID>MaxLineLength:HomeViewModel.kt$HomeViewModel$// todo (minor): consider using the latest loaded data to minimize UI transitions between loading and success states</ID>
     <ID>MaxLineLength:SettingsDetailsScreen.kt$text = "When enabled, the app will use your API keys to make all the requests. These requests will count towards your monthly allowance."</ID>
     <ID>MaxLineLength:SettingsDetailsUiState.kt$SettingsDetailsUiState.ValidationPromptState.Companion$description = "Your changes will not be saved. The app will continue to use the previously saved API keys."</ID>
     <ID>MaxLineLength:SharedPreferencesStorage.kt$SharedPreferencesStorage$"fpjs_prefs_v2_legacy"</ID>
     <ID>MaxLineLength:StateMocks.kt$StateMocks$asJson = "{\"browserName\":\"Other\",\"browserVersion\":\"\",\"confidence\":{\"score\":1},\"device\":\"Pixel 4 XL\",\"firstSeenAt\":{\"global\":\"2024-01-16T01:01:01.587Z\",\"subscription\":\"2024-01-16T01:01:01.587Z\"},\"incognito\":false,\"ip\":\"192.192.192.192\",\"ipLocation\":{\"accuracyRadius\":20,\"city\":{\"name\":\"Berlin\"},\"continent\":{\"code\":\"EU\",\"name\":\"Europe\"},\"country\":{\"code\":\"DE\",\"name\":\"Germany\"},\"latitude\":20.2020,\"longitude\":20.2020,\"postalCode\":\"123456\",\"subdivisions\":[{\"isoCode\":\"DE-BE\",\"name\":\"Berlin\"}],\"timezone\":\"Europe\\/Berlin\"},\"lastSeenAt\":{\"global\":\"2024-01-20T01:01:01.587Z\",\"subscription\":\"2024-01-20T01:01:01.587Z\"},\"meta\":{\"version\":\"v1.1.2221+e341fd375\"},\"os\":\"Android\",\"osVersion\":\"13\",\"visitorFound\":true,\"visitorId\":\"rVC74CiaXVZGVC69OBsP\"}"</ID>
-    <ID>MayBeConst:Credentials.kt$Credentials$val apiKey: String = "vtWXVvmErEiKTyOW2Dbc"</ID>
-    <ID>NewLineAtEndOfFile:AppBarAnimation.kt$com.fingerprintjs.android.fpjs_pro_demo.ui.kit.AppBarAnimation.kt</ID>
-    <ID>NewLineAtEndOfFile:CommonComponent.kt$com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponent.kt</ID>
-    <ID>NewLineAtEndOfFile:CommonComponentStorage.kt$com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage.kt</ID>
-    <ID>NewLineAtEndOfFile:Credentials.kt$com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials.kt</ID>
-    <ID>NewLineAtEndOfFile:HomeScreenUiStateCreatorUnitTests.kt$com.fingerprintjs.android.fpjs_pro_demo.HomeScreenUiStateCreatorUnitTests.kt</ID>
-    <ID>NewLineAtEndOfFile:IdentificationProvider.kt$com.fingerprintjs.android.fpjs_pro_demo.domain.identification.IdentificationProvider.kt</ID>
-    <ID>NewLineAtEndOfFile:SettingsUiState.kt$com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.main.SettingsUiState.kt</ID>
-    <ID>NewLineAtEndOfFile:SmartSignalsResponse.kt$com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsResponse.kt</ID>
-    <ID>NewLineAtEndOfFile:StateMocks.kt$com.fingerprintjs.android.fpjs_pro_demo.utils.StateMocks.kt</ID>
-    <ID>NewLineAtEndOfFile:Tab.kt$com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.Tab.kt</ID>
-    <ID>NewLineAtEndOfFile:Theme.kt$com.fingerprintjs.android.fpjs_pro_demo.ui.theme.Theme.kt</ID>
-    <ID>ReturnCount:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.Companion.create( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsResponse: SmartSignalsResponse, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, ): HomeScreenUiState.Content</ID>
+    <ID>ReturnCount:HomeScreenUiStateCreator.kt$HomeScreenUiStateCreator$fun HomeScreenUiState.Content.Companion.create( fingerprintSdkResponse: FingerprintJSProResult, smartSignalsData: SmartSignalsData, isLoading: Boolean, onSmartSignalDocClicked: (url: String) -&gt; Unit = {}, onHideSignupPrompt: () -&gt; Unit = {}, onPutToClipboard: (String) -&gt; Unit = {}, onSignupPromptClicked: () -&gt; Unit = {}, onReload: () -&gt; Unit = {}, onSupportClicked: () -&gt; Unit = {}, onGotoApiKeysSettings: () -&gt; Unit = {}, ): HomeScreenUiState.Content</ID>
+    <ID>ReturnCount:JSONSyntaxHighlighter.kt$JSONSyntaxHighlighter.JSONTokenizer$fun nextToken(): Token?</ID>
     <ID>ReturnCount:SmartSignalsBodyParser.kt$SmartSignalsBodyParser$@VisibleForTesting inline fun &lt;reified T : SmartSignal&gt; JsonObject.getSmartSignal( key: String, validation: T.() -&gt; Boolean = { true }, transformation: T.() -&gt; T = { this }, ): SmartSignalInfo&lt;T&gt;</ID>
+    <ID>TooManyFunctions:HomeViewModel.kt$HomeViewModel : ViewModel</ID>
     <ID>UnusedPrivateMember:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors1()</ID>
     <ID>UnusedPrivateMember:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors2()</ID>
     <ID>UnusedPrivateMember:ColorMaterial.kt$@Preview @Composable private fun PreviewMaterialThemeColors3()</ID>
@@ -171,7 +84,7 @@
     <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Companion.Mocked by lazy { HomeScreenUiState( reload = HomeScreenUiState.ReloadState(false, {}), appBar = HomeScreenUiState.AppBarState({}, {}, {}), mocking = null, content = HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked, ) }</ID>
     <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Content.Error.Companion.Mocked: HomeScreenUiState.Content.Error by lazy { HomeScreenUiState.Content.Error.Unknown({}, {}) }</ID>
     <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Content.LoadingOrSuccess.Companion.LoadingMocked by lazy { HomeScreenUiState.Content.LoadingOrSuccess.SuccessMocked.copy( isLoading = true, ) }</ID>
-    <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Content.LoadingOrSuccess.Companion.SuccessMocked by lazy { with(homeScreenUiStateCreator) { HomeScreenUiState.Content.LoadingOrSuccess.create( fingerprintJSProResponse = fingerprintJSResponse, smartSignals = smartSignals, isLoading = false, ) } }</ID>
+    <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Content.LoadingOrSuccess.Companion.SuccessMocked by lazy { with(homeScreenUiStateCreator) { HomeScreenUiState.Content.LoadingOrSuccess.create( fingerprintJSProResponse = fingerprintJSResponse, smartSignals = smartSignals, isLoading = false, isSmartSignalsLoading = false ) } }</ID>
     <ID>VariableNaming:StateMocks.kt$StateMocks$val HomeScreenUiState.Content.TapToBegin.Companion.Mocked by lazy { HomeScreenUiState.Content.TapToBegin(onTap = {}) }</ID>
   </CurrentIssues>
 </SmellBaseline>

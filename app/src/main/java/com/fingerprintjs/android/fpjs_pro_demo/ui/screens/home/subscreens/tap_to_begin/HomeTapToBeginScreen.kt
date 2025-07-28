@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin
 
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.fingerprint_button.FingerprintButton
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 
 @Composable
 fun HomeTapToBeginScreen(
@@ -44,7 +44,7 @@ fun HomeTapToBeginScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             text = "Device intelligence powered by\n" +
-                    "Fingerprint Android SDK v${BuildConfig.SDK_VERSION_NAME}",
+                "Fingerprint Android SDK v${BuildConfig.SDK_VERSION_NAME}",
             textAlign = TextAlign.Center,
             style = AppTheme.materialTheme.typography.bodyLarge,
             color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
