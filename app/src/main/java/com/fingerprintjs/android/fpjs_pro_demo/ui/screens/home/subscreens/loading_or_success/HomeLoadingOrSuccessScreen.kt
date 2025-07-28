@@ -90,7 +90,7 @@ fun HomeLoadingOrSuccessScreen(
                 ),
             ) { state ->
                 Text(
-                    modifier= Modifier
+                    modifier = Modifier
                         .copyOnLongPress(
                             data = state.data,
                             enabled = !state.isShimmed,

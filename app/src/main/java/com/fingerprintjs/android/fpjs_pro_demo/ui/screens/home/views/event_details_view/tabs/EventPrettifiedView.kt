@@ -57,7 +57,6 @@ fun EventPrettifiedView(
     isLoading: Boolean,
     isSmartSignalsLoading: Boolean
 ) {
-
     Column(modifier = modifier) {
         properties.forEachIndexed { index, property ->
             key(property.name) {
@@ -123,7 +122,6 @@ private fun PrettifiedPropertyView(
                 false -> AppTheme.materialTheme.colorScheme.onBackground
             }
 
-
             val valueStyle = AppTheme.materialTheme.typography.bodyLarge
             val localDensity = LocalDensity.current
             val valuePaddingFromText = remember(localDensity) {
@@ -162,12 +160,16 @@ private fun PrettifiedPropertyView(
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                links = if (!isSmartSignal) emptyList() else listOf(
-                    LinkableText.Link(
-                        mask = "Smart Signal $smartSignalInlineImageAlternateText",
-                        handler = onSmartSignalClick,
+                links = if (!isSmartSignal) {
+                    emptyList()
+                } else {
+                    listOf(
+                        LinkableText.Link(
+                            mask = "Smart Signal $smartSignalInlineImageAlternateText",
+                            handler = onSmartSignalClick,
+                        )
                     )
-                ),
+                },
                 style = AppTheme.materialTheme.typography.bodyMedium,
                 text = buildAnnotatedString {
                     if (!isSmartSignal) {

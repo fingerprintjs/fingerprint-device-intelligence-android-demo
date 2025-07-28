@@ -83,7 +83,8 @@ data class HomeScreenUiState(
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline
                 override val title = "Failed to Fingerprint"
-                override val description = "The public API key is missing or invalid. Ensure the key was entered correctly."
+                override val description = "The public API key is missing or invalid. Ensure the key " +
+                    "was entered correctly."
                 override val links = emptyList<LinkableText.Link>()
                 override val buttonTitle: String = "Go to API Keys"
                 override val onButtonCLick = onGotoApiKeysSettings
@@ -105,7 +106,8 @@ data class HomeScreenUiState(
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline
                 override val title = "Failed to Fingerprint"
-                override val description = "The public API key is not intended for the selected region. Visit Settings to change the region."
+                override val description = "The public API key is not intended for the selected region. " +
+                    "Visit Settings to change the region."
                 override val links = emptyList<LinkableText.Link>()
                 override val buttonTitle: String = "Go to API Keys"
                 override val onButtonCLick = onGotoApiKeysSettings
@@ -116,7 +118,8 @@ data class HomeScreenUiState(
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline
                 override val title = "Failed to fetch Smart Signals"
-                override val description = "The provided secret API key is invalid. Make sure that provided public and secret API keys belong to the same application."
+                override val description = "The provided secret API key is invalid. Make sure that provided " +
+                    "public and secret API keys belong to the same application."
                 override val links = emptyList<LinkableText.Link>()
                 override val buttonTitle: String = "Go to API Keys"
                 override val onButtonCLick = onGotoApiKeysSettings
@@ -127,7 +130,8 @@ data class HomeScreenUiState(
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline
                 override val title = "Failed to fetch Smart Signals"
-                override val description = "The provided secret API key is either missing or invalid. Please double-check that the key was entered correctly."
+                override val description = "The provided secret API key is either missing or invalid. " +
+                    "Please double-check that the key was entered correctly."
                 override val links = emptyList<LinkableText.Link>()
                 override val buttonTitle: String = "Go to API Keys"
                 override val onButtonCLick = onGotoApiKeysSettings

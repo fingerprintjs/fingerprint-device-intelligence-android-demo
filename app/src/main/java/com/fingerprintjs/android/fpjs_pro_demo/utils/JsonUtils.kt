@@ -1,12 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
-import androidx.annotation.VisibleForTesting
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.substring
-import androidx.compose.ui.text.withStyle
-import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppColors
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull

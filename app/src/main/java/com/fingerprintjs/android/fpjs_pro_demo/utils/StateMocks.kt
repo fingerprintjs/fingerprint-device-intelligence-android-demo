@@ -27,6 +27,7 @@ class StateMocks @Inject constructor(
     private val homeScreenUiStateCreator: HomeScreenUiStateCreator,
     private val smartSignalsBodyParser: SmartSignalsBodyParser,
 ) {
+    @Suppress("MaximumLineLength")
     val fingerprintJSResponse = FingerprintJSProResponse(
         requestId = "1111111111111.AAAAAA",
         visitorId = "rVC74CiaXVZGVC69OBsP",
@@ -155,26 +156,26 @@ class StateMocks @Inject constructor(
     }
 
     val appBarDropdownMenuItems: List<List<AppBarDropdownMenuItem>> = listOf(
-            listOf(
-                AppBarDropdownMenuItem(
-                    icon = Icons.AutoMirrored.Filled.MenuBook,
-                    description = "Documentation",
-                    onClick = {},
-                ),
-                AppBarDropdownMenuItem(
-                    icon = Icons.Outlined.Mail,
-                    description = "Support",
-                    onClick = {},
-                ),
+        listOf(
+            AppBarDropdownMenuItem(
+                icon = Icons.AutoMirrored.Filled.MenuBook,
+                description = "Documentation",
+                onClick = {},
             ),
-            listOf(
-                AppBarDropdownMenuItem(
-                    icon = Icons.AutoMirrored.Filled.OpenInNew,
-                    description = "Sign up",
-                    onClick = {},
-                ),
-            )
+            AppBarDropdownMenuItem(
+                icon = Icons.Outlined.Mail,
+                description = "Support",
+                onClick = {},
+            ),
+        ),
+        listOf(
+            AppBarDropdownMenuItem(
+                icon = Icons.AutoMirrored.Filled.OpenInNew,
+                description = "Sign up",
+                onClick = {},
+            ),
         )
+    )
 
     val customApiKeysState = CustomApiKeysState(
         public = "lkasdfj342508dgF48gf",
