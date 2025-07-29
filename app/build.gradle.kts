@@ -1,10 +1,9 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import org.gradle.kotlin.dsl.detektPlugins
 
 @Suppress("PropertyName")
-val VERSION_NAME="3.3.0"
+val VERSION_NAME="3.4.0"
 @Suppress("PropertyName")
-val VERSION_CODE=28
+val VERSION_CODE=36
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
