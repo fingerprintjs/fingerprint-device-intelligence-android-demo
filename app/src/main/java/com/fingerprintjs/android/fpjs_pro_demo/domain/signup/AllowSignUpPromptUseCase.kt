@@ -49,8 +49,8 @@ class AllowSignUpPromptUseCase @Inject constructor(
 
     private suspend fun updateState() {
         _showAllowed.emit(
-            (System.currentTimeMillis() - getSignupPromptHideTimeMillis() > MILLIS_IN_WEEK)
-                    && getFingerprintSuccessCount() >= 2
+            (System.currentTimeMillis() - getSignupPromptHideTimeMillis() > MILLIS_IN_WEEK) &&
+                getFingerprintSuccessCount() >= 2
         )
     }
 

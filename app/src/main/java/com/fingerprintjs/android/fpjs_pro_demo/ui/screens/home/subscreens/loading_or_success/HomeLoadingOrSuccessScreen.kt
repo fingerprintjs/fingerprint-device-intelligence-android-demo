@@ -90,7 +90,7 @@ fun HomeLoadingOrSuccessScreen(
                 ),
             ) { state ->
                 Text(
-                    modifier= Modifier
+                    modifier = Modifier
                         .copyOnLongPress(
                             data = state.data,
                             enabled = !state.isShimmed,
@@ -129,6 +129,7 @@ fun HomeLoadingOrSuccessScreen(
             prettifiedProperties = state.prettifiedProps,
             rawJson = state.rawJson,
             isLoading = state.isLoading,
+            isSmartSignalsLoading = state.isSmartSignalsLoading
         )
     }
 }

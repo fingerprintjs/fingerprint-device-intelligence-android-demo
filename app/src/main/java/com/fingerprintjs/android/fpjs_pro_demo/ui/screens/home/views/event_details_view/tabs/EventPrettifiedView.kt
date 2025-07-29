@@ -55,8 +55,8 @@ fun EventPrettifiedView(
     modifier: Modifier,
     properties: List<PrettifiedProperty>,
     isLoading: Boolean,
+    isSmartSignalsLoading: Boolean
 ) {
-
     Column(modifier = modifier) {
         properties.forEachIndexed { index, property ->
             key(property.name) {
@@ -70,8 +70,12 @@ fun EventPrettifiedView(
                     onLongClickEnabled = property.onLongClickEnabled,
                     isSmartSignal = property.isSmartSignal,
                     onSmartSignalClick = property.onSmartSignalClick,
-                    isLoading = isLoading,
                     isLast = index == properties.lastIndex,
+                    isLoading = if (property.isSmartSignal) {
+                        isSmartSignalsLoading
+                    } else {
+                        isLoading
+                    }
                 )
             }
         }
@@ -118,7 +122,6 @@ private fun PrettifiedPropertyView(
                 false -> AppTheme.materialTheme.colorScheme.onBackground
             }
 
-
             val valueStyle = AppTheme.materialTheme.typography.bodyLarge
             val localDensity = LocalDensity.current
             val valuePaddingFromText = remember(localDensity) {
@@ -157,12 +160,16 @@ private fun PrettifiedPropertyView(
                 color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                links = if (!isSmartSignal) emptyList() else listOf(
-                    LinkableText.Link(
-                        mask = "Smart Signal $smartSignalInlineImageAlternateText",
-                        handler = onSmartSignalClick,
+                links = if (!isSmartSignal) {
+                    emptyList()
+                } else {
+                    listOf(
+                        LinkableText.Link(
+                            mask = "Smart Signal $smartSignalInlineImageAlternateText",
+                            handler = onSmartSignalClick,
+                        )
                     )
-                ),
+                },
                 style = AppTheme.materialTheme.typography.bodyMedium,
                 text = buildAnnotatedString {
                     if (!isSmartSignal) {
@@ -211,6 +218,7 @@ private fun Preview() {
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
                 isLoading = isLoading,
+                isSmartSignalsLoading = isSmartSignalsLoading
             )
         }
     }
@@ -225,6 +233,7 @@ private fun PreviewLoading() {
                 modifier = Modifier.fillMaxSize(),
                 properties = prettifiedProps,
                 isLoading = isLoading,
+                isSmartSignalsLoading = isSmartSignalsLoading
             )
         }
     }

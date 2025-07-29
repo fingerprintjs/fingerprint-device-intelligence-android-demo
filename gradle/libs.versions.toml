@@ -16,8 +16,8 @@ dagger = "2.51.1"
 junit = "4.13.2"
 junitExt = "1.2.1"
 espresso = "3.6.1"
-fingerprint = "2.8.0"
-fingerprintDebug = "2.8.0-debug"
+fingerprint = "2.9.0"
+fingerprintDebug = "2.9.0-debug"
 androidApplicationPlugin = "8.7.1"
 kotlin = "2.0.21"
 detekt = "1.23.8"
@@ -37,6 +37,7 @@ androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graph
 androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 squareup-okHttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
 valentinilk-compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
 michaelbull-kotlin-result = { group = "com.michael-bull.kotlin-result", name = "kotlin-result", version.ref = "kotlinResult" }

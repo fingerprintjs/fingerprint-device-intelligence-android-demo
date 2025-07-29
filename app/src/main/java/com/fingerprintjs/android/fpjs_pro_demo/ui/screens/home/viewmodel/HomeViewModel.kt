@@ -65,12 +65,11 @@ class HomeViewModel @Inject constructor(
     private val contentState: StateFlow<HomeScreenUiState.Content> =
         fingerprintData
             .map {
-                val data: FingerprintData.Data = when(it) {
+                val data: FingerprintData.Data = when (it) {
                     is Loading -> {
                         // todo (minor): consider using the latest loaded data to minimize UI transitions between loading and success states
                         FingerprintData.Data(
-                            fingerprintSdkResponse = Ok(stateMocks.fingerprintJSResponse),
-                            smartSignalsResponse = Ok(stateMocks.smartSignals)
+                            fingerprintSdkResponse = Ok(stateMocks.fingerprintJSResponse)
                         )
                     }
                     is FingerprintData.Data -> it
@@ -79,7 +78,7 @@ class HomeViewModel @Inject constructor(
                 with(homeScreenUiStateCreator) {
                     HomeScreenUiState.Content.create(
                         fingerprintSdkResponse = data.fingerprintSdkResponse,
-                        smartSignalsResponse = data.smartSignalsResponse,
+                        smartSignalsData = data.smartSignalsResponse,
                         isLoading = it is Loading,
                         onSmartSignalDocClicked = ::onLaunchUrl,
                         onHideSignupPrompt = ::onHideSignupPromptClicked,
@@ -92,8 +91,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .onEach {
-                if (it is HomeScreenUiState.Content.LoadingOrSuccess && !it.isLoading)
+                if (it is HomeScreenUiState.Content.LoadingOrSuccess && !it.isLoading) {
                     showSignUpPromptUseCase.onFingerprintSuccess()
+                }
             }
             .combine(showSignUpPromptUseCase.showAllowed) { uiState, showAllowed ->
                 if (uiState is HomeScreenUiState.Content.LoadingOrSuccess && !uiState.isLoading) {
@@ -135,9 +135,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun onReload() = viewModelScope.launch {
-            fingerprintData.emit(Loading)
-            fingerprintData.emit(getRealOrStubbedFingerprintData())
-        }
+        fingerprintData.emit(Loading)
+        val response = getRealOrStubbedFingerprintData()
+        fingerprintData.emit(FingerprintData.Data(response))
+        val smartSignals = getSmartSignalData(response)
+        fingerprintData.emit(FingerprintData.Data(response, SmartSignalsData.Data(smartSignals)))
+    }
 
     private fun onSupportClicked() = onLaunchUrl(URLs.support)
     private fun onDocumentationClicked() = onLaunchUrl(URLs.documentation)
@@ -149,40 +152,52 @@ class HomeViewModel @Inject constructor(
     private fun onGotoApiKeysSettings() = viewModelScope.launch { goToApiKeySettingsMutable.emit(Unit) }
 
     private var reloadCount = 0
-    private suspend fun getRealOrStubbedFingerprintData(): FingerprintData.Data {
+    private suspend fun getRealOrStubbedFingerprintData(): FingerprintJSProResult {
         return withContext(Dispatchers.IO) {
             if (mockingState.value?.enabled == true) {
                 delay(2000)
-                if (++reloadCount % 4 == 0)
-                    FingerprintData.Data(
-                        fingerprintSdkResponse = Err(stateMocks.fingerprintJSOtherError),
-                        smartSignalsResponse = Err(SmartSignalsError.Unknown)
-                    )
-                else FingerprintData.Data(
-                    fingerprintSdkResponse = Ok(stateMocks.fingerprintJSResponse),
-                    smartSignalsResponse = Ok(stateMocks.smartSignals),
-                )
+                if (++reloadCount % 4 == 0) {
+                    Err(stateMocks.fingerprintJSOtherError)
+                } else {
+                    Ok(stateMocks.fingerprintJSResponse)
+                }
             } else {
-                val fingerprintSdkResponse = identificationProvider.getVisitorId()
-                val smartSignalsResponse = fingerprintSdkResponse
+                identificationProvider.getVisitorId()
+            }
+        }
+    }
+
+    private suspend fun getSmartSignalData(fingerprintSdkResponse: FingerprintJSProResult): SmartSignalsResponse {
+        return withContext(Dispatchers.IO) {
+            if (mockingState.value?.enabled == true) {
+                delay(2000)
+                if (++reloadCount % 4 == 0) {
+                    Err(SmartSignalsError.Unknown)
+                } else {
+                    Ok(stateMocks.smartSignals)
+                }
+            } else {
+                fingerprintSdkResponse
                     // if fingerprintSdkResponse is error, consider smart signals response as
                     // error too for simplicity
                     .mapError { SmartSignalsError.Unknown }
                     .flatMap { smartSignalsProvider.getSmartSignals(it.requestId) }
-
-                FingerprintData.Data(
-                    fingerprintSdkResponse = fingerprintSdkResponse,
-                    smartSignalsResponse = smartSignalsResponse,
-                )
             }
         }
     }
 }
 
 private sealed class FingerprintData {
-    data object Loading: FingerprintData()
+    data object Loading : FingerprintData()
     data class Data(
         val fingerprintSdkResponse: FingerprintJSProResult,
+        val smartSignalsResponse: SmartSignalsData = SmartSignalsData.Loading,
+    ) : FingerprintData()
+}
+
+sealed class SmartSignalsData {
+    data object Loading : SmartSignalsData()
+    data class Data(
         val smartSignalsResponse: SmartSignalsResponse,
-    ): FingerprintData()
+    ) : SmartSignalsData()
 }

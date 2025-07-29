@@ -49,7 +49,6 @@ class CustomApiKeysUseCase @Inject constructor(
         _state.emit(loadedState)
     }
 
-
     private suspend fun saveState(state: CustomApiKeysState): Result<*, *> {
         return appStorage.save(state.public, StorageKey.CustomPublicApiKey)
             .andThen { appStorage.save(state.secret, StorageKey.CustomSecretApiKey) }

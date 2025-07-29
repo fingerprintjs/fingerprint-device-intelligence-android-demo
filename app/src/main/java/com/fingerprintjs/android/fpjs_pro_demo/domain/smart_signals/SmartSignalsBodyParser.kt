@@ -41,6 +41,8 @@ class SmartSignalsBodyParser @Inject constructor(
                         )
                     }
                 ),
+                tampering = products.getSmartSignal(key = "tampering"),
+                mitm = products.getSmartSignal(key = "mitmAttack"),
             )
         }.mapError { }
     }
@@ -76,10 +78,10 @@ class SmartSignalsBodyParser @Inject constructor(
     }
 
     private fun String.isEssentiallyEmpty(): Boolean =
-        this.isEmpty()
-                || this == "n\\a"
-                || this.contentEquals("null", ignoreCase = true)
-                || this.contentEquals("unknown", ignoreCase = true)
+        this.isEmpty() ||
+            this == "n\\a" ||
+            this.contentEquals("null", ignoreCase = true) ||
+            this.contentEquals("unknown", ignoreCase = true)
 
     private fun String.takeIfNotEssentiallyEmpty(): String? = takeIf { !it.isEssentiallyEmpty() }
 

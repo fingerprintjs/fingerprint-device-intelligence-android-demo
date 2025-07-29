@@ -69,15 +69,17 @@ fun <T> Shimmable(
 
                 else -> {
                     // default transition
-                    (fadeIn(
-                        animationSpec = tween(
-                            220,
-                            delayMillis = 90
+                    (
+                        fadeIn(
+                            animationSpec = tween(
+                                220,
+                                delayMillis = 90
+                            )
+                        ) + scaleIn(
+                            initialScale = 0.92f,
+                            animationSpec = tween(220, delayMillis = 90)
                         )
-                    ) + scaleIn(
-                        initialScale = 0.92f,
-                        animationSpec = tween(220, delayMillis = 90)
-                    )).togetherWith(fadeOut(animationSpec = tween(90)))
+                        ).togetherWith(fadeOut(animationSpec = tween(90)))
                 }
             }
         },

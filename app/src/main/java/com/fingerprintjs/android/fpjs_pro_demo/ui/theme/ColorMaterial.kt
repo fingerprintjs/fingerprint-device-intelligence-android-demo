@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.fingerprintjs.android.fpjs_pro_demo.ui.theme
 
 import androidx.compose.foundation.background
@@ -16,12 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fingerprintjs.android.fpjs_pro_demo.R
 
-private object AppColors {
+internal object AppColors {
     val Black = Color(0xFF141415)
     val Gray50 = Color(0xFFFAFAFA)
     val Gray100 = Color(0xFFE8E8E8)
@@ -34,9 +34,7 @@ private object AppColors {
     val Gray800 = Color(0xFF434344)
     val Gray900 = Color(0xFF202021)
     val Orange100 = Color(0xFFFFF1EC)
-    val Orange400: Color
-        @Composable
-        get() = colorResource(R.color.orange_400)
+    val Orange400 = Color(0xFFFF5D22)
     val Red500 = Color(0xFFF42020)
     val White = Color(0xFFFFFFFF)
 
@@ -85,7 +83,6 @@ val LightMaterialColorScheme: ColorScheme
         surfaceContainerLowest = AppColors.White,
         surfaceDim = AppColors.Gray50,
     )
-
 
 val DarkMaterialColorScheme: ColorScheme
     @Composable
