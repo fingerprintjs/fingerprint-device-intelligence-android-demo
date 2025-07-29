@@ -22,6 +22,7 @@ android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
     compileSdk = 34
 
+    ndkVersion = "28.2.13676358"
 
     externalNativeBuild {
         cmake {
