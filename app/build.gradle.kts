@@ -19,7 +19,7 @@ plugins {
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
-    compileSdk = 34
+    compileSdk = 35
 
 
     externalNativeBuild {
@@ -32,7 +32,7 @@ android {
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
 
