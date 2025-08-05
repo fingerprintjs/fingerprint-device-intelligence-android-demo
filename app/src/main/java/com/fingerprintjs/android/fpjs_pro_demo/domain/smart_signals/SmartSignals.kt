@@ -82,5 +82,6 @@ sealed class SmartSignal {
         val result: Boolean,
         val originTimezone: String? = null,
         val originCountry: String? = null,
+        val methods: Map<String, Boolean> = mapOf()
     ) : SmartSignal()
 }
