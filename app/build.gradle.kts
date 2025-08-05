@@ -21,7 +21,8 @@ android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
     compileSdk = 35
 
-
+    ndkVersion = "28.2.13676358"
+    
     externalNativeBuild {
         cmake {
             path = File("src/main/cpp/CMakeLists.txt")
