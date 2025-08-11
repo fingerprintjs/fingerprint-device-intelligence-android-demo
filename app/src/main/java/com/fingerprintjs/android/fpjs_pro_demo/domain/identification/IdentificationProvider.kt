@@ -34,6 +34,8 @@ class IdentificationProvider @Inject constructor(
                     apiKey = if (it.enabled) it.public else Credentials.apiKey,
                     endpointUrl = if (it.enabled) it.region.endpointUrl else Credentials.endpointUrl,
                     extendedResponseFormat = true,
+                    locationTimeoutMillis = 4000,
+                    allowUseOfLocationData = true
                 )
             )
         }
