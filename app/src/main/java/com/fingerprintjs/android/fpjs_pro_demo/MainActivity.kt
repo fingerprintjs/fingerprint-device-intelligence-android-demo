@@ -46,8 +46,8 @@ class MainActivity : ComponentActivity() {
     }
 
     fun checkLocationPermissions() {
-        if (isAnyLocationPermissionEnabled()) {
-            // We have at least some location permission, so we can proceed with getVisitorId
+        if (isAnyLocationPermissionGranted()) {
+            // We have at least some location permission, so we can proceed with Fingerprint call
             return
         }
 
