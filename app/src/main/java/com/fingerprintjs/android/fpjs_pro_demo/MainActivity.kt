@@ -46,20 +46,8 @@ class MainActivity : ComponentActivity() {
     }
 
     fun checkLocationPermissions() {
-        if ((
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-                ) ||
-            (
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-                )
-        ) {
-            // We have at least some location permission, so we can proceed
+        if (isAnyLocationPermissionEnabled()) {
+            // We have at least some location permission, so we can proceed with getVisitorId
             return
         }
 
@@ -76,5 +64,17 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         )
+    }
+
+    private fun isAnyLocationPermissionEnabled(): Boolean {
+        return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
+                || isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
+    private fun isPermissionGranted(permission: String): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }
