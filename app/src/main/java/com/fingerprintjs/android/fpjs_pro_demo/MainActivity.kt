@@ -1,13 +1,17 @@
 package com.fingerprintjs.android.fpjs_pro_demo
 
+import android.Manifest
 import android.animation.ObjectAnimator
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.animation.doOnEnd
+import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
@@ -37,5 +41,40 @@ class MainActivity : ComponentActivity() {
                 NavScreen()
             }
         }
+
+        checkLocationPermissions()
+    }
+
+    fun checkLocationPermissions() {
+        if (isAnyLocationPermissionGranted()) {
+            // We have at least some location permission, so we can proceed with Fingerprint call
+            return
+        }
+
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            // Even if the user didn't give us permission, we now know the answer and therefore
+            // should proceed with the Fingerprint call
+        }
+
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+
+    private fun isAnyLocationPermissionGranted(): Boolean {
+        return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
+            isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
+    private fun isPermissionGranted(permission: String): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }
