@@ -337,6 +337,8 @@ class HomeScreenUiStateCreator @Inject constructor(
                 ) {
                     when {
                         !result -> NOT_DETECTED_STRING
+                        methods.getOrElse("auxiliaryMobile") { false } ->
+                            "${DETECTED_STRING}. Device has VPN enabled"
                         originCountry != null ->
                             "${DETECTED_STRING}. Device location is $originCountry"
 
