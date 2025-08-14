@@ -67,8 +67,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun isAnyLocationPermissionEnabled(): Boolean {
-        return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
-                || isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+        return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
+            isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
     }
 
     private fun isPermissionGranted(permission: String): Boolean {
