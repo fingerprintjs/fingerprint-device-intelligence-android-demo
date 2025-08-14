@@ -17,6 +17,13 @@ plugins {
     alias(libs.plugins.arturbosch.detekt)
 }
 
+val googleServicesFilename = "google-services.json"
+val googleServicesFile = file(googleServicesFilename)
+if (googleServicesFile.exists()) {
+    plugins.apply(libs.plugins.google.services.get().pluginId)
+    plugins.apply(libs.plugins.firebase.crashlytics.get().pluginId)
+}
+
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
     compileSdk = 35
@@ -125,6 +132,10 @@ dependencies {
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.animation)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.ndk)
 
     //shimmer
     implementation(libs.valentinilk.compose.shimmer)

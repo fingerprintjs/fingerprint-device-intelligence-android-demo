@@ -5,4 +5,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.compose) apply false
     alias(libs.plugins.jetbrains.kotlin.serialization) apply false
     alias(libs.plugins.jetbrains.kotlin.kapt) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
 }

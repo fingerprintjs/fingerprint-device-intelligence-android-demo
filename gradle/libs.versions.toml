@@ -1,4 +1,5 @@
 [versions]
+firebaseBom = "33.15.0"
 ktxCore = "1.13.1"
 ktxLifecycleRuntime = "2.8.6"
 composeNavigation = "2.8.3"
@@ -21,6 +22,8 @@ fingerprintDebug = "2.9.0-debug"
 androidApplicationPlugin = "8.7.1"
 kotlin = "2.0.21"
 detekt = "1.23.8"
+googleServicesPlugin = "4.4.3"
+firebaseCrashlytics = "3.0.5"
 
 [libraries]
 androidx-naviation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
@@ -38,6 +41,9 @@ androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }
 squareup-okHttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
 valentinilk-compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
 michaelbull-kotlin-result = { group = "com.michael-bull.kotlin-result", name = "kotlin-result", version.ref = "kotlinResult" }
@@ -65,3 +71,5 @@ jetbrains-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServicesPlugin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
