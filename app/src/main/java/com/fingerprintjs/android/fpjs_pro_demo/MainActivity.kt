@@ -57,8 +57,7 @@ class MainActivity : ComponentActivity() {
             // Even if the user didn't give us permission, we now know the answer and therefore
             // should proceed with the Fingerprint call
         }
-
-        // Request permission
+        
         locationPermissionRequest.launch(
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
