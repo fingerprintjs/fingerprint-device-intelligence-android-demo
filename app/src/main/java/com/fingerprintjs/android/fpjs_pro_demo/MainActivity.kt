@@ -54,7 +54,8 @@ class MainActivity : ComponentActivity() {
         val locationPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
-            // Whether they give us permission or not, we can now make the Fingerprint call
+            // Even if the user didn't give us permission, we now know the answer and therefore
+            // should proceed with the Fingerprint call
         }
 
         // Request permission
