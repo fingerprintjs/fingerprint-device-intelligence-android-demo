@@ -1,4 +1,12 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import java.util.Properties
+
+val local = Properties().apply {
+    val file = File(rootDir, "local.properties")
+    if (file.exists()) {
+        load(file.inputStream())
+    }
+}
 
 @Suppress("PropertyName")
 val VERSION_NAME="3.4.0"
@@ -54,9 +62,9 @@ android {
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias  = System.getenv("RELEASE_SIGN_KEY_ALIAS")
-            keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD")
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: local.getProperty("KEYSTORE_PASSWORD")
+            keyAlias  = System.getenv("RELEASE_SIGN_KEY_ALIAS") ?: local.getProperty("RELEASE_SIGN_KEY_ALIAS")
+            keyPassword = System.getenv("RELEASE_SIGN_KEY_PASSWORD") ?: local.getProperty("RELEASE_SIGN_KEY_PASSWORD")
         }
     }
 
