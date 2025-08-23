@@ -120,6 +120,7 @@ dependencies {
     implementation(libs.androidx.naviation.compose)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.fragment.ktx)
 
     //compose
     implementation(libs.androidx.activity.compose)
