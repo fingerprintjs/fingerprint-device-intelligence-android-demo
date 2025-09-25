@@ -36,6 +36,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.Shimmable
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel.HomeScreenUiState
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.TypographyExtended.textPrettifiedView
 import com.fingerprintjs.android.fpjs_pro_demo.utils.PreviewMultipleConfigurations
 import com.fingerprintjs.android.fpjs_pro_demo.utils.ShowPreview
 
@@ -141,12 +142,7 @@ private fun PrettifiedPropertyView(
                     color = valueColor,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    style = valueStyle.merge(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Proportional,
-                            trim = LineHeightStyle.Trim.Both,
-                        ),
-                    ),
+                    style = textPrettifiedView,
                     fontStyle = if (isValueItalic) FontStyle.Italic else FontStyle.Normal,
                     text = state.data,
                 )
