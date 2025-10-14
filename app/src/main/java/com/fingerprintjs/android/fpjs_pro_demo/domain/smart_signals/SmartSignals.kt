@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
+import android.text.format.DateUtils
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
@@ -14,6 +15,10 @@ class SmartSignals(
     val vpn: SmartSignalInfo<SmartSignal.Vpn>,
     val tampering: SmartSignalInfo<SmartSignal.Tampering>,
     val mitm: SmartSignalInfo<SmartSignal.Mitm>,
+    val asn: SmartSignalInfo<SmartSignal.ASN>,
+    val dataCenter: SmartSignalInfo<SmartSignal.DataCenter>,
+    val ipBlocklist: SmartSignalInfo<SmartSignal.IPBlocklist>,
+    val proxy: SmartSignalInfo<SmartSignal.Proxy>,
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -97,4 +102,29 @@ sealed class SmartSignal {
     data class Mitm(
         val result: Boolean,
     ) : SmartSignal()
+
+    @Serializable
+    data class ASN(
+        val result: Boolean,
+        val details: Map<String, String> = mapOf()
+    ) : SmartSignal()
+
+    @Serializable
+    data class DataCenter(
+        val result: Boolean
+    ) : SmartSignal()
+
+    @Serializable
+    data class IPBlocklist(
+        val result: Boolean,
+        val details: Map<String, Boolean> = mapOf()
+    ) : SmartSignal()
+
+    @Serializable
+    data class Proxy(
+        val result: Boolean,
+        val confidence: String,
+        val details: Map<String, String> = mapOf()
+    ) : SmartSignal()
 }
+

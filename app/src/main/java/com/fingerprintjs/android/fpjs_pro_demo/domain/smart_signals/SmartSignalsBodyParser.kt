@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
+import androidx.compose.runtime.key
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.getOr
 import com.github.michaelbull.result.mapError
@@ -22,7 +23,9 @@ class SmartSignalsBodyParser @Inject constructor(
             val rootObject = json.parseToJsonElement(body) as JsonObject
             val products = rootObject.get("products") as JsonObject
             SmartSignals(
+                asn = products.getSmartSignal("asn"),
                 clonedApp = products.getSmartSignal(key = "clonedApp"),
+                dataCenter = products.getSmartSignal("datacenter"),
                 emulator = products.getSmartSignal(key = "emulator"),
                 factoryReset = products.getSmartSignal(
                     key = "factoryReset",
@@ -30,7 +33,9 @@ class SmartSignalsBodyParser @Inject constructor(
                 ),
                 frida = products.getSmartSignal(key = "frida"),
                 highActivity = products.getSmartSignal(key = "highActivity"),
+                ipBlocklist = products.getSmartSignal("ipBlocklist" ),
                 locationSpoofing = products.getSmartSignal(key = "locationSpoofing"),
+                proxy = products.getSmartSignal("proxy"),
                 root = products.getSmartSignal(key = "rootApps"),
                 vpn = products.getSmartSignal(
                     key = "vpn",

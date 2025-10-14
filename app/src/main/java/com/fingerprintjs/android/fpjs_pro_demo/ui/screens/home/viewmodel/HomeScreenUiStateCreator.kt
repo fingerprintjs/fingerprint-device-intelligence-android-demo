@@ -181,6 +181,10 @@ class HomeScreenUiStateCreator @Inject constructor(
         val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
         val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
         val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
+//        val asn = fingerprintJSProResponse.asn.subscription.dropEssentiallyEmpty()
+//        val provider = fingerprintJSProResponse.provider.subscription.dropEssentiallyEmpty()
+//        val ipProvider = asn + provider
+//        val dataCenter = fingerprintJSProResponse.dataCenter.subscription.dropEssentiallyEmpty()
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -263,6 +267,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Last Seen At",
                     value = lastSeenAt
                 ),
+//                identificationProperty(
+//                    name = "IP Network Provider",
+//                    value = ipProvider
+//                ),
+
                 smartSignalProperty(
                     from = { clonedApp },
                     name = "Cloned App",
@@ -303,6 +312,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     }
                 },
                 smartSignalProperty(
+                    from = { ipBlocklist },
+                    name = "Blocklist Match",
+                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
                     from = { locationSpoofing },
                     name = "Geolocation Spoofing",
                     docUrl = URLs.SmartSignalsOverview.locationSpoofing,
@@ -313,6 +329,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { mitm },
                     name = "MITM Attack",
                     docUrl = URLs.SmartSignalsOverview.mitm
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
+                    from = { proxy },
+                    name = "Proxy",
+                    docUrl = URLs.SmartSignalsOverview.proxy
                 ) {
                     result.detectionStatusString()
                 },
@@ -377,7 +400,9 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.factoryReset,
                             smartSignals.frida,
                             smartSignals.highActivity,
+                            smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.proxy,
                             smartSignals.root,
                             smartSignals.vpn,
                         )
