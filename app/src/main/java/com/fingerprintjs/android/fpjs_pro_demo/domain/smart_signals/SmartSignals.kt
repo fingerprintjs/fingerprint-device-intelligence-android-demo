@@ -55,7 +55,7 @@ sealed class SmartSignal {
     @Serializable
     data class FactoryReset(
         val time: String,
-        val timestamp: Int,
+        val timestamp: Long,
     ) : SmartSignal()
 
     @Serializable

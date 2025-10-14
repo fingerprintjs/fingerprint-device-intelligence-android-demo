@@ -41,6 +41,7 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.round
+import android.text.format.DateUtils
 
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
@@ -282,7 +283,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Factory Reset",
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                 ) {
-                    if (timestamp <= 0) NOT_DETECTED_STRING else time
+                    if (timestamp <= 0) NOT_DETECTED_STRING else relativeFactoryResetTime(time, timestamp)
                 },
                 smartSignalProperty(
                     from = { frida },
@@ -400,4 +401,15 @@ class HomeScreenUiStateCreator @Inject constructor(
     private val NOT_DETECTED_STRING = "Not detected"
     private val DETECTED_STRING = "Detected"
     private val NOT_AVAILABLE_STRING = "N/A"
+
+    fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
+        if (time.isNullOrBlank()) return NOT_DETECTED_STRING
+        val relative = DateUtils.getRelativeTimeSpanString(
+            timestamp * 1000,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS,
+            DateUtils.FORMAT_ABBREV_RELATIVE
+        )
+        return "$relative ($time)"
+    }
 }
