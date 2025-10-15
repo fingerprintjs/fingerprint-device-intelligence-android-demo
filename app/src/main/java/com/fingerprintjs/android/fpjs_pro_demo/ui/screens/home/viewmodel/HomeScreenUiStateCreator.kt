@@ -43,11 +43,11 @@ import javax.inject.Singleton
 import kotlin.math.round
 import android.text.format.DateUtils
 
+private const val MILLIS_IN_SECOND = 1000L
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
 ) {
-
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsData: SmartSignalsData,
@@ -405,7 +405,7 @@ class HomeScreenUiStateCreator @Inject constructor(
     fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
         if (time.isNullOrBlank()) return NOT_DETECTED_STRING
         val relative = DateUtils.getRelativeTimeSpanString(
-            timestamp * 1000,
+            timestamp * MILLIS_IN_SECOND,
             System.currentTimeMillis(),
             DateUtils.MINUTE_IN_MILLIS,
             DateUtils.FORMAT_ABBREV_RELATIVE
