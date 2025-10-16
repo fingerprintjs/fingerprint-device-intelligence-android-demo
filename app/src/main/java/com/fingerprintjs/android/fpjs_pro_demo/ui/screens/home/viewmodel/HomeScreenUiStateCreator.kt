@@ -284,7 +284,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Factory Reset",
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                 ) {
-                    if (timestamp <= 0) NOT_DETECTED_STRING else relativeFactoryResetTime(time, timestamp)
+                    if (timestamp <= 0 || time.isNullOrBlank()) {
+                        NOT_DETECTED_STRING
+                    } else {
+                        relativeFactoryResetTime(time, timestamp)
+                    }
                 },
                 smartSignalProperty(
                     from = { frida },
@@ -404,7 +408,6 @@ class HomeScreenUiStateCreator @Inject constructor(
     private val NOT_AVAILABLE_STRING = "N/A"
 
     fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
-        if (time.isNullOrBlank()) return NOT_DETECTED_STRING
         val relative = DateUtils.getRelativeTimeSpanString(
             timestamp * MILLIS_IN_SECOND,
             System.currentTimeMillis(),
