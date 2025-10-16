@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
+import android.text.format.DateUtils
 import androidx.annotation.VisibleForTesting
 import com.fingerprintjs.android.fpjs_pro.ApiKeyExpired
 import com.fingerprintjs.android.fpjs_pro.ApiKeyNotFound
@@ -41,9 +42,9 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.round
-import android.text.format.DateUtils
 
 private const val MILLIS_IN_SECOND = 1000L
+
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
