@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
+@Suppress("LongParameterList")
 class SmartSignals(
     val clonedApp: SmartSignalInfo<SmartSignal.ClonedApp>,
     val emulator: SmartSignalInfo<SmartSignal.Emulator>,
