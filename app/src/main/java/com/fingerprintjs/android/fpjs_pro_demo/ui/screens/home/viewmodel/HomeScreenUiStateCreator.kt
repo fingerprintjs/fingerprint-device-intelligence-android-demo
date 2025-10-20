@@ -181,10 +181,6 @@ class HomeScreenUiStateCreator @Inject constructor(
         val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
         val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
         val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
-//        val asn = fingerprintJSProResponse.asn.subscription.dropEssentiallyEmpty()
-//        val provider = fingerprintJSProResponse.provider.subscription.dropEssentiallyEmpty()
-//        val ipProvider = asn + provider
-//        val dataCenter = fingerprintJSProResponse.dataCenter.subscription.dropEssentiallyEmpty()
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -250,16 +246,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = ipAddress
                 ),
                 identificationProperty(
-                    name = "IP Location",
-                    value = run {
-                        when {
-                            ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
-                            ipCountry != null -> "$ipCountry"
-                            else -> null
-                        }
-                    },
-                ),
-                identificationProperty(
                     name = "First Seen At",
                     value = firstSeenAt
                 ),
@@ -267,10 +253,14 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Last Seen At",
                     value = lastSeenAt
                 ),
-//                identificationProperty(
-//                    name = "IP Network Provider",
-//                    value = ipProvider
-//                ),
+
+                smartSignalProperty(
+                    from = { ipBlocklist },
+                    name = "Blocklist Match",
+                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
+                ) {
+                    result.detectionStatusString()
+                },
 
                 smartSignalProperty(
                     from = { clonedApp },
@@ -311,13 +301,27 @@ class HomeScreenUiStateCreator @Inject constructor(
                         result.detectionStatusString()
                     }
                 },
+
                 smartSignalProperty(
-                    from = { ipBlocklist },
-                    name = "Blocklist Match",
-                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
+                    from = { ipInfo },
+                    name = "IP Location",
+                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                 ) {
-                    result.detectionStatusString()
+                    when {
+                        ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
+                        ipCountry != null -> ipCountry
+                        else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
+                    }
                 },
+
+                smartSignalProperty(
+                    from = { ipInfo },
+                    name = "IP Network Provider",
+                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider
+                ) {
+                    "${v4.asn.name} - ${v4.asn.asn}"
+                },
+
                 smartSignalProperty(
                     from = { locationSpoofing },
                     name = "Geolocation Spoofing",
@@ -400,6 +404,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.factoryReset,
                             smartSignals.frida,
                             smartSignals.highActivity,
+                            smartSignals.ipInfo,
                             smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
                             smartSignals.proxy,

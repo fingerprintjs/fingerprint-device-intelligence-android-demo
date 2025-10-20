@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
+import com.fingerprintjs.android.fpjs_pro.IpLocation
 
 fun FingerprintJSProResponse.toJsonMap() = mapOf(
     "requestId" to requestId,
@@ -13,38 +14,8 @@ fun FingerprintJSProResponse.toJsonMap() = mapOf(
     },
     "visitorFound" to visitorFound,
     "ipAddress" to ipAddress,
-    "ipLocation" to ipLocation?.run {
-        mapOf(
-            "accuracyRadius" to accuracyRadius,
-            "latitude" to latitude,
-            "longitude" to longitude,
-            "postalCode" to postalCode,
-            "timezone" to timezone,
-            "city" to city.run {
-                mapOf(
-                    "name" to name
-                )
-            },
-            "country" to country.run {
-                mapOf(
-                    "name" to name,
-                    "code" to code,
-                )
-            },
-            "continent" to continent.run {
-                mapOf(
-                    "name" to name,
-                    "code" to code,
-                )
-            },
-            "subdivisions" to subdivisions.map {
-                mapOf(
-                    "name" to it.name,
-                    "isoCode" to it.isoCode,
-                )
-            }
-        )
-    },
+    // ✅ Only add ipLocation if it’s not null
+    "ipLocation" to ipLocationData(ipLocation),
     "osName" to osName,
     "osVersion" to osVersion,
     "firstSeenAt" to firstSeenAt.run {
@@ -61,6 +32,26 @@ fun FingerprintJSProResponse.toJsonMap() = mapOf(
     },
     "errorMessage" to errorMessage,
 ).filterValues { it != null }
+
+private fun ipLocationData(ipLocation: IpLocation?): Map<String, Any>? {
+    return ipLocation
+        ?.takeIf { it.latitude != 0.0 && it.longitude != 0.0 }
+        ?.let { loc ->
+            mapOf(
+                "accuracyRadius" to loc.accuracyRadius,
+                "latitude" to loc.latitude,
+                "longitude" to loc.longitude,
+                "postalCode" to loc.postalCode,
+                "timezone" to loc.timezone,
+                "city" to mapOf("name" to loc.city.name),
+                "country" to mapOf("name" to loc.country.name, "code" to loc.country.code),
+                "continent" to mapOf("name" to loc.continent.name, "code" to loc.continent.code),
+                "subdivisions" to loc.subdivisions.map { sub ->
+                    mapOf("name" to sub.name, "isoCode" to sub.isoCode)
+                }
+            )
+        }
+}
 
 val Configuration.Region.description: String
     get() = when (this) {

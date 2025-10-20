@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
-import android.text.format.DateUtils
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
@@ -15,10 +14,9 @@ class SmartSignals(
     val vpn: SmartSignalInfo<SmartSignal.Vpn>,
     val tampering: SmartSignalInfo<SmartSignal.Tampering>,
     val mitm: SmartSignalInfo<SmartSignal.Mitm>,
-    val asn: SmartSignalInfo<SmartSignal.ASN>,
-    val dataCenter: SmartSignalInfo<SmartSignal.DataCenter>,
     val ipBlocklist: SmartSignalInfo<SmartSignal.IPBlocklist>,
     val proxy: SmartSignalInfo<SmartSignal.Proxy>,
+    val ipInfo: SmartSignalInfo<SmartSignal.IPInfo>
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -105,13 +103,15 @@ sealed class SmartSignal {
 
     @Serializable
     data class ASN(
-        val result: Boolean,
-        val details: Map<String, String> = mapOf()
+        val asn: String,
+        val name: String,
+        val network: String
     ) : SmartSignal()
 
     @Serializable
     data class DataCenter(
-        val result: Boolean
+        val result: Boolean,
+        val name: String
     ) : SmartSignal()
 
     @Serializable
@@ -126,5 +126,46 @@ sealed class SmartSignal {
         val confidence: String,
         val details: Map<String, String> = mapOf()
     ) : SmartSignal()
-}
 
+    @Serializable
+    data class IPInfo(
+        val v4: IPV4
+    ) : SmartSignal()
+
+    @Serializable
+    data class GeoLocation(
+        val accuracyRadius: Int,
+        val latitude: Double,
+        val longitude: Double,
+        val postalCode: Int,
+        val timezone: String,
+        val city: City,
+        val country: Country,
+        val continent: Continent,
+    ) : SmartSignal()
+
+    @Serializable
+    data class City(
+        val name: String
+    )
+
+    @Serializable
+    data class Country(
+        val code: String,
+        val name: String
+    )
+
+    @Serializable
+    data class Continent(
+        val code: String,
+        val name: String
+    )
+
+    @Serializable
+    data class IPV4(
+        val address: String,
+        val geolocation: GeoLocation,
+        val asn: ASN,
+        val datacenter: DataCenter
+    ) : SmartSignal()
+}
