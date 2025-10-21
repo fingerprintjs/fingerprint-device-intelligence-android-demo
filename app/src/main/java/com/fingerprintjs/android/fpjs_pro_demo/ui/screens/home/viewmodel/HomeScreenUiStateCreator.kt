@@ -255,14 +255,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                 ),
 
                 smartSignalProperty(
-                    from = { ipBlocklist },
-                    name = "Blocklist Match",
-                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
-                ) {
-                    result.detectionStatusString()
-                },
-
-                smartSignalProperty(
                     from = { clonedApp },
                     name = "Cloned App",
                     docUrl = URLs.SmartSignalsOverview.clonedApp,
@@ -300,6 +292,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     } else {
                         result.detectionStatusString()
                     }
+                },
+                smartSignalProperty(
+                    from = { ipBlocklist },
+                    name = "IP Blocklist Match",
+                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
+                ) {
+                    result.detectionStatusString()
                 },
 
                 smartSignalProperty(

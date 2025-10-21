@@ -88,7 +88,7 @@ sealed class SmartSignal {
         val result: Boolean,
         val originTimezone: String? = null,
         val originCountry: String? = null,
-        val methods: Map<String, Boolean> = mapOf()
+        val methods: Map<String, Boolean> = mapOf(),
     ) : SmartSignal()
 
     @Serializable
@@ -106,31 +106,31 @@ sealed class SmartSignal {
     data class ASN(
         val asn: String,
         val name: String,
-        val network: String
+        val network: String,
     ) : SmartSignal()
 
     @Serializable
     data class DataCenter(
         val result: Boolean,
-        val name: String
+        val name: String,
     ) : SmartSignal()
 
     @Serializable
     data class IPBlocklist(
         val result: Boolean,
-        val details: Map<String, Boolean> = mapOf()
+        val details: Map<String, Boolean> = mapOf(),
     ) : SmartSignal()
 
     @Serializable
     data class Proxy(
         val result: Boolean,
         val confidence: String,
-        val details: Map<String, String> = mapOf()
+        val details: Map<String, String> = mapOf(),
     ) : SmartSignal()
 
     @Serializable
     data class IPInfo(
-        val v4: IPV4
+        val v4: IPV4,
     ) : SmartSignal()
 
     @Serializable
@@ -147,19 +147,19 @@ sealed class SmartSignal {
 
     @Serializable
     data class City(
-        val name: String
+        val name: String,
     )
 
     @Serializable
     data class Country(
         val code: String,
-        val name: String
+        val name: String,
     )
 
     @Serializable
     data class Continent(
         val code: String,
-        val name: String
+        val name: String,
     )
 
     @Serializable
@@ -167,6 +167,6 @@ sealed class SmartSignal {
         val address: String,
         val geolocation: GeoLocation,
         val asn: ASN,
-        val datacenter: DataCenter
+        val datacenter: DataCenter,
     ) : SmartSignal()
 }

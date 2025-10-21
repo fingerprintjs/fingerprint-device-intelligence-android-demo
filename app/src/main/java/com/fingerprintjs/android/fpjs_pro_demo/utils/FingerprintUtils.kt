@@ -14,7 +14,6 @@ fun FingerprintJSProResponse.toJsonMap() = mapOf(
     },
     "visitorFound" to visitorFound,
     "ipAddress" to ipAddress,
-    // ✅ Only add ipLocation if it’s not null
     "ipLocation" to ipLocationData(ipLocation),
     "osName" to osName,
     "osVersion" to osVersion,
