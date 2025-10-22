@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
-import androidx.compose.ui.text.AnnotatedString
 import junit.framework.TestCase
 import org.junit.Test
 
