@@ -8,6 +8,7 @@ const val HOURS_IN_DAY = 24
 const val DAYS_IN_WEEK = 7
 const val WEEK = 5
 const val MILLIS_IN_SECOND = 1000L
+
 fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
     val timestampMillis = if (timestamp < TIME_STAMP) timestamp * MILLIS_IN_SECOND else timestamp
     val diff = System.currentTimeMillis() - timestampMillis
