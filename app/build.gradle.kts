@@ -1,3 +1,4 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import java.util.Properties
 
@@ -18,6 +19,7 @@ val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug els
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.firebase.appdistribution)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
@@ -73,6 +75,12 @@ android {
         // includes an option of mocking responses of Fingerprint's servers.
         debug {
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
+
+            firebaseAppDistribution {
+                appId = "1:812085152269:android:1e1bd14e6ae6e93f22e344"
+                artifactType = "APK"
+                serviceCredentialsFile = "service-credentials.json"
+            }
         }
         // Production release build variant
         release {
@@ -80,6 +88,12 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
+
+            firebaseAppDistribution {
+                appId = "1:812085152269:android:1e1bd14e6ae6e93f22e344"
+                artifactType = "APK"
+                serviceCredentialsFile = "service-credentials.json"
+            }
         }
         // Use this build variant for testing the app locally with minification enabled and release
         // level of performance, but also with the mocking functionality that the debug build type has.
