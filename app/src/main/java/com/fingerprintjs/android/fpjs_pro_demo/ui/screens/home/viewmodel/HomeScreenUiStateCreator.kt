@@ -246,16 +246,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = ipAddress
                 ),
                 identificationProperty(
-                    name = "IP Location",
-                    value = run {
-                        when {
-                            ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
-                            ipCountry != null -> "$ipCountry"
-                            else -> null
-                        }
-                    },
-                ),
-                identificationProperty(
                     name = "First Seen At",
                     value = firstSeenAt
                 ),
@@ -263,6 +253,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Last Seen At",
                     value = lastSeenAt
                 ),
+
                 smartSignalProperty(
                     from = { clonedApp },
                     name = "Cloned App",
@@ -303,6 +294,34 @@ class HomeScreenUiStateCreator @Inject constructor(
                     }
                 },
                 smartSignalProperty(
+                    from = { ipBlocklist },
+                    name = "IP Blocklist Match",
+                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
+                ) {
+                    result.detectionStatusString()
+                },
+
+                smartSignalProperty(
+                    from = { ipInfo },
+                    name = "IP Location",
+                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
+                ) {
+                    when {
+                        ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
+                        ipCountry != null -> ipCountry
+                        else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
+                    }
+                },
+
+                smartSignalProperty(
+                    from = { ipInfo },
+                    name = "IP Network Provider",
+                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider
+                ) {
+                    "${v4.asn.name} - ${v4.asn.asn}"
+                },
+
+                smartSignalProperty(
                     from = { locationSpoofing },
                     name = "Geolocation Spoofing",
                     docUrl = URLs.SmartSignalsOverview.locationSpoofing,
@@ -313,6 +332,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { mitm },
                     name = "MITM Attack",
                     docUrl = URLs.SmartSignalsOverview.mitm
+                ) {
+                    result.detectionStatusString()
+                },
+                smartSignalProperty(
+                    from = { proxy },
+                    name = "Proxy",
+                    docUrl = URLs.SmartSignalsOverview.proxy
                 ) {
                     result.detectionStatusString()
                 },
@@ -377,7 +403,10 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.factoryReset,
                             smartSignals.frida,
                             smartSignals.highActivity,
+                            smartSignals.ipInfo,
+                            smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.proxy,
                             smartSignals.root,
                             smartSignals.vpn,
                         )
