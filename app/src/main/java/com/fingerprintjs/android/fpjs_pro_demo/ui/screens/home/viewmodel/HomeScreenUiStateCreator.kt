@@ -32,6 +32,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalI
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
+import com.fingerprintjs.android.fpjs_pro_demo.utils.relativeFactoryResetTime
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
 import com.github.michaelbull.result.getOrElse
@@ -46,7 +47,6 @@ import kotlin.math.round
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
 ) {
-
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsData: SmartSignalsData,
@@ -282,7 +282,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Factory Reset",
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                 ) {
-                    if (timestamp <= 0) NOT_DETECTED_STRING else time
+                    if (timestamp <= 0 || time.isNullOrBlank()) {
+                        NOT_DETECTED_STRING
+                    } else {
+                        relativeFactoryResetTime(time, timestamp)
+                    }
                 },
                 smartSignalProperty(
                     from = { frida },
