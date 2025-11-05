@@ -29,8 +29,11 @@ class SmartSignalsBodyParser @Inject constructor(
                     validation = { !time.isEssentiallyEmpty() }
                 ),
                 frida = products.getSmartSignal(key = "frida"),
+                ipInfo = products.getSmartSignal(key = "ipInfo"),
                 highActivity = products.getSmartSignal(key = "highActivity"),
+                ipBlocklist = products.getSmartSignal("ipBlocklist"),
                 locationSpoofing = products.getSmartSignal(key = "locationSpoofing"),
+                proxy = products.getSmartSignal("proxy"),
                 root = products.getSmartSignal(key = "rootApps"),
                 vpn = products.getSmartSignal(
                     key = "vpn",
