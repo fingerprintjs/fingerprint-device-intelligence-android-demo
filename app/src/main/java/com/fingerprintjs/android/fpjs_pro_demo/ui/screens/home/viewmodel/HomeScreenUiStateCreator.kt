@@ -399,62 +399,6 @@ class HomeScreenUiStateCreator @Inject constructor(
         )
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun SmartSignal.Vpn.getVpnStatusString(): String = when {
-        !result -> NOT_DETECTED_STRING
-
-        else -> getVpnDetectionDetails(methods, confidence, originCountry)
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun SmartSignal.Vpn.getVpnNoteString(): String = when {
-        !result -> ""
-
-        else -> VPN_NOTE_STRING
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun getVpnDetectionDetails(
-        methods: Map<String, Boolean>,
-        confidence: String?,
-        originCountry: String?
-    ): String {
-        val priority = listOf("publicVPN", "timezoneMismatch", "relay", "auxiliaryMobile")
-
-        var detectedMethod = ""
-        for (key in priority) {
-            if (methods[key] == true) {
-                detectedMethod = " (${prettifiedKeys[key]})"
-                break
-            }
-        }
-
-        return "${DETECTED_STRING}${detectedMethod}${appendConfidenceLevel(confidence)}${
-            appendCountryInfo(
-                originCountry
-            )
-        }"
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun appendCountryInfo(originCountry: String?): String {
-        return if (originCountry != null) {
-            val countryInfo = getCountryInfo(originCountry)
-            "\nOrigin Country: ${countryInfo.first} ${countryInfo.second}"
-        } else {
-            ""
-        }
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun appendConfidenceLevel(confidence: String?): String {
-        return if (confidence != null) {
-            "\nConfidence: $confidence"
-        } else {
-            ""
-        }
-    }
-
     @VisibleForTesting
     fun createRawJson(
         fingerprintJSProResponse: FingerprintJSProResponse,
@@ -491,38 +435,92 @@ class HomeScreenUiStateCreator @Inject constructor(
         return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun getFlagEmoji(countryCode: String): String {
-        val normalized = countryCode.trim().uppercase(Locale.ROOT)
-        if (normalized.length != 2) return ""
-
-        val first = Character.codePointAt(normalized, 0) - 0x41 + 0x1F1E6
-        val second = Character.codePointAt(normalized, 1) - 0x41 + 0x1F1E6
-
-        return String(Character.toChars(first)) + String(Character.toChars(second))
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun getCountryInfo(code: String): Pair<String, String> {
-        val normalized = code.trim().uppercase(Locale.ROOT)
-        val name = Locale("", normalized).displayCountry
-        val flag = getFlagEmoji(normalized)
-        val displayName = if (name.isNotBlank()) name else normalized
-        return Pair(displayName, flag)
-    }
-
-    private fun Boolean.detectionStatusString(): String {
-        return if (this) DETECTED_STRING else NOT_DETECTED_STRING
-    }
-
-    private val NOT_DETECTED_STRING = "Not detected"
-    private val DETECTED_STRING = "Detected"
-    private val NOT_AVAILABLE_STRING = "N/A"
-    private val VPN_NOTE_STRING = "Note: works without location permissions"
-    private val prettifiedKeys = mapOf(
-        "publicVPN" to "Public VPN",
-        "timezoneMismatch" to "Timezone mismatch",
-        "relay" to "Relay",
-        "auxiliaryMobile" to "Auxiliary mobile"
-    )
 }
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun SmartSignal.Vpn.getVpnStatusString(): String = when {
+    !result -> NOT_DETECTED_STRING
+    else -> getVpnDetectionDetails(methods, confidence, originCountry)
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun SmartSignal.Vpn.getVpnNoteString(): String = when {
+    !result -> ""
+    else -> vpnNoteString
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun getVpnDetectionDetails(
+    methods: Map<String, Boolean>,
+    confidence: String?,
+    originCountry: String?,
+): String {
+    val detectedMethod = vpnMethodPriority
+        .firstOrNull { methods[it] == true }
+        ?.let { " (${vpnMethodLabels[it]})" }
+        .orEmpty()
+
+    return "$DETECTED_STRING$detectedMethod${appendConfidenceLevel(confidence)}${appendCountryInfo(originCountry)}"
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun appendCountryInfo(originCountry: String?): String {
+    if (originCountry.isNullOrBlank()) {
+        return ""
+    }
+    val (countryName, flag) = getCountryInfo(originCountry)
+    return "\nOrigin Country: $countryName $flag".trimEnd()
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun appendConfidenceLevel(confidence: String?): String {
+    return confidence?.let { "\nConfidence: $it" }.orEmpty()
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun getFlagEmoji(countryCode: String): String {
+    val normalized = countryCode.trim().uppercase(Locale.ROOT)
+    if (normalized.length != COUNTRY_CODE_LENGTH) return ""
+
+    val first = Character.codePointAt(normalized, 0) - ASCII_UPPERCASE_A_CODEPOINT + REGIONAL_INDICATOR_BASE
+    val second = Character.codePointAt(normalized, 1) - ASCII_UPPERCASE_A_CODEPOINT + REGIONAL_INDICATOR_BASE
+
+    return String(Character.toChars(first)) + String(Character.toChars(second))
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun getCountryInfo(code: String): Pair<String, String> {
+    val normalized = code.trim().uppercase(Locale.ROOT)
+    val name = Locale("", normalized).displayCountry
+    val flag = getFlagEmoji(normalized)
+    val displayName = if (name.isNotBlank()) name else normalized
+    return displayName to flag
+}
+
+@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+internal fun Boolean.detectionStatusString(): String {
+    return if (this) DETECTED_STRING else NOT_DETECTED_STRING
+}
+
+private const val NOT_DETECTED_STRING = "Not detected"
+private const val DETECTED_STRING = "Detected"
+private const val NOT_AVAILABLE_STRING = "N/A"
+private const val vpnNoteString = "Note: works without location permissions"
+
+private val vpnMethodLabels = mapOf(
+    "publicVPN" to "Public VPN",
+    "timezoneMismatch" to "Timezone mismatch",
+    "relay" to "Relay",
+    "auxiliaryMobile" to "Auxiliary mobile",
+)
+
+private val vpnMethodPriority = listOf(
+    "publicVPN",
+    "timezoneMismatch",
+    "relay",
+    "auxiliaryMobile",
+)
+
+private const val COUNTRY_CODE_LENGTH = 2
+private const val ASCII_UPPERCASE_A_CODEPOINT = 0x41
+private const val REGIONAL_INDICATOR_BASE = 0x1F1E6
