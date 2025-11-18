@@ -168,7 +168,9 @@ class HomeScreenUiStateCreator @Inject constructor(
         // Checking the values from FingerprintJSProResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
-            it.isNotEmpty() && it != "n\\a" && !it.contentEquals("null", ignoreCase = true)
+            it.isNotEmpty() &&
+                it != "n\\a" &&
+                !it.contentEquals("null", ignoreCase = true)
         }
 
         val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
