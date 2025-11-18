@@ -282,7 +282,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Factory Reset",
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                     value = {
-                        if (timestamp <= 0 || time.isNullOrBlank()) {
+                        if (timestamp <= 0 || time.isBlank()) {
                             NOT_DETECTED_STRING
                         } else {
                             relativeFactoryResetTime(time, timestamp)
