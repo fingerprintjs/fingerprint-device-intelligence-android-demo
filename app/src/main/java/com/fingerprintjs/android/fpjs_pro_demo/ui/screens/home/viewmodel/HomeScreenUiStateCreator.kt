@@ -168,9 +168,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         // Checking the values from FingerprintJSProResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
-            it.isNotEmpty() &&
-                    it != "n\\a" &&
-                    !it.contentEquals("null", ignoreCase = true)
+            it.isNotEmpty() && it != "n\\a" && !it.contentEquals("null", ignoreCase = true)
         }
 
         val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
@@ -434,7 +432,6 @@ class HomeScreenUiStateCreator @Inject constructor(
         }
         return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
     }
-
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -446,7 +443,7 @@ internal fun SmartSignal.Vpn.getVpnStatusString(): String = when {
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun SmartSignal.Vpn.getVpnNoteString(): String = when {
     !result -> ""
-    else -> vpnNoteString
+    else -> VPN_NOTE_STRING
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -455,9 +452,9 @@ internal fun getVpnDetectionDetails(
     confidence: String?,
     originCountry: String?,
 ): String {
-    val detectedMethod = vpnMethodPriority
+    val detectedMethod = VPN_METHOD_PRIORITY
         .firstOrNull { methods[it] == true }
-        ?.let { " (${vpnMethodLabels[it]})" }
+        ?.let { " (${VPN_METHOD_LABELS[it]})" }
         .orEmpty()
 
     return "$DETECTED_STRING$detectedMethod${appendConfidenceLevel(confidence)}${appendCountryInfo(originCountry)}"
@@ -505,16 +502,16 @@ internal fun Boolean.detectionStatusString(): String {
 private const val NOT_DETECTED_STRING = "Not detected"
 private const val DETECTED_STRING = "Detected"
 private const val NOT_AVAILABLE_STRING = "N/A"
-private const val vpnNoteString = "Note: works without location permissions"
+private const val VPN_NOTE_STRING = "Note: works without location permissions"
 
-private val vpnMethodLabels = mapOf(
+private val VPN_METHOD_LABELS = mapOf(
     "publicVPN" to "Public VPN",
     "timezoneMismatch" to "Timezone mismatch",
     "relay" to "Relay",
     "auxiliaryMobile" to "Auxiliary mobile",
 )
 
-private val vpnMethodPriority = listOf(
+private val VPN_METHOD_PRIORITY = listOf(
     "publicVPN",
     "timezoneMismatch",
     "relay",
