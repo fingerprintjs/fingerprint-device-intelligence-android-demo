@@ -68,17 +68,17 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `getEpochTimeFromTimeString parses valid ISO string`() {
+    fun `getEpochTimestampFromTimeString parses valid ISO string`() {
         val timeString = "2024-01-01T12:00:00Z"
 
-        val result = getEpochTimeFromTimeString(timeString)
+        val result = getEpochTimestampFromTimeString(timeString)
 
         TestCase.assertEquals(1704110400L, result)
     }
 
     @Test
-    fun `getEpochTimeFromTimeString returns null for invalid string`() {
-        val result = getEpochTimeFromTimeString("invalid-time")
+    fun `getEpochTimestampFromTimeString returns null for invalid string`() {
+        val result = getEpochTimestampFromTimeString("invalid-time")
 
         TestCase.assertNull(result)
     }

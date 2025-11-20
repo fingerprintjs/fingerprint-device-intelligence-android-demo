@@ -25,6 +25,7 @@ import com.fingerprintjs.android.fpjs_pro.TooManyRequest
 import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro.UnsupportedVersion
 import com.fingerprintjs.android.fpjs_pro.WrongRegion
+import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignal
@@ -32,7 +33,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalI
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
-import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimeFromTimeString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimestampFromTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
@@ -169,8 +170,8 @@ class HomeScreenUiStateCreator @Inject constructor(
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
             it.isNotEmpty() &&
-                it != "n\\a" &&
-                !it.contentEquals("null", ignoreCase = true)
+                it != StringConstants.N_A_ESCAPED &&
+                !it.contentEquals(StringConstants.NULL_STRING, ignoreCase = true)
         }
 
         val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
@@ -182,8 +183,8 @@ class HomeScreenUiStateCreator @Inject constructor(
         val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
         val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
         val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
-        val firstSeenAtTimestamp = firstSeenAt?.let { getEpochTimeFromTimeString(it) } ?: 0L
-        val lastSeenAtTimestamp = lastSeenAt?.let { getEpochTimeFromTimeString(it) } ?: 0L
+        val firstSeenAtTimestamp = firstSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
+        val lastSeenAtTimestamp = lastSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -195,11 +196,11 @@ class HomeScreenUiStateCreator @Inject constructor(
             return PrettifiedProperty(
                 name = name,
                 value = when (smartSignalsInfo) {
-                    null -> NOT_AVAILABLE_STRING
+                    null -> StringConstants.NOT_AVAILABLE
                     is SmartSignalInfo.Success -> smartSignalsInfo.typedData.value()
-                    is SmartSignalInfo.Error -> NOT_AVAILABLE_STRING
-                    is SmartSignalInfo.ParseError -> NOT_AVAILABLE_STRING
-                    is SmartSignalInfo.Disabled -> "Signal disabled for your account"
+                    is SmartSignalInfo.Error -> StringConstants.NOT_AVAILABLE
+                    is SmartSignalInfo.ParseError -> StringConstants.NOT_AVAILABLE
+                    is SmartSignalInfo.Disabled -> StringConstants.SIGNAL_DISABLED
                 },
                 isValueFaded = smartSignalsInfo !is SmartSignalInfo.Success,
                 isValueItalic = smartSignalsInfo is SmartSignalInfo.Disabled,
@@ -214,7 +215,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         ): PrettifiedProperty {
             return PrettifiedProperty(
                 name = name,
-                value = value ?: NOT_AVAILABLE_STRING,
+                value = value ?: StringConstants.NOT_AVAILABLE,
                 isValueFaded = value == null,
             )
         }
@@ -229,76 +230,76 @@ class HomeScreenUiStateCreator @Inject constructor(
             isSignupPromptShown = false,
             prettifiedProps = listOfNotNull(
                 identificationProperty(
-                    name = "Request ID",
+                    name = StringConstants.REQUEST_ID,
                     value = requestId
                 ),
                 identificationProperty(
-                    name = "Visitor ID",
+                    name = StringConstants.VISITOR_ID,
                     value = visitorId
                 ),
                 identificationProperty(
-                    name = "Visitor Found",
-                    value = if (visitorFound) "Yes" else "No"
+                    name = StringConstants.VISITOR_FOUND,
+                    value = if (visitorFound) StringConstants.YES else StringConstants.NO
                 ),
                 identificationProperty(
-                    name = "Confidence",
-                    value = "${round(confidence * 100).toInt()}%"
+                    name = StringConstants.CONFIDENCE,
+                    value = "${round(confidence * 100).toInt()}${StringConstants.PERCENTAGE}"
                 ),
                 identificationProperty(
-                    name = "IP Address",
+                    name = StringConstants.IP_ADDRESS,
                     value = ipAddress
                 ),
                 identificationProperty(
-                    name = "First Seen At",
+                    name = StringConstants.FIRST_SEEN_AT,
                     value = getRelativeTimeString(firstSeenAt, firstSeenAtTimestamp)
                 ),
                 identificationProperty(
-                    name = "Last Seen At",
+                    name = StringConstants.LAST_SEEN_AT,
                     value = getRelativeTimeString(lastSeenAt, lastSeenAtTimestamp)
                 ),
 
                 smartSignalProperty(
                     from = { clonedApp },
-                    name = "Cloned App",
+                    name = StringConstants.CLONED_APP,
                     docUrl = URLs.SmartSignalsOverview.clonedApp,
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { emulator },
-                    name = "Emulator",
+                    name = StringConstants.EMULATOR,
                     docUrl = URLs.SmartSignalsOverview.emulator
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { factoryReset },
-                    name = "Factory Reset",
+                    name = StringConstants.FACTORY_RESET,
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                 ) {
                     getRelativeTimeString(time, timestamp)
                 },
                 smartSignalProperty(
                     from = { frida },
-                    name = "Frida",
+                    name = StringConstants.FRIDA,
                     docUrl = URLs.SmartSignalsOverview.frida,
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { highActivity },
-                    name = "High Activity",
+                    name = StringConstants.HIGH_ACTIVITY,
                     docUrl = URLs.SmartSignalsOverview.highActivity,
                 ) {
                     if (result && dailyRequests != null) {
-                        "${DETECTED_STRING}. $dailyRequests per day"
+                        "${StringConstants.DETECTED}. $dailyRequests ${StringConstants.PER_DAY}"
                     } else {
                         result.detectionStatusString()
                     }
                 },
                 smartSignalProperty(
                     from = { ipBlocklist },
-                    name = "IP Blocklist Match",
+                    name = StringConstants.IP_BLOCKLIST_MATCH,
                     docUrl = URLs.SmartSignalsOverview.ipBlocklist
                 ) {
                     result.detectionStatusString()
@@ -306,7 +307,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
                 smartSignalProperty(
                     from = { ipInfo },
-                    name = "IP Location",
+                    name = StringConstants.IP_LOCATION,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                 ) {
                     when {
@@ -318,7 +319,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
                 smartSignalProperty(
                     from = { ipInfo },
-                    name = "IP Network Provider",
+                    name = StringConstants.IP_NETWORK_PROVIDER,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider
                 ) {
                     "${v4.asn.name} - ${v4.asn.asn}"
@@ -326,55 +327,55 @@ class HomeScreenUiStateCreator @Inject constructor(
 
                 smartSignalProperty(
                     from = { locationSpoofing },
-                    name = "Geolocation Spoofing",
+                    name = StringConstants.GEOLOCATION_SPOOFING,
                     docUrl = URLs.SmartSignalsOverview.locationSpoofing,
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { mitm },
-                    name = "MITM Attack",
+                    name = StringConstants.MITM_ATTACK,
                     docUrl = URLs.SmartSignalsOverview.mitm
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { proxy },
-                    name = "Proxy",
+                    name = StringConstants.PROXY,
                     docUrl = URLs.SmartSignalsOverview.proxy
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { root },
-                    name = "Rooted Device",
+                    name = StringConstants.ROOTED_DEVICE,
                     docUrl = URLs.SmartSignalsOverview.root,
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { tampering },
-                    name = "Tampered Request",
+                    name = StringConstants.TAMPERED_REQUEST,
                     docUrl = URLs.SmartSignalsOverview.tampering
                 ) {
                     result.detectionStatusString()
                 },
                 smartSignalProperty(
                     from = { vpn },
-                    name = "VPN",
+                    name = StringConstants.VPN,
                     docUrl = URLs.SmartSignalsOverview.vpn,
                 ) {
                     when {
-                        !result -> NOT_DETECTED_STRING
+                        !result -> StringConstants.NOT_DETECTED
                         methods.getOrElse("auxiliaryMobile") { false } ->
-                            "${DETECTED_STRING}. Device has VPN enabled"
+                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_HAS_VPN_ENABLED}"
                         originCountry != null ->
-                            "${DETECTED_STRING}. Device location is $originCountry"
+                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_LOCATION_IS} $originCountry"
 
                         originTimezone != null ->
-                            "${DETECTED_STRING}. Device timezone is $originTimezone"
+                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_TIMEZONE_IS} $originTimezone"
 
-                        else -> DETECTED_STRING
+                        else -> StringConstants.DETECTED
                     }
                 },
             )
@@ -395,10 +396,10 @@ class HomeScreenUiStateCreator @Inject constructor(
         smartSignals: SmartSignals?,
     ): String {
         val map = buildMap {
-            this.put("identification", fingerprintJSProResponse.toJsonMap())
+            this.put(StringConstants.IDENTIFICATION, fingerprintJSProResponse.toJsonMap())
             if (smartSignals != null) {
                 this.put(
-                    "smartSignals",
+                    StringConstants.SMART_SIGNALS,
                     buildMap {
                         listOfNotNull(
                             smartSignals.clonedApp,
@@ -426,10 +427,6 @@ class HomeScreenUiStateCreator @Inject constructor(
     }
 
     private fun Boolean.detectionStatusString(): String {
-        return if (this) DETECTED_STRING else NOT_DETECTED_STRING
+        return if (this) StringConstants.DETECTED else StringConstants.NOT_DETECTED
     }
-
-    private val NOT_DETECTED_STRING = "Not detected"
-    private val DETECTED_STRING = "Detected"
-    private val NOT_AVAILABLE_STRING = "N/A"
 }

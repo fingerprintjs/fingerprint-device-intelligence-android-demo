@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import android.text.format.DateUtils
+import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import java.time.Instant
 import java.time.format.DateTimeParseException
 
@@ -23,11 +24,11 @@ fun relativeTime(time: String?, timestamp: Long): String {
     val weeks = days / DAYS_IN_WEEK
 
     val relative = when {
-        seconds < SECONDS_IN_MINUTE -> "Just now"
-        minutes < MINUTES_IN_HOUR -> "$minutes minute${if (minutes > 1) "s" else ""} ago"
-        hours < HOURS_IN_DAY -> "$hours hour${if (hours > 1) "s" else ""} ago"
-        days < DAYS_IN_WEEK -> "$days day${if (days > 1) "s" else ""} ago"
-        weeks < WEEK -> "$weeks week${if (weeks > 1) "s" else ""} ago"
+        seconds < SECONDS_IN_MINUTE -> StringConstants.JUST_NOW
+        minutes < MINUTES_IN_HOUR -> "$minutes ${if (minutes > 1) StringConstants.MINUTES else StringConstants.MINUTE} ${StringConstants.AGO}"
+        hours < HOURS_IN_DAY -> "$hours ${if (hours > 1) StringConstants.HOURS else StringConstants.HOUR} ${StringConstants.AGO}"
+        days < DAYS_IN_WEEK -> "$days ${if (days > 1) StringConstants.DAYS else StringConstants.DAY} ${StringConstants.AGO}"
+        weeks < WEEK -> "$weeks ${if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK} ${StringConstants.AGO}"
         else -> DateUtils.getRelativeTimeSpanString(
             timestamp * MILLIS_IN_SECOND,
             System.currentTimeMillis(),
@@ -35,10 +36,10 @@ fun relativeTime(time: String?, timestamp: Long): String {
             DateUtils.FORMAT_ABBREV_RELATIVE
         )
     }
-    return "$time ($relative)"
+    return "$time (${relative})"
 }
 
-fun getEpochTimeFromTimeString(time: String): Long? {
+fun getEpochTimestampFromTimeString(time: String): Long? {
     return try {
         Instant.parse(time).epochSecond
     } catch (e: DateTimeParseException) {
@@ -48,7 +49,7 @@ fun getEpochTimeFromTimeString(time: String): Long? {
 
 fun getRelativeTimeString(time: String?, timestamp: Long): String {
     return if (timestamp <= 0 || time?.isBlank() == true) {
-        "Not detected"
+        StringConstants.NOT_DETECTED
     } else {
         relativeTime(time, timestamp)
     }
