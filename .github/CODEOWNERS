@@ -1,0 +1,5 @@
+# CODEOWNERS file for fingerprint-device-intelligence-android-demo
+# These owners will be automatically requested for review when someone opens a pull request.
+
+# Global owners for all files
+* @alexzfp @manjunathnijaguna-fp @rajabhargava21
