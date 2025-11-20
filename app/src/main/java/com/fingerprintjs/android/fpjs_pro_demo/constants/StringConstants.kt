@@ -5,10 +5,10 @@ object StringConstants {
     const val NOT_DETECTED = "Not detected"
     const val DETECTED = "Detected"
     const val NOT_AVAILABLE = "N/A"
-    
+
     // Signal disabled message
     const val SIGNAL_DISABLED = "Signal disabled for your account"
-    
+
     // Property names
     const val REQUEST_ID = "Request ID"
     const val VISITOR_ID = "Visitor ID"
@@ -17,7 +17,7 @@ object StringConstants {
     const val IP_ADDRESS = "IP Address"
     const val FIRST_SEEN_AT = "First Seen At"
     const val LAST_SEEN_AT = "Last Seen At"
-    
+
     // Smart signal names
     const val CLONED_APP = "Cloned App"
     const val EMULATOR = "Emulator"
@@ -33,30 +33,30 @@ object StringConstants {
     const val ROOTED_DEVICE = "Rooted Device"
     const val TAMPERED_REQUEST = "Tampered Request"
     const val VPN = "VPN"
-    
+
     // Visitor found values
     const val YES = "Yes"
     const val NO = "No"
-    
+
     // VPN detection messages
     const val DEVICE_HAS_VPN_ENABLED = "Device has VPN enabled"
     const val DEVICE_LOCATION_IS = "Device location is"
     const val DEVICE_TIMEZONE_IS = "Device timezone is"
-    
+
     // High activity message
     const val PER_DAY = "per day"
-    
+
     // JSON keys
     const val IDENTIFICATION = "identification"
     const val SMART_SIGNALS = "smartSignals"
-    
+
     // Empty value checks
     const val N_A_ESCAPED = "n\\a"
     const val NULL_STRING = "null"
-    
+
     // Format strings
     const val PERCENTAGE = "%"
-    
+
     // Relative time strings
     const val JUST_NOW = "Just now"
     const val AGO = "ago"

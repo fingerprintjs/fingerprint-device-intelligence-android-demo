@@ -25,10 +25,22 @@ fun relativeTime(time: String?, timestamp: Long): String {
 
     val relative = when {
         seconds < SECONDS_IN_MINUTE -> StringConstants.JUST_NOW
-        minutes < MINUTES_IN_HOUR -> "$minutes ${if (minutes > 1) StringConstants.MINUTES else StringConstants.MINUTE} ${StringConstants.AGO}"
-        hours < HOURS_IN_DAY -> "$hours ${if (hours > 1) StringConstants.HOURS else StringConstants.HOUR} ${StringConstants.AGO}"
-        days < DAYS_IN_WEEK -> "$days ${if (days > 1) StringConstants.DAYS else StringConstants.DAY} ${StringConstants.AGO}"
-        weeks < WEEK -> "$weeks ${if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK} ${StringConstants.AGO}"
+        minutes < MINUTES_IN_HOUR -> {
+            val unit = if (minutes > 1) StringConstants.MINUTES else StringConstants.MINUTE
+            "$minutes $unit ${StringConstants.AGO}"
+        }
+        hours < HOURS_IN_DAY -> {
+            val unit = if (hours > 1) StringConstants.HOURS else StringConstants.HOUR
+            "$hours $unit ${StringConstants.AGO}"
+        }
+        days < DAYS_IN_WEEK -> {
+            val unit = if (days > 1) StringConstants.DAYS else StringConstants.DAY
+            "$days $unit ${StringConstants.AGO}"
+        }
+        weeks < WEEK -> {
+            val unit = if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK
+            "$weeks $unit ${StringConstants.AGO}"
+        }
         else -> DateUtils.getRelativeTimeSpanString(
             timestamp * MILLIS_IN_SECOND,
             System.currentTimeMillis(),
@@ -36,7 +48,7 @@ fun relativeTime(time: String?, timestamp: Long): String {
             DateUtils.FORMAT_ABBREV_RELATIVE
         )
     }
-    return "$time (${relative})"
+    return "$time ($relative)"
 }
 
 fun getEpochTimestampFromTimeString(time: String): Long? {
