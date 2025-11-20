@@ -32,7 +32,8 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalI
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
-import com.fingerprintjs.android.fpjs_pro_demo.utils.relativeFactoryResetTime
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimeFromTimeString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
 import com.github.michaelbull.result.getOrElse
@@ -181,6 +182,8 @@ class HomeScreenUiStateCreator @Inject constructor(
         val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
         val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
         val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
+        val firstSeenAtTimestamp = firstSeenAt?.let { getEpochTimeFromTimeString(it) } ?: 0L
+        val lastSeenAtTimestamp = lastSeenAt?.let { getEpochTimeFromTimeString(it) } ?: 0L
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -247,11 +250,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                 ),
                 identificationProperty(
                     name = "First Seen At",
-                    value = firstSeenAt
+                    value = getRelativeTimeString(firstSeenAt, firstSeenAtTimestamp)
                 ),
                 identificationProperty(
                     name = "Last Seen At",
-                    value = lastSeenAt
+                    value = getRelativeTimeString(lastSeenAt, lastSeenAtTimestamp)
                 ),
 
                 smartSignalProperty(
@@ -273,11 +276,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = "Factory Reset",
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
                 ) {
-                    if (timestamp <= 0 || time.isNullOrBlank()) {
-                        NOT_DETECTED_STRING
-                    } else {
-                        relativeFactoryResetTime(time, timestamp)
-                    }
+                    getRelativeTimeString(time, timestamp)
                 },
                 smartSignalProperty(
                     from = { frida },

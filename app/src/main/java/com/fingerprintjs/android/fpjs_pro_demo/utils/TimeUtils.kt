@@ -1,6 +1,9 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import android.text.format.DateUtils
+import java.time.Instant
+import java.time.format.DateTimeParseException
+
 const val TIME_STAMP = 10_000_000_000L
 const val SECONDS_IN_MINUTE = 60
 const val MINUTES_IN_HOUR = 60
@@ -9,7 +12,7 @@ const val DAYS_IN_WEEK = 7
 const val WEEK = 5
 const val MILLIS_IN_SECOND = 1000L
 
-fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
+fun relativeTime(time: String?, timestamp: Long): String {
     val timestampMillis = if (timestamp < TIME_STAMP) timestamp * MILLIS_IN_SECOND else timestamp
     val diff = System.currentTimeMillis() - timestampMillis
 
@@ -33,4 +36,20 @@ fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
         )
     }
     return "$time ($relative)"
+}
+
+fun getEpochTimeFromTimeString(time: String): Long? {
+    return try {
+        Instant.parse(time).epochSecond
+    } catch (e: DateTimeParseException) {
+        null
+    }
+}
+
+fun getRelativeTimeString(time: String?, timestamp: Long): String {
+    return if (timestamp <= 0 || time?.isBlank() == true) {
+        "Not detected"
+    } else {
+        relativeTime(time, timestamp)
+    }
 }
