@@ -1,6 +1,10 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import android.text.format.DateUtils
+import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
+import java.time.Instant
+import java.time.format.DateTimeParseException
+
 const val TIME_STAMP = 10_000_000_000L
 const val SECONDS_IN_MINUTE = 60
 const val MINUTES_IN_HOUR = 60
@@ -9,7 +13,7 @@ const val DAYS_IN_WEEK = 7
 const val WEEK = 5
 const val MILLIS_IN_SECOND = 1000L
 
-fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
+fun relativeTime(time: String?, timestamp: Long): String {
     val timestampMillis = if (timestamp < TIME_STAMP) timestamp * MILLIS_IN_SECOND else timestamp
     val diff = System.currentTimeMillis() - timestampMillis
 
@@ -20,11 +24,23 @@ fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
     val weeks = days / DAYS_IN_WEEK
 
     val relative = when {
-        seconds < SECONDS_IN_MINUTE -> "Just now"
-        minutes < MINUTES_IN_HOUR -> "$minutes minute${if (minutes > 1) "s" else ""} ago"
-        hours < HOURS_IN_DAY -> "$hours hour${if (hours > 1) "s" else ""} ago"
-        days < DAYS_IN_WEEK -> "$days day${if (days > 1) "s" else ""} ago"
-        weeks < WEEK -> "$weeks week${if (weeks > 1) "s" else ""} ago"
+        seconds < SECONDS_IN_MINUTE -> StringConstants.JUST_NOW
+        minutes < MINUTES_IN_HOUR -> {
+            val unit = if (minutes > 1) StringConstants.MINUTES else StringConstants.MINUTE
+            "$minutes $unit ${StringConstants.AGO}"
+        }
+        hours < HOURS_IN_DAY -> {
+            val unit = if (hours > 1) StringConstants.HOURS else StringConstants.HOUR
+            "$hours $unit ${StringConstants.AGO}"
+        }
+        days < DAYS_IN_WEEK -> {
+            val unit = if (days > 1) StringConstants.DAYS else StringConstants.DAY
+            "$days $unit ${StringConstants.AGO}"
+        }
+        weeks < WEEK -> {
+            val unit = if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK
+            "$weeks $unit ${StringConstants.AGO}"
+        }
         else -> DateUtils.getRelativeTimeSpanString(
             timestamp * MILLIS_IN_SECOND,
             System.currentTimeMillis(),
@@ -33,4 +49,20 @@ fun relativeFactoryResetTime(time: String?, timestamp: Long): String {
         )
     }
     return "$time ($relative)"
+}
+
+fun getEpochTimestampFromTimeString(time: String): Long? {
+    return try {
+        Instant.parse(time).epochSecond
+    } catch (e: DateTimeParseException) {
+        null
+    }
+}
+
+fun getRelativeTimeString(time: String?, timestamp: Long): String {
+    return if (timestamp <= 0 || time?.isBlank() == true) {
+        StringConstants.NOT_DETECTED
+    } else {
+        relativeTime(time, timestamp)
+    }
 }
