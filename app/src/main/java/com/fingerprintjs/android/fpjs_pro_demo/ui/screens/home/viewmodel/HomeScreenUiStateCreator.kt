@@ -41,6 +41,7 @@ import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.recoverIf
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.round
@@ -191,6 +192,7 @@ class HomeScreenUiStateCreator @Inject constructor(
             name: String,
             docUrl: String,
             value: T.() -> String,
+            note: (T.() -> String?)? = null,
         ): PrettifiedProperty {
             val smartSignalsInfo = smartSignals?.let(from)
             return PrettifiedProperty(
@@ -206,6 +208,11 @@ class HomeScreenUiStateCreator @Inject constructor(
                 isValueItalic = smartSignalsInfo is SmartSignalInfo.Disabled,
                 isSmartSignal = true,
                 onSmartSignalClick = { onSmartSignalDocClicked(docUrl) },
+                note = (smartSignalsInfo as? SmartSignalInfo.Success)?.typedData?.let {
+                    note?.invoke(
+                        it
+                    )
+                }
             )
         }
 
@@ -262,122 +269,124 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { clonedApp },
                     name = StringConstants.CLONED_APP,
                     docUrl = URLs.SmartSignalsOverview.clonedApp,
-                ) {
-                    result.detectionStatusString()
-                },
+                    value = {
+                        result.detectionStatusString()
+                    },
+                ),
                 smartSignalProperty(
                     from = { emulator },
                     name = StringConstants.EMULATOR,
-                    docUrl = URLs.SmartSignalsOverview.emulator
-                ) {
-                    result.detectionStatusString()
-                },
+                    docUrl = URLs.SmartSignalsOverview.emulator,
+                    value = {
+                        result.detectionStatusString()
+                    },
+                ),
                 smartSignalProperty(
                     from = { factoryReset },
                     name = StringConstants.FACTORY_RESET,
                     docUrl = URLs.SmartSignalsOverview.factoryReset,
-                ) {
-                    getRelativeTimeString(time, timestamp)
-                },
+                    value = {
+                        getRelativeTimeString(time, timestamp)
+                    },
+                ),
                 smartSignalProperty(
                     from = { frida },
                     name = StringConstants.FRIDA,
                     docUrl = URLs.SmartSignalsOverview.frida,
-                ) {
-                    result.detectionStatusString()
-                },
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { highActivity },
                     name = StringConstants.HIGH_ACTIVITY,
                     docUrl = URLs.SmartSignalsOverview.highActivity,
-                ) {
-                    if (result && dailyRequests != null) {
-                        "${StringConstants.DETECTED}. $dailyRequests ${StringConstants.PER_DAY}"
-                    } else {
-                        result.detectionStatusString()
+                    value = {
+                        if (result && dailyRequests != null) {
+                            "${StringConstants.DETECTED}. $dailyRequests ${StringConstants.PER_DAY}"
+                        } else {
+                            result.detectionStatusString()
+                        }
                     }
-                },
+                ),
                 smartSignalProperty(
                     from = { ipBlocklist },
                     name = StringConstants.IP_BLOCKLIST_MATCH,
-                    docUrl = URLs.SmartSignalsOverview.ipBlocklist
-                ) {
-                    result.detectionStatusString()
-                },
+                    docUrl = URLs.SmartSignalsOverview.ipBlocklist,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
 
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_LOCATION,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
-                ) {
-                    when {
-                        ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
-                        ipCountry != null -> ipCountry
-                        else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
+                    value = {
+                        when {
+                            ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
+                            ipCountry != null -> ipCountry
+                            else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
+                        }
                     }
-                },
+                ),
 
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_NETWORK_PROVIDER,
-                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider
-                ) {
-                    "${v4.asn.name} - ${v4.asn.asn}"
-                },
+                    docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
+                    value = {
+                        "${v4.asn.name} - ${v4.asn.asn}"
+                    }
+                ),
 
                 smartSignalProperty(
                     from = { locationSpoofing },
                     name = StringConstants.GEOLOCATION_SPOOFING,
                     docUrl = URLs.SmartSignalsOverview.locationSpoofing,
-                ) {
-                    result.detectionStatusString()
-                },
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { mitm },
                     name = StringConstants.MITM_ATTACK,
-                    docUrl = URLs.SmartSignalsOverview.mitm
-                ) {
-                    result.detectionStatusString()
-                },
+                    docUrl = URLs.SmartSignalsOverview.mitm,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { proxy },
                     name = StringConstants.PROXY,
-                    docUrl = URLs.SmartSignalsOverview.proxy
-                ) {
-                    result.detectionStatusString()
-                },
+                    docUrl = URLs.SmartSignalsOverview.proxy,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { root },
                     name = StringConstants.ROOTED_DEVICE,
                     docUrl = URLs.SmartSignalsOverview.root,
-                ) {
-                    result.detectionStatusString()
-                },
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { tampering },
                     name = StringConstants.TAMPERED_REQUEST,
-                    docUrl = URLs.SmartSignalsOverview.tampering
-                ) {
-                    result.detectionStatusString()
-                },
+                    docUrl = URLs.SmartSignalsOverview.tampering,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
                 smartSignalProperty(
                     from = { vpn },
                     name = StringConstants.VPN,
                     docUrl = URLs.SmartSignalsOverview.vpn,
-                ) {
-                    when {
-                        !result -> StringConstants.NOT_DETECTED
-                        methods.getOrElse("auxiliaryMobile") { false } ->
-                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_HAS_VPN_ENABLED}"
-                        originCountry != null ->
-                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_LOCATION_IS} $originCountry"
-
-                        originTimezone != null ->
-                            "${StringConstants.DETECTED}. ${StringConstants.DEVICE_TIMEZONE_IS} $originTimezone"
-
-                        else -> StringConstants.DETECTED
-                    }
-                },
+                    value = { getVpnStatusString() },
+                    note = { getVpnNoteString() },
+                ),
             )
                 .map {
                     it.copy(
@@ -424,9 +433,5 @@ class HomeScreenUiStateCreator @Inject constructor(
             }
         }
         return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
-    }
-
-    private fun Boolean.detectionStatusString(): String {
-        return if (this) StringConstants.DETECTED else StringConstants.NOT_DETECTED
     }
 }
