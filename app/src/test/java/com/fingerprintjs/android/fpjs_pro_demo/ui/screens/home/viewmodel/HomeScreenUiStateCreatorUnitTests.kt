@@ -34,7 +34,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertEquals("Not detected", result)
@@ -51,7 +51,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -71,7 +71,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -91,7 +91,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -111,7 +111,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -135,7 +135,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Public VPN"))
@@ -154,7 +154,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -173,7 +173,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -192,7 +192,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnStatusString() }
+        val result = vpn.getVpnStatusString()
 
         // then
         TestCase.assertTrue(result.contains("Detected"))
@@ -212,7 +212,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnNoteString() }
+        val result = vpn.getVpnNoteString()
 
         // then
         TestCase.assertEquals("", result)
@@ -229,7 +229,7 @@ class HomeScreenUiStateCreatorUnitTests {
         )
 
         // when
-        val result = with(creator) { vpn.getVpnNoteString() }
+        val result = vpn.getVpnNoteString()
 
         // then
         TestCase.assertEquals("Note: works without location permissions", result)
@@ -239,7 +239,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenEmptyMethods_whenGetVpnDetectionDetails_thenReturnsDetectedWithoutMethod() {
         // when
-        val result = creator.getVpnDetectionDetails(
+        val result = getVpnDetectionDetails(
             methods = emptyMap(),
             confidence = "high",
             originCountry = "US"
@@ -255,7 +255,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenMethodsWithPublicVpn_whenGetVpnDetectionDetails_thenReturnsWithPublicVpn() {
         // when
-        val result = creator.getVpnDetectionDetails(
+        val result = getVpnDetectionDetails(
             methods = mapOf("publicVPN" to true),
             confidence = null,
             originCountry = null
@@ -271,7 +271,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenMethodsWithAllFields_whenGetVpnDetectionDetails_thenReturnsCompleteString() {
         // when
-        val result = creator.getVpnDetectionDetails(
+        val result = getVpnDetectionDetails(
             methods = mapOf("timezoneMismatch" to true),
             confidence = "medium",
             originCountry = "DE"
@@ -288,7 +288,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenNullOriginCountry_whenAppendCountryInfo_thenReturnsEmptyString() {
         // when
-        val result = creator.appendCountryInfo(null)
+        val result = appendCountryInfo(null)
 
         // then
         TestCase.assertEquals("", result)
@@ -297,7 +297,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidCountryCode_whenAppendCountryInfo_thenReturnsFormattedString() {
         // when
-        val result = creator.appendCountryInfo("US")
+        val result = appendCountryInfo("US")
 
         // then
         TestCase.assertTrue(result.contains("Origin Country:"))
@@ -308,7 +308,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenLowerCaseCountryCode_whenAppendCountryInfo_thenReturnsFormattedString() {
         // when
-        val result = creator.appendCountryInfo("us")
+        val result = appendCountryInfo("us")
 
         // then
         TestCase.assertTrue(result.contains("Origin Country:"))
@@ -318,7 +318,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeWithWhitespace_whenAppendCountryInfo_thenReturnsFormattedString() {
         // when
-        val result = creator.appendCountryInfo("  DE  ")
+        val result = appendCountryInfo("  DE  ")
 
         // then
         TestCase.assertTrue(result.contains("Origin Country:"))
@@ -329,7 +329,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenNullConfidence_whenAppendConfidenceLevel_thenReturnsEmptyString() {
         // when
-        val result = creator.appendConfidenceLevel(null)
+        val result = appendConfidenceLevel(null)
 
         // then
         TestCase.assertEquals("", result)
@@ -338,7 +338,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidConfidence_whenAppendConfidenceLevel_thenReturnsFormattedString() {
         // when
-        val result = creator.appendConfidenceLevel("high")
+        val result = appendConfidenceLevel("high")
 
         // then
         TestCase.assertEquals("\nConfidence: high", result)
@@ -347,7 +347,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenMediumConfidence_whenAppendConfidenceLevel_thenReturnsFormattedString() {
         // when
-        val result = creator.appendConfidenceLevel("medium")
+        val result = appendConfidenceLevel("medium")
 
         // then
         TestCase.assertEquals("\nConfidence: medium", result)
@@ -356,7 +356,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenLowConfidence_whenAppendConfidenceLevel_thenReturnsFormattedString() {
         // when
-        val result = creator.appendConfidenceLevel("low")
+        val result = appendConfidenceLevel("low")
 
         // then
         TestCase.assertEquals("\nConfidence: low", result)
@@ -366,7 +366,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidCountryCode_whenGetFlagEmoji_thenReturnsFlagEmoji() {
         // when
-        val result = creator.getFlagEmoji("US")
+        val result = getFlagEmoji("US")
 
         // then
         TestCase.assertFalse(result.isEmpty())
@@ -376,7 +376,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenLowerCaseCountryCode_whenGetFlagEmoji_thenReturnsFlagEmoji() {
         // when
-        val result = creator.getFlagEmoji("us")
+        val result = getFlagEmoji("us")
 
         // then
         TestCase.assertFalse(result.isEmpty())
@@ -385,7 +385,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeWithWhitespace_whenGetFlagEmoji_thenReturnsFlagEmoji() {
         // when
-        val result = creator.getFlagEmoji("  DE  ")
+        val result = getFlagEmoji("  DE  ")
 
         // then
         TestCase.assertFalse(result.isEmpty())
@@ -394,7 +394,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenInvalidCountryCode_whenGetFlagEmoji_thenReturnsEmptyString() {
         // when
-        val result = creator.getFlagEmoji("USA")
+        val result = getFlagEmoji("USA")
 
         // then
         TestCase.assertEquals("", result)
@@ -403,7 +403,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenEmptyCountryCode_whenGetFlagEmoji_thenReturnsEmptyString() {
         // when
-        val result = creator.getFlagEmoji("")
+        val result = getFlagEmoji("")
 
         // then
         TestCase.assertEquals("", result)
@@ -412,7 +412,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenSingleCharacterCountryCode_whenGetFlagEmoji_thenReturnsEmptyString() {
         // when
-        val result = creator.getFlagEmoji("U")
+        val result = getFlagEmoji("U")
 
         // then
         TestCase.assertEquals("", result)
@@ -421,7 +421,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeUS_whenGetFlagEmoji_thenReturnsUSFlag() {
         // when
-        val result = creator.getFlagEmoji("US")
+        val result = getFlagEmoji("US")
 
         // then
         TestCase.assertEquals("\uD83C\uDDFA\uD83C\uDDF8", result) // 🇺🇸
@@ -430,7 +430,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeDE_whenGetFlagEmoji_thenReturnsGermanyFlag() {
         // when
-        val result = creator.getFlagEmoji("DE")
+        val result = getFlagEmoji("DE")
 
         // then
         TestCase.assertEquals("\uD83C\uDDE9\uD83C\uDDEA", result) // 🇩🇪
@@ -439,7 +439,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeFR_whenGetFlagEmoji_thenReturnsFranceFlag() {
         // when
-        val result = creator.getFlagEmoji("FR")
+        val result = getFlagEmoji("FR")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEB\uD83C\uDDF7", result) // 🇫🇷
@@ -448,7 +448,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeGB_whenGetFlagEmoji_thenReturnsUnitedKingdomFlag() {
         // when
-        val result = creator.getFlagEmoji("GB")
+        val result = getFlagEmoji("GB")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEC\uD83C\uDDE7", result) // 🇬🇧
@@ -457,7 +457,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeJP_whenGetFlagEmoji_thenReturnsJapanFlag() {
         // when
-        val result = creator.getFlagEmoji("JP")
+        val result = getFlagEmoji("JP")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEF\uD83C\uDDF5", result) // 🇯🇵
@@ -466,7 +466,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeCA_whenGetFlagEmoji_thenReturnsCanadaFlag() {
         // when
-        val result = creator.getFlagEmoji("CA")
+        val result = getFlagEmoji("CA")
 
         // then
         TestCase.assertEquals("\uD83C\uDDE8\uD83C\uDDE6", result) // 🇨🇦
@@ -475,7 +475,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeAU_whenGetFlagEmoji_thenReturnsAustraliaFlag() {
         // when
-        val result = creator.getFlagEmoji("AU")
+        val result = getFlagEmoji("AU")
 
         // then
         TestCase.assertEquals("\uD83C\uDDE6\uD83C\uDDFA", result) // 🇦🇺
@@ -484,7 +484,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeBR_whenGetFlagEmoji_thenReturnsBrazilFlag() {
         // when
-        val result = creator.getFlagEmoji("BR")
+        val result = getFlagEmoji("BR")
 
         // then
         TestCase.assertEquals("\uD83C\uDDE7\uD83C\uDDF7", result) // 🇧🇷
@@ -493,7 +493,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeCN_whenGetFlagEmoji_thenReturnsChinaFlag() {
         // when
-        val result = creator.getFlagEmoji("CN")
+        val result = getFlagEmoji("CN")
 
         // then
         TestCase.assertEquals("\uD83C\uDDE8\uD83C\uDDF3", result) // 🇨🇳
@@ -502,7 +502,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeIN_whenGetFlagEmoji_thenReturnsIndiaFlag() {
         // when
-        val result = creator.getFlagEmoji("IN")
+        val result = getFlagEmoji("IN")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEE\uD83C\uDDF3", result) // 🇮🇳
@@ -511,7 +511,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeRU_whenGetFlagEmoji_thenReturnsRussiaFlag() {
         // when
-        val result = creator.getFlagEmoji("RU")
+        val result = getFlagEmoji("RU")
 
         // then
         TestCase.assertEquals("\uD83C\uDDF7\uD83C\uDDFA", result) // 🇷🇺
@@ -520,7 +520,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeIT_whenGetFlagEmoji_thenReturnsItalyFlag() {
         // when
-        val result = creator.getFlagEmoji("IT")
+        val result = getFlagEmoji("IT")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEE\uD83C\uDDF9", result) // 🇮🇹
@@ -529,7 +529,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeES_whenGetFlagEmoji_thenReturnsSpainFlag() {
         // when
-        val result = creator.getFlagEmoji("ES")
+        val result = getFlagEmoji("ES")
 
         // then
         TestCase.assertEquals("\uD83C\uDDEA\uD83C\uDDF8", result) // 🇪🇸
@@ -538,7 +538,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeMX_whenGetFlagEmoji_thenReturnsMexicoFlag() {
         // when
-        val result = creator.getFlagEmoji("MX")
+        val result = getFlagEmoji("MX")
 
         // then
         TestCase.assertEquals("\uD83C\uDDF2\uD83C\uDDFD", result) // 🇲🇽
@@ -547,7 +547,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeKR_whenGetFlagEmoji_thenReturnsSouthKoreaFlag() {
         // when
-        val result = creator.getFlagEmoji("KR")
+        val result = getFlagEmoji("KR")
 
         // then
         TestCase.assertEquals("\uD83C\uDDF0\uD83C\uDDF7", result) // 🇰🇷
@@ -557,7 +557,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidCountryCode_whenGetCountryInfo_thenReturnsNameAndFlag() {
         // when
-        val result = creator.getCountryInfo("US")
+        val result = getCountryInfo("US")
 
         // then
         TestCase.assertEquals("United States", result.first)
@@ -567,7 +567,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidCountryCodeDE_whenGetCountryInfo_thenReturnsGermany() {
         // when
-        val result = creator.getCountryInfo("DE")
+        val result = getCountryInfo("DE")
 
         // then
         TestCase.assertEquals("Germany", result.first)
@@ -577,7 +577,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenValidCountryCodeFR_whenGetCountryInfo_thenReturnsFrance() {
         // when
-        val result = creator.getCountryInfo("FR")
+        val result = getCountryInfo("FR")
 
         // then
         TestCase.assertEquals("France", result.first)
@@ -587,7 +587,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenLowerCaseCountryCode_whenGetCountryInfo_thenReturnsNameAndFlag() {
         // when
-        val result = creator.getCountryInfo("gb")
+        val result = getCountryInfo("gb")
 
         // then
         TestCase.assertTrue(result.first.isNotEmpty())
@@ -597,7 +597,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenCountryCodeWithWhitespace_whenGetCountryInfo_thenReturnsNameAndFlag() {
         // when
-        val result = creator.getCountryInfo("  JP  ")
+        val result = getCountryInfo("  JP  ")
 
         // then
         TestCase.assertTrue(result.first.isNotEmpty())
@@ -607,7 +607,7 @@ class HomeScreenUiStateCreatorUnitTests {
     @Test
     fun givenInvalidCountryCode_whenGetCountryInfo_thenReturnsCodeAsName() {
         // when
-        val result = creator.getCountryInfo("XX")
+        val result = getCountryInfo("XX")
 
         // then
         TestCase.assertEquals("XX", result.first)

@@ -86,6 +86,7 @@ fun EventPrettifiedView(
     }
 }
 
+@Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PrettifiedPropertyView(
