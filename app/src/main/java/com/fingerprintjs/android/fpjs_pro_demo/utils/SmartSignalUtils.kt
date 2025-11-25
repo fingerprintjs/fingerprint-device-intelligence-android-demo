@@ -28,7 +28,11 @@ internal fun getVpnDetectionDetails(
         ?.let { " (${StringConstants.VPN_METHOD_LABELS[it]})" }
         .orEmpty()
 
-    return "${StringConstants.DETECTED}$detectedMethod${appendConfidenceLevel(confidence)}${appendCountryInfo(originCountry)}"
+    return "${StringConstants.DETECTED}$detectedMethod${appendConfidenceLevel(confidence)}${
+        appendCountryInfo(
+            originCountry
+        )
+    }"
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -50,8 +54,14 @@ internal fun getFlagEmoji(countryCode: String): String {
     val normalized = countryCode.trim().uppercase(Locale.ROOT)
     if (normalized.length != StringConstants.COUNTRY_CODE_LENGTH) return ""
 
-    val first = Character.codePointAt(normalized, 0) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
-    val second = Character.codePointAt(normalized, 1) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
+    val first = Character.codePointAt(
+        normalized,
+        0
+    ) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
+    val second = Character.codePointAt(
+        normalized,
+        1
+    ) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
 
     return String(Character.toChars(first)) + String(Character.toChars(second))
 }
@@ -69,4 +79,3 @@ internal fun getCountryInfo(code: String): Pair<String, String> {
 internal fun Boolean.detectionStatusString(): String {
     return if (this) StringConstants.DETECTED else StringConstants.NOT_DETECTED
 }
-
