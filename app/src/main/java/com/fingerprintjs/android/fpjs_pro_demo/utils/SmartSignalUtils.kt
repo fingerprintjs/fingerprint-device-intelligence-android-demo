@@ -1,19 +1,20 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import androidx.annotation.VisibleForTesting
+import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignal
 import java.util.Locale
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun SmartSignal.Vpn.getVpnStatusString(): String = when {
-    !result -> NOT_DETECTED_STRING
+    !result -> StringConstants.NOT_DETECTED
     else -> getVpnDetectionDetails(methods, confidence, originCountry)
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun SmartSignal.Vpn.getVpnNoteString(): String = when {
     !result -> ""
-    else -> VPN_NOTE_STRING
+    else -> StringConstants.VPN_NOTE_STRING
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -22,12 +23,12 @@ internal fun getVpnDetectionDetails(
     confidence: String?,
     originCountry: String?,
 ): String {
-    val detectedMethod = VPN_METHOD_PRIORITY
+    val detectedMethod = StringConstants.VPN_METHOD_PRIORITY
         .firstOrNull { methods[it] == true }
-        ?.let { " (${VPN_METHOD_LABELS[it]})" }
+        ?.let { " (${StringConstants.VPN_METHOD_LABELS[it]})" }
         .orEmpty()
 
-    return "$DETECTED_STRING$detectedMethod${appendConfidenceLevel(confidence)}${appendCountryInfo(originCountry)}"
+    return "${StringConstants.DETECTED}$detectedMethod${appendConfidenceLevel(confidence)}${appendCountryInfo(originCountry)}"
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -47,10 +48,10 @@ internal fun appendConfidenceLevel(confidence: String?): String {
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun getFlagEmoji(countryCode: String): String {
     val normalized = countryCode.trim().uppercase(Locale.ROOT)
-    if (normalized.length != COUNTRY_CODE_LENGTH) return ""
+    if (normalized.length != StringConstants.COUNTRY_CODE_LENGTH) return ""
 
-    val first = Character.codePointAt(normalized, 0) - ASCII_UPPERCASE_A_CODEPOINT + REGIONAL_INDICATOR_BASE
-    val second = Character.codePointAt(normalized, 1) - ASCII_UPPERCASE_A_CODEPOINT + REGIONAL_INDICATOR_BASE
+    val first = Character.codePointAt(normalized, 0) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
+    val second = Character.codePointAt(normalized, 1) - StringConstants.ASCII_UPPERCASE_A_CODEPOINT + StringConstants.REGIONAL_INDICATOR_BASE
 
     return String(Character.toChars(first)) + String(Character.toChars(second))
 }
@@ -66,28 +67,6 @@ internal fun getCountryInfo(code: String): Pair<String, String> {
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
 internal fun Boolean.detectionStatusString(): String {
-    return if (this) DETECTED_STRING else NOT_DETECTED_STRING
+    return if (this) StringConstants.DETECTED else StringConstants.NOT_DETECTED
 }
 
-const val NOT_DETECTED_STRING = "Not detected"
-const val DETECTED_STRING = "Detected"
-const val NOT_AVAILABLE_STRING = "N/A"
-private const val VPN_NOTE_STRING = "Note: works without location permissions"
-
-private val VPN_METHOD_LABELS = mapOf(
-    "publicVPN" to "Public VPN",
-    "timezoneMismatch" to "Timezone mismatch",
-    "relay" to "Relay",
-    "auxiliaryMobile" to "Auxiliary mobile",
-)
-
-private val VPN_METHOD_PRIORITY = listOf(
-    "publicVPN",
-    "timezoneMismatch",
-    "relay",
-    "auxiliaryMobile",
-)
-
-private const val COUNTRY_CODE_LENGTH = 2
-private const val ASCII_UPPERCASE_A_CODEPOINT = 0x41
-private const val REGIONAL_INDICATOR_BASE = 0x1F1E6
