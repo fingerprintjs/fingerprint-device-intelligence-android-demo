@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
                     showSignUpPromptUseCase.onFingerprintSuccess()
                 }
             }
-            .combine(showSignUpPromptUseCase.showAllowed) { uiState, showAllowed ->
+            .combine(showSignUpPromptUseCase.showAllowed(viewModelScope)) { uiState, showAllowed ->
                 if (uiState is HomeScreenUiState.Content.LoadingOrSuccess && !uiState.isLoading) {
                     uiState.copy(isSignupPromptShown = showAllowed)
                 } else {

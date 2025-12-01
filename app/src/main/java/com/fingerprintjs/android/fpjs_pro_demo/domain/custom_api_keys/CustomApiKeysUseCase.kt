@@ -20,13 +20,13 @@ import javax.inject.Inject
 @AppScope
 class CustomApiKeysUseCase @Inject constructor(
     private val appStorage: AppStorage,
-    private val applicationScope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) {
     private val _state = MutableSharedFlow<CustomApiKeysState>(replay = 1)
     val state: Flow<CustomApiKeysState> = _state.distinctUntilChanged()
 
     init {
-        applicationScope.launch(Dispatchers.IO) {
+        scope.launch(Dispatchers.IO) {
             refreshState()
         }
     }

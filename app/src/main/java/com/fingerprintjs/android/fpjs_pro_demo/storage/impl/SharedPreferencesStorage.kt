@@ -20,7 +20,7 @@ import javax.inject.Inject
 @AppScope
 class SharedPreferencesStorage @Inject constructor(
     private val context: Context,
-    private val applicationScope: CoroutineScope,
+    private val scope: CoroutineScope,
 ) : BackingStorage {
     private val encryptedSharedPreferencesSupported = android.os.Build.VERSION.SDK_INT >= 23
 
@@ -44,7 +44,7 @@ class SharedPreferencesStorage @Inject constructor(
     }
 
     init {
-        applicationScope.launch { clearPreviousSharedPreferences() }
+        scope.launch { clearPreviousSharedPreferences() }
     }
 
     private val sharedPreferences: SharedPreferences by lazy {
