@@ -30,7 +30,6 @@ val googleServicesFilename = "google-services.json"
 val googleServicesFile = file(googleServicesFilename)
 if (googleServicesFile.exists()) {
     plugins.apply(libs.plugins.google.services.get().pluginId)
-    plugins.apply(libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 android {
