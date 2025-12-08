@@ -23,13 +23,13 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.arturbosch.detekt)
-    alias(libs.plugins.firebase.crashlytics)
 }
 
 val googleServicesFilename = "google-services.json"
 val googleServicesFile = file(googleServicesFilename)
 if (googleServicesFile.exists()) {
     plugins.apply(libs.plugins.google.services.get().pluginId)
+    plugins.apply(libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 android {
