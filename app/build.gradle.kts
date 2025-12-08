@@ -81,6 +81,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
         // Use this build variant for testing the app locally with minification enabled and release
         // level of performance, but also with the mocking functionality that the debug build type has.
@@ -90,11 +93,15 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 
     firebaseCrashlytics {
         nativeSymbolUploadEnabled = true
+        mappingFileUploadEnabled = true
     }
 
     compileOptions {
@@ -149,6 +156,7 @@ dependencies {
 
     //Firebase
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.crashlytics.ndk)
 
     //shimmer
