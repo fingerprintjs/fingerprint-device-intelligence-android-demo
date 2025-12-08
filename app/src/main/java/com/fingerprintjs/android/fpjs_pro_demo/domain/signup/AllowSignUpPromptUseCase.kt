@@ -3,28 +3,16 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.signup
 import com.fingerprintjs.android.fpjs_pro_demo.storage.AppStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey
 import com.github.michaelbull.result.getOrElse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 class AllowSignUpPromptUseCase @Inject constructor(
     private val appStorage: AppStorage,
 ) {
     private val _showAllowed = MutableSharedFlow<Boolean>(replay = 1)
-    private val initialized = AtomicBoolean(false)
-
-    fun showAllowed(scope: CoroutineScope): Flow<Boolean> {
-        if (initialized.compareAndSet(false, true)) {
-            scope.launch(Dispatchers.IO) {
-                updateState()
-            }
-        }
-        return _showAllowed
-    }
+    val showAllowed: Flow<Boolean>
+        get() = _showAllowed
 
     private suspend fun getFingerprintSuccessCount() =
         appStorage.load(StorageKey.FingerprintSuccessCount, Int::class).getOrElse { 0 }
@@ -48,7 +36,7 @@ class AllowSignUpPromptUseCase @Inject constructor(
         updateState()
     }
 
-    private suspend fun updateState() {
+    suspend fun updateState() {
         _showAllowed.emit(
             (System.currentTimeMillis() - getSignupPromptHideTimeMillis() > MILLIS_IN_WEEK) &&
                 getFingerprintSuccessCount() >= 2

@@ -41,6 +41,12 @@ class HomeViewModel @Inject constructor(
     private val smartSignalsProvider: SmartSignalsProvider,
     private val homeScreenUiStateCreator: HomeScreenUiStateCreator,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            showSignUpPromptUseCase.initialize()
+        }
+    }
     private val externalLinkToOpenMutable = MutableSharedFlow<String>()
     val externalLinkToOpen: Flow<String>
         get() = externalLinkToOpenMutable
@@ -95,7 +101,7 @@ class HomeViewModel @Inject constructor(
                     showSignUpPromptUseCase.onFingerprintSuccess()
                 }
             }
-            .combine(showSignUpPromptUseCase.showAllowed(viewModelScope)) { uiState, showAllowed ->
+            .combine(showSignUpPromptUseCase.showAllowed) { uiState, showAllowed ->
                 if (uiState is HomeScreenUiState.Content.LoadingOrSuccess && !uiState.isLoading) {
                     uiState.copy(isSignupPromptShown = showAllowed)
                 } else {
