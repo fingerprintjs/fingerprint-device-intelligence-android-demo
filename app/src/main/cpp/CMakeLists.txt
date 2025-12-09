@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.18.1)
 
 project("jni-helper")
 
-# Add debug symbols
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -g2 -O3")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g2 -O3")
 
