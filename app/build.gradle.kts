@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.util.Properties
 
 val local = Properties().apply {
@@ -24,13 +25,11 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.arturbosch.detekt)
     alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
 }
 
 val googleServicesFilename = "google-services.json"
 val googleServicesFile = file(googleServicesFilename)
-if (googleServicesFile.exists()) {
-    plugins.apply(libs.plugins.google.services.get().pluginId)
-}
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
@@ -96,11 +95,6 @@ android {
                 debugSymbolLevel = "FULL"
             }
         }
-    }
-
-    firebaseCrashlytics {
-        nativeSymbolUploadEnabled = true
-        mappingFileUploadEnabled = true
     }
 
     compileOptions {
@@ -187,4 +181,17 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     detektPlugins(libs.detekt.formatting)
+}
+
+afterEvaluate {
+    extensions.findByType(CrashlyticsExtension::class.java)?.apply {
+        mappingFileUploadEnabled = googleServicesFile.exists()
+        nativeSymbolUploadEnabled = googleServicesFile.exists()
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType<com.google.gms.googleservices.GoogleServicesTask>().configureEach {
+        onlyIf { googleServicesFile.exists() }
+    }
 }
