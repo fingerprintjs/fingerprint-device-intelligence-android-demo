@@ -113,6 +113,22 @@ android {
             (this as? BaseVariantOutputImpl)?.outputFileName = "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
         }
     }
+    
+    // Force secure versions of transitive dependencies to fix vulnerabilities
+    configurations.all {
+        resolutionStrategy {
+            force(
+                "com.google.protobuf:protobuf-java:3.25.5",
+                "com.google.protobuf:protobuf-java-util:3.25.5",
+                "commons-io:commons-io:2.14.0",
+                "io.netty:netty-codec-http2:4.1.129.Final",
+                "io.netty:netty-codec-http:4.1.129.Final",
+                "io.netty:netty-handler:4.1.118.Final",
+                "io.netty:netty-common:4.1.118",
+                "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+            )
+        }
+    }
 }
 
 detekt {
@@ -140,7 +156,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.preview)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.animation)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
