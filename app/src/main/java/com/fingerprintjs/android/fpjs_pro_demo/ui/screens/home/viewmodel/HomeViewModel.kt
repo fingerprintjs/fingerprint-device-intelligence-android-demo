@@ -41,6 +41,12 @@ class HomeViewModel @Inject constructor(
     private val smartSignalsProvider: SmartSignalsProvider,
     private val homeScreenUiStateCreator: HomeScreenUiStateCreator,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            showSignUpPromptUseCase.initialize()
+        }
+    }
     private val externalLinkToOpenMutable = MutableSharedFlow<String>()
     val externalLinkToOpen: Flow<String>
         get() = externalLinkToOpenMutable
