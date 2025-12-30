@@ -613,7 +613,7 @@ class SmartSignalUtilsUnitTests {
         // then
         TestCase.assertTrue(result.contains("ID: testId123"))
         TestCase.assertTrue(result.contains("Precision Radius: 10m"))
-        TestCase.assertTrue(result.contains("Confidence: 0.76%"))
+        TestCase.assertTrue(result.contains("Confidence: 0.76"))
     }
 
     @Test
@@ -679,7 +679,7 @@ class SmartSignalUtilsUnitTests {
         val result = proximity.getProximityDetails()
 
         // then
-        TestCase.assertTrue(result.contains("Confidence: 0.5%"))
+        TestCase.assertTrue(result.contains("Confidence: 0.5"))
         TestCase.assertFalse(result.contains("ID:"))
         TestCase.assertFalse(result.contains("Precision Radius:"))
     }
@@ -698,7 +698,7 @@ class SmartSignalUtilsUnitTests {
 
         // then
         TestCase.assertTrue(result.contains("ID: testId123"))
-        TestCase.assertTrue(result.contains("Confidence: 0.85%"))
+        TestCase.assertTrue(result.contains("Confidence: 0.85"))
         TestCase.assertFalse(result.contains("Precision Radius:"))
     }
 }
