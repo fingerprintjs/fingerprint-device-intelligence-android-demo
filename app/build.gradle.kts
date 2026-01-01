@@ -188,6 +188,11 @@ afterEvaluate {
         mappingFileUploadEnabled = googleServicesFile.exists()
         nativeSymbolUploadEnabled = googleServicesFile.exists()
     }
+    
+    // Skip Crashlytics upload tasks if google-services.json doesn't exist
+    tasks.matching { it.name.startsWith("uploadCrashlytics") }.configureEach {
+        onlyIf { googleServicesFile.exists() }
+    }
 }
 
 gradle.projectsEvaluated {
