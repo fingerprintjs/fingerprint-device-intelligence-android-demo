@@ -421,8 +421,10 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.ipInfo,
                             smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.mitm,
                             smartSignals.proxy,
                             smartSignals.root,
+                            smartSignals.tampering,
                             smartSignals.vpn,
                         )
                             .forEach {
