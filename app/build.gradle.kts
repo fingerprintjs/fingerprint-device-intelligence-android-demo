@@ -184,9 +184,17 @@ dependencies {
 }
 
 afterEvaluate {
+    val hasGoogleServices = googleServicesFile.exists()
+    
     extensions.findByType(CrashlyticsExtension::class.java)?.apply {
-        mappingFileUploadEnabled = googleServicesFile.exists()
-        nativeSymbolUploadEnabled = googleServicesFile.exists()
+        mappingFileUploadEnabled = hasGoogleServices
+        nativeSymbolUploadEnabled = hasGoogleServices
+    }
+    
+    // Disable Crashlytics upload tasks if google-services.json doesn't exist
+    // Using enabled = false prevents task configuration validation errors
+    tasks.matching { it.name.startsWith("uploadCrashlytics") }.configureEach {
+        enabled = hasGoogleServices
     }
 }
 
