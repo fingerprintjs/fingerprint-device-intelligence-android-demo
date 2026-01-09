@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import org.gradle.kotlin.dsl.project
-=======
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
->>>>>>> 86674f7 (Mobile 893: enable gwp (#65))
 import java.util.Properties
 
 val local = Properties().apply {
@@ -14,9 +10,9 @@ val local = Properties().apply {
 }
 
 @Suppress("PropertyName")
-val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "3.7.0"
+val VERSION_NAME="3.8.0"
 @Suppress("PropertyName")
-val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 42
+val VERSION_CODE=43
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
@@ -116,8 +112,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-<<<<<<< HEAD
-=======
     applicationVariants.all {
         val variant = this
         this.outputs.all {
@@ -140,7 +134,6 @@ android {
             )
         }
     }
->>>>>>> 3878eb1 (MOBILE-853: dependency version changes for snyk vulnerability fixes (#68))
 }
 
 detekt {
