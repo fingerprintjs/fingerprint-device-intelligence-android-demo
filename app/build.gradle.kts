@@ -1,5 +1,4 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.util.Properties
 
 val local = Properties().apply {
@@ -24,12 +23,14 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.arturbosch.detekt)
-    alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.google.services)
 }
 
 val googleServicesFilename = "google-services.json"
 val googleServicesFile = file(googleServicesFilename)
+if (googleServicesFile.exists()) {
+    plugins.apply(libs.plugins.google.services.get().pluginId)
+    plugins.apply(libs.plugins.firebase.crashlytics.get().pluginId)
+}
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
@@ -79,9 +80,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
         }
         // Use this build variant for testing the app locally with minification enabled and release
         // level of performance, but also with the mocking functionality that the debug build type has.
@@ -91,9 +89,6 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
         }
     }
 
@@ -149,7 +144,6 @@ dependencies {
 
     //Firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.crashlytics.ndk)
 
     //shimmer
@@ -181,17 +175,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     detektPlugins(libs.detekt.formatting)
-}
-
-afterEvaluate {
-    extensions.findByType(CrashlyticsExtension::class.java)?.apply {
-        mappingFileUploadEnabled = googleServicesFile.exists()
-        nativeSymbolUploadEnabled = googleServicesFile.exists()
-    }
-}
-
-gradle.projectsEvaluated {
-    tasks.withType<com.google.gms.googleservices.GoogleServicesTask>().configureEach {
-        onlyIf { googleServicesFile.exists() }
-    }
 }
