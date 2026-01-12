@@ -109,7 +109,6 @@ private val expectedJson = """
                 "result": true,
                 "originTimezone": "America/New_York",
                 "originCountry": "DE",
-                "confidence": "high",
                 "methods": {
                     "timezoneMismatch": true,
                     "publicVPN": false,

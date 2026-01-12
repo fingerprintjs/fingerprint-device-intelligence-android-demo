@@ -24,11 +24,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,7 +48,6 @@ data class PrettifiedProperty(
     val onLongClickEnabled: Boolean = false,
     val isSmartSignal: Boolean = false,
     val onSmartSignalClick: () -> Unit = {},
-    val note: String? = null
 )
 
 @Composable
@@ -73,7 +70,6 @@ fun EventPrettifiedView(
                     onLongClickEnabled = property.onLongClickEnabled,
                     isSmartSignal = property.isSmartSignal,
                     onSmartSignalClick = property.onSmartSignalClick,
-                    note = property.note,
                     isLast = index == properties.lastIndex,
                     isLoading = if (property.isSmartSignal) {
                         isSmartSignalsLoading
@@ -86,7 +82,6 @@ fun EventPrettifiedView(
     }
 }
 
-@Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PrettifiedPropertyView(
@@ -99,7 +94,6 @@ private fun PrettifiedPropertyView(
     onLongClickEnabled: Boolean,
     isSmartSignal: Boolean,
     onSmartSignalClick: () -> Unit = {},
-    note: String?,
     isLoading: Boolean,
     isLast: Boolean,
 ) {
@@ -145,26 +139,11 @@ private fun PrettifiedPropertyView(
             ) { state ->
                 Text(
                     color = valueColor,
-                    maxLines = 4,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = textPrettifiedView,
                     fontStyle = if (isValueItalic) FontStyle.Italic else FontStyle.Normal,
-                    text = buildAnnotatedString {
-                        withStyle(SpanStyle(fontSize = textPrettifiedView.fontSize)) {
-                            append(state.data)
-                        }
-                        if (note?.isNotBlank() == true) {
-                            append("\n")
-                            withStyle(
-                                SpanStyle(
-                                    fontSize = 10.sp,
-                                    color = AppTheme.materialTheme.colorScheme.onSurfaceVariant
-                                )
-                            ) {
-                                append(note)
-                            }
-                        }
-                    }
+                    text = state.data,
                 )
             }
             val smartSignalInlineImageAlternateText =
