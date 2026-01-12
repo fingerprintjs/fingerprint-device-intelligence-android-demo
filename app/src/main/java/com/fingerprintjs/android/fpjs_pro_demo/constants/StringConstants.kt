@@ -33,20 +33,6 @@ object StringConstants {
     const val ROOTED_DEVICE = "Rooted Device"
     const val TAMPERED_REQUEST = "Tampered Request"
     const val VPN = "VPN"
-    const val PROXIMITY = "Proximity Detection"
-
-    // Smart signal link text
-    const val SMART_SIGNAL = "Smart Signal"
-    const val MORE_INFO = "More Info"
-
-    // Proximity value formatting
-    const val PROXIMITY_ID_PREFIX = "Proximity ID: "
-    const val PROXIMITY_PRECISION_RADIUS_PREFIX = "Precision Radius: "
-    const val PROXIMITY_PRECISION_RADIUS_SUFFIX = "m"
-    const val PROXIMITY_CONFIDENCE_PREFIX = "Confidence: "
-    const val PROXIMITY_REQUIRES_PERMISSION = "Requires location permission"
-    const val PROXIMITY_DOC_URL =
-        "https://dev.fingerprint.com/docs/native-android-integration#proximity-detection-for-android-devices"
 
     // Visitor found values
     const val YES = "Yes"
