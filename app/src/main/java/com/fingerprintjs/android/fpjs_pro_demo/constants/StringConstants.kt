@@ -38,6 +38,11 @@ object StringConstants {
     const val YES = "Yes"
     const val NO = "No"
 
+    // VPN detection messages
+    const val DEVICE_HAS_VPN_ENABLED = "Device has VPN enabled"
+    const val DEVICE_LOCATION_IS = "Device location is"
+    const val DEVICE_TIMEZONE_IS = "Device timezone is"
+
     // High activity message
     const val PER_DAY = "per day"
 
@@ -63,24 +68,4 @@ object StringConstants {
     const val DAYS = "days"
     const val WEEK = "week"
     const val WEEKS = "weeks"
-    const val VPN_NOTE_STRING = "Note: works without location permissions"
-
-    // VPN Detection
-    val VPN_METHOD_LABELS = mapOf(
-        "publicVPN" to "Public VPN",
-        "timezoneMismatch" to "Timezone mismatch",
-        "relay" to "Relay",
-        "auxiliaryMobile" to "Auxiliary mobile",
-    )
-
-    val VPN_METHOD_PRIORITY = listOf(
-        "publicVPN",
-        "timezoneMismatch",
-        "relay",
-        "auxiliaryMobile",
-    )
-
-    const val COUNTRY_CODE_LENGTH = 2
-    const val ASCII_UPPERCASE_A_CODEPOINT = 0x41
-    const val REGIONAL_INDICATOR_BASE = 0x1F1E6
 }
