@@ -32,7 +32,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.LinkableText
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.Shimmable
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.ShimmableState
@@ -51,8 +50,7 @@ data class PrettifiedProperty(
     val onLongClickEnabled: Boolean = false,
     val isSmartSignal: Boolean = false,
     val onSmartSignalClick: () -> Unit = {},
-    val note: String? = null,
-    val smartSignalLinkText: String = StringConstants.SMART_SIGNAL
+    val note: String? = null
 )
 
 @Composable
@@ -76,7 +74,6 @@ fun EventPrettifiedView(
                     isSmartSignal = property.isSmartSignal,
                     onSmartSignalClick = property.onSmartSignalClick,
                     note = property.note,
-                    smartSignalLinkText = property.smartSignalLinkText,
                     isLast = index == properties.lastIndex,
                     isLoading = if (property.isSmartSignal) {
                         isSmartSignalsLoading
@@ -105,7 +102,6 @@ private fun PrettifiedPropertyView(
     note: String?,
     isLoading: Boolean,
     isLast: Boolean,
-    smartSignalLinkText: String = StringConstants.SMART_SIGNAL,
 ) {
     Box(
         modifier = modifier
@@ -185,7 +181,7 @@ private fun PrettifiedPropertyView(
                 } else {
                     listOf(
                         LinkableText.Link(
-                            mask = "$smartSignalLinkText $smartSignalInlineImageAlternateText",
+                            mask = "Smart Signal $smartSignalInlineImageAlternateText",
                             handler = onSmartSignalClick,
                         )
                     )
@@ -195,7 +191,7 @@ private fun PrettifiedPropertyView(
                     if (!isSmartSignal) {
                         append(name)
                     } else {
-                        append("$name - $smartSignalLinkText ")
+                        append("$name - Smart Signal ")
                         appendInlineContent(
                             id = smartSignalInlineImageId,
                             alternateText = smartSignalInlineImageAlternateText,

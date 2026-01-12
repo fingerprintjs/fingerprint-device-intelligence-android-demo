@@ -15,8 +15,8 @@ class TimeUtilsTests {
 
     @Test
     fun `returns Just now for seconds less than 60`() {
-        val now = System.currentTimeMillis()
-        val timestamp = (now - 30 * MILLIS_IN_SECOND) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 30 * MILLIS_IN_SECOND
 
         val result = relativeTime("12:00 PM", timestamp)
         TestCase.assertEquals("12:00 PM (Just now)", result)
@@ -24,8 +24,8 @@ class TimeUtilsTests {
 
     @Test
     fun `returns minutes ago for less than an hour`() {
-        val now = System.currentTimeMillis()
-        val timestamp = (now - 5 * SECONDS_IN_MINUTE * MILLIS_IN_SECOND) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 5 * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
         val result = relativeTime("12:00 PM", timestamp)
         TestCase.assertEquals("12:00 PM (5 minutes ago)", result)
@@ -33,8 +33,8 @@ class TimeUtilsTests {
 
     @Test
     fun `returns hours ago for less than a day`() {
-        val now = System.currentTimeMillis()
-        val timestamp = (now - 3 * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 3 * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
         val result = relativeTime("12:00 PM", timestamp)
         TestCase.assertEquals("12:00 PM (3 hours ago)", result)
@@ -42,9 +42,8 @@ class TimeUtilsTests {
 
     @Test
     fun `returns days ago for less than a week`() {
-        val now = System.currentTimeMillis()
-        val twoDaysAgoMillis = 2 * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
-        val timestamp = (now - twoDaysAgoMillis) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 2 * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
         val result = relativeTime("12:00 PM", timestamp)
         TestCase.assertEquals("12:00 PM (2 days ago)", result)
@@ -52,30 +51,20 @@ class TimeUtilsTests {
 
     @Test
     fun `returns weeks ago for less than threshold`() {
-        val now = System.currentTimeMillis()
-        val oneWeekAgoMillis = 1 * DAYS_IN_WEEK * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
-        val timestamp = (now - oneWeekAgoMillis) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 7 * DAYS_IN_WEEK * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
         val result = relativeTime("12:00 PM", timestamp)
         TestCase.assertEquals("12:00 PM (1 week ago)", result)
     }
 
     @Test
-    @Suppress("SwallowedException")
     fun `falls back to DateUtils for older timestamps`() {
-        val now = System.currentTimeMillis()
-        val fortyDaysAgoMillis = 40L * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
-        val timestamp = (now - fortyDaysAgoMillis) / MILLIS_IN_SECOND
+        val now = 1_000_000_000_000L
+        val timestamp = now - 40L * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
-        try {
-            val result = relativeTime("12:00 PM", timestamp)
-            // If DateUtils works (e.g., in Robolectric), verify the format
-            assert(result.startsWith("12:00 PM ("))
-        } catch (e: RuntimeException) {
-            // DateUtils.getRelativeTimeSpanString throws RuntimeException in JUnit tests
-            // This is expected behavior when Android APIs are not available
-            // Exception is intentionally swallowed as it's expected in unit test environment
-        }
+        val result = relativeTime("12:00 PM", timestamp)
+        assert(result.startsWith("12:00 PM ("))
     }
 
     @Test

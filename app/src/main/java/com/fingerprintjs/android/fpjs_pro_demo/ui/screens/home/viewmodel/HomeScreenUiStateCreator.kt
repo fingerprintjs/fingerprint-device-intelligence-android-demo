@@ -35,7 +35,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimestampFromTimeString
-import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnStatusString
@@ -196,7 +195,6 @@ class HomeScreenUiStateCreator @Inject constructor(
             docUrl: String,
             value: T.() -> String,
             note: (T.() -> String?)? = null,
-            smartSignalLinkText: String = StringConstants.SMART_SIGNAL,
         ): PrettifiedProperty {
             val smartSignalsInfo = smartSignals?.let(from)
             return PrettifiedProperty(
@@ -216,8 +214,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     note?.invoke(
                         it
                     )
-                },
-                smartSignalLinkText = smartSignalLinkText,
+                }
             )
         }
 
@@ -392,13 +389,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = { getVpnStatusString() },
                     note = { getVpnNoteString() },
                 ),
-                smartSignalProperty(
-                    from = { proximity },
-                    name = StringConstants.PROXIMITY,
-                    docUrl = StringConstants.PROXIMITY_DOC_URL,
-                    value = { getProximityDetails() },
-                    smartSignalLinkText = StringConstants.MORE_INFO,
-                ),
             )
                 .map {
                     it.copy(
@@ -436,7 +426,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.root,
                             smartSignals.tampering,
                             smartSignals.vpn,
-                            smartSignals.proximity,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {
