@@ -23,6 +23,7 @@ fingerprintDebug = "2.13.0-debug"
 androidApplicationPlugin = "8.7.1"
 kotlin = "2.1.0"
 detekt = "1.23.8"
+desugaring = "2.1.4"
 googleServicesPlugin = "4.4.3"
 firebaseCrashlytics = "3.0.5"
 
@@ -43,6 +44,7 @@ androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+desugaring-formatting = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics-ndk = { module = "com.google.firebase:firebase-crashlytics-ndk" }

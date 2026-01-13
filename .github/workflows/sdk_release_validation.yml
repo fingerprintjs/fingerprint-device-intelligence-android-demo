@@ -1,0 +1,82 @@
+name: SDK Release Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+      - MOBILE-273/firebase_distribution
+  workflow_dispatch:
+
+jobs:
+  validate-sdk-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # ----------------------------------------
+      # STEP 1: Extract SDK version from demo app
+      # ----------------------------------------
+      - name: Extract SDK version from demo app
+        id: demo_sdk
+        run: |
+          SDK_VERSION=$(grep -R 'SDK_VERSION_NAME' app \
+          | sed -E 's/.*"SDK_VERSION_NAME".*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/' \
+          | head -n 1)
+
+
+          if [ -z "$SDK_VERSION" ]; then
+            echo "❌ Failed to detect SDK version in demo app"
+            exit 1
+          fi
+
+          echo "Detected demo app SDK version: $SDK_VERSION"
+          echo "sdk_version=$SDK_VERSION" >> $GITHUB_OUTPUT
+
+      # -------------------------------------------------
+      # STEP 2: Fetch latest SDK release from GitHub API
+      # -------------------------------------------------
+      - name: Fetch latest SDK release
+        id: latest_sdk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            https://api.github.com/repos/fingerprintjs/fingerprintjs-pro-android-private/releases/latest)
+
+          TAG=$(echo "$RESPONSE" | jq -r '.tag_name')
+
+          if [ "$TAG" = "null" ] || [ -z "$TAG" ]; then
+            echo "❌ Failed to fetch latest SDK release"
+            exit 1
+          fi
+
+          LATEST_VERSION=${TAG#v}
+
+          echo "Latest SDK version: $LATEST_VERSION"
+          echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+      # ----------------------------------------
+      # STEP 3: Compare versions
+      # ----------------------------------------
+      - name: Compare demo SDK vs released SDK
+        run: |
+          DEMO_VERSION="${{ steps.demo_sdk.outputs.sdk_version }}"
+          LATEST_VERSION="${{ steps.latest_sdk.outputs.latest_version }}"
+
+          echo "Demo app SDK version   : $DEMO_VERSION"
+          echo "Latest released SDK    : $LATEST_VERSION"
+
+          if [ "$DEMO_VERSION" != "$LATEST_VERSION" ]; then
+            echo "❌ Demo app is NOT using the latest SDK version"
+            echo "➡️  Please update demo app to SDK $LATEST_VERSION"
+            exit 1
+          fi
+
+          echo "✅ Demo app uses the latest SDK version"
+
