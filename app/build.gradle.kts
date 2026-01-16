@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import org.gradle.kotlin.dsl.project
 import java.util.Properties
 
 val local = Properties().apply {
@@ -9,9 +10,9 @@ val local = Properties().apply {
 }
 
 @Suppress("PropertyName")
-val VERSION_NAME="3.7.0"
+val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "3.7.0"
 @Suppress("PropertyName")
-val VERSION_CODE=42
+val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 42
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
