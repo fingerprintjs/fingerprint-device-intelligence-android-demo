@@ -1,5 +1,6 @@
-package com.fingerprintjs.android.fpjs_pro_demo.utils
+package com.fingerprintjs.android.fpjs_pro_demo
 
+import com.fingerprintjs.android.fpjs_pro_demo.utils.relativeFactoryResetTime
 import junit.framework.TestCase
 import org.junit.Test
 
@@ -14,7 +15,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `returns Just now for seconds less than 60`() {
+    fun ReturnsJustnowForSecondsLessThan60() {
         val now = 1_000_000_000_000L
         val timestamp = now - 30 * MILLIS_IN_SECOND
 
@@ -23,7 +24,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `returns minutes ago for less than an hour`() {
+    fun ReturnsMinutesAgoForLessThanAnHour() {
         val now = 1_000_000_000_000L
         val timestamp = now - 5 * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
@@ -32,7 +33,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `returns hours ago for less than a day`() {
+    fun ReturnsHoursAgoForLessThanADay() {
         val now = 1_000_000_000_000L
         val timestamp = now - 3 * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
@@ -41,7 +42,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `returns days ago for less than a week`() {
+    fun ReturnsDaysAgoForLessThanAWeek() {
         val now = 1_000_000_000_000L
         val timestamp = now - 2 * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
@@ -50,7 +51,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `returns weeks ago for less than threshold`() {
+    fun ReturnsWeeksAgoForLessThanThreshold() {
         val now = 1_000_000_000_000L
         val timestamp = now - 7 * DAYS_IN_WEEK * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
@@ -59,7 +60,7 @@ class TimeUtilsTests {
     }
 
     @Test
-    fun `falls back to DateUtils for older timestamps`() {
+    fun FallsBackToDateUtilsForOlderTimestamps() {
         val now = 1_000_000_000_000L
         val timestamp = now - 40L * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLIS_IN_SECOND
 
