@@ -10,9 +10,9 @@ val local = Properties().apply {
 }
 
 @Suppress("PropertyName")
-val VERSION_NAME= project.findProperty("VERSION_NAME") ?: "3.7.0"
+val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "3.7.0"
 @Suppress("PropertyName")
-val VERSION_CODE= project.findProperty("VERSION_CODE") ?: 42
+val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 42
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
@@ -50,8 +50,8 @@ android {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 23
         targetSdk = 35
-        versionCode = project.findProperty("VERSION_CODE")?.toString()?.toInt()
-        versionName = project.findProperty("VERSION_NAME")?.toString()
+        versionCode = VERSION_CODE
+        versionName = VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
