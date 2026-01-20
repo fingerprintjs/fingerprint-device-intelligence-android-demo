@@ -25,6 +25,7 @@ import com.fingerprintjs.android.fpjs_pro.TooManyRequest
 import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro.UnsupportedVersion
 import com.fingerprintjs.android.fpjs_pro.WrongRegion
+import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
@@ -52,6 +53,7 @@ import kotlin.math.round
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
+    private val app: App
 ) {
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
@@ -396,7 +398,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { proximity },
                     name = StringConstants.PROXIMITY,
                     docUrl = StringConstants.PROXIMITY_DOC_URL,
-                    value = { getProximityDetails() },
+                    value = { getProximityDetails(app.applicationContext) },
                     smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
             )
