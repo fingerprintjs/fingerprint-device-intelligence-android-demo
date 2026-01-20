@@ -1,25 +1,17 @@
-name: Google Play Release
+name: Google Play Release (Bundle Upload)
 
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: "Branch to build from"
-        required: true
-        default: "main"
       versionCode:
         description: "Android versionCode"
         required: true
       versionName:
         description: "Android versionName"
         required: true
-      track:
-        description: "Google Play track (internal, production)"
-        required: true
-        default: "production"
 
 jobs:
-  build-and-release:
+  build-and-upload:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +20,6 @@ jobs:
       # -----------------------------
       - name: Checkout branch
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}
 
       # -----------------------------
       # Setup Java
@@ -74,5 +64,3 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.fingerprintjs.android.fpjs_pro_demo
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: ${{ github.event.inputs.track }}
-          status: completed
