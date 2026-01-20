@@ -100,6 +100,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -111,6 +112,13 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    lint {
+        abortOnError = true
+        warningsAsErrors = false
+        checkReleaseBuilds = true
+        xmlReport = true
+        htmlReport = true
     }
     applicationVariants.all {
         val variant = this
@@ -196,6 +204,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     detektPlugins(libs.detekt.formatting)
+    coreLibraryDesugaring(libs.desugaring.formatting)
 }
 
 afterEvaluate {
