@@ -36,7 +36,7 @@ jobs:
       # -----------------------------
       - name: Decode keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.jks
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -50,10 +50,9 @@ jobs:
             -PVERSION_CODE=${{ github.event.inputs.versionCode }} \
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
-          KEYSTORE_PATH: release.keystore
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
+          RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
+          RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
 
       # -----------------------------
       # Upload to Google Play
