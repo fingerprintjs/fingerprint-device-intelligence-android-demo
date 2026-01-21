@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
-import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignal
@@ -77,7 +76,9 @@ internal fun getCountryInfo(code: String): Pair<String, String> {
 }
 
 @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-internal fun SmartSignal.Proximity.getProximityDetails(context: Context): String {
+internal fun SmartSignal.Proximity.getProximityDetails(
+    isAnyLocationPermissionGranted: Boolean = false
+): String {
     val idPart = id?.let { "${StringConstants.PROXIMITY_ID_PREFIX}$it" } ?: ""
     val precisionRadiusPart = precisionRadius?.let {
         "\n${StringConstants.PROXIMITY_PRECISION_RADIUS_PREFIX}$it${StringConstants.PROXIMITY_PRECISION_RADIUS_SUFFIX}"
@@ -87,7 +88,7 @@ internal fun SmartSignal.Proximity.getProximityDetails(context: Context): String
     } ?: ""
     val proximityDetails = idPart + precisionRadiusPart + confidencePart
     return proximityDetails.ifBlank {
-        if (NativeUtils.isAnyLocationPermissionGranted(context)) {
+        if (isAnyLocationPermissionGranted) {
             StringConstants.PROXIMITY_NO_DATA
         } else {
             StringConstants.PROXIMITY_REQUIRES_PERMISSION

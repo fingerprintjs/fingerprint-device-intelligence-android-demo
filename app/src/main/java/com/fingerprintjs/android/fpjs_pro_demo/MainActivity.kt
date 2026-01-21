@@ -13,7 +13,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
-import com.fingerprintjs.android.fpjs_pro_demo.utils.NativeUtils.isAnyLocationPermissionGranted
+import com.fingerprintjs.android.fpjs_pro_demo.utils.PermissionUtils.isAnyLocationPermissionGranted
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class MainActivity : ComponentActivity() {

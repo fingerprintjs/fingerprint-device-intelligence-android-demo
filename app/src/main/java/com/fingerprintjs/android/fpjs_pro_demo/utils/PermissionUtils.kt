@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 
-object NativeUtils {
+object PermissionUtils {
 
     fun isAnyLocationPermissionGranted(context: Context): Boolean {
         return isPermissionGranted(context, Manifest.permission.ACCESS_FINE_LOCATION) ||

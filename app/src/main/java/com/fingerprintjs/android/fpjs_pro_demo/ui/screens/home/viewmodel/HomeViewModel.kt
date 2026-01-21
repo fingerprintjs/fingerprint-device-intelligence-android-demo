@@ -2,6 +2,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
@@ -40,6 +41,7 @@ class HomeViewModel @Inject constructor(
     private val showSignUpPromptUseCase: ShowSignUpPromptUseCase,
     private val smartSignalsProvider: SmartSignalsProvider,
     private val homeScreenUiStateCreator: HomeScreenUiStateCreator,
+    private val app: App
 ) : ViewModel() {
 
     init {
@@ -86,6 +88,7 @@ class HomeViewModel @Inject constructor(
                         fingerprintSdkResponse = data.fingerprintSdkResponse,
                         smartSignalsData = data.smartSignalsResponse,
                         isLoading = it is Loading,
+                        context = app.applicationContext,
                         onSmartSignalDocClicked = ::onLaunchUrl,
                         onHideSignupPrompt = ::onHideSignupPromptClicked,
                         onPutToClipboard = ::onPutToClipboard,
