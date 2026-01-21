@@ -55,6 +55,7 @@ import kotlin.math.round
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
 ) {
+    @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod", "ReturnCount")
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsData: SmartSignalsData,
@@ -164,6 +165,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         )
     }
 
+    @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
         fingerprintJSProResponse: FingerprintJSProResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
