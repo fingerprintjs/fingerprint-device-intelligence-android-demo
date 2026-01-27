@@ -6,6 +6,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.BuildConfig
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.IdentificationProvider
+import com.fingerprintjs.android.fpjs_pro_demo.domain.permissions.CheckPermissionUseCase
 import com.fingerprintjs.android.fpjs_pro_demo.domain.signup.ShowSignUpPromptUseCase
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsProvider
@@ -40,6 +41,7 @@ class HomeViewModel @Inject constructor(
     private val showSignUpPromptUseCase: ShowSignUpPromptUseCase,
     private val smartSignalsProvider: SmartSignalsProvider,
     private val homeScreenUiStateCreator: HomeScreenUiStateCreator,
+    private val checkPermissionUseCase: CheckPermissionUseCase,
 ) : ViewModel() {
 
     init {
@@ -86,6 +88,7 @@ class HomeViewModel @Inject constructor(
                         fingerprintSdkResponse = data.fingerprintSdkResponse,
                         smartSignalsData = data.smartSignalsResponse,
                         isLoading = it is Loading,
+                        isAnyLocationPermissionGranted = checkPermissionUseCase.isAnyLocationPermissionGranted(),
                         onSmartSignalDocClicked = ::onLaunchUrl,
                         onHideSignupPrompt = ::onHideSignupPromptClicked,
                         onPutToClipboard = ::onPutToClipboard,

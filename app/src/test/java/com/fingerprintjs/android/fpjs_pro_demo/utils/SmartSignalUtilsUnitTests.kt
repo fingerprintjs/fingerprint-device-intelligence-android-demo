@@ -651,7 +651,7 @@ class SmartSignalUtilsUnitTests {
     }
 
     @Test
-    fun givenProximityWithAllNullFields_whenGetProximityDetails_thenReturnsRequiresPermission() {
+    fun givenProximityWithAllNullFieldsAndNoPermission_whenGetProximityDetails_thenReturnsRequiresPermission() {
         // given
         val proximity = SmartSignal.Proximity(
             id = null,
@@ -660,10 +660,26 @@ class SmartSignalUtilsUnitTests {
         )
 
         // when
-        val result = proximity.getProximityDetails()
+        val result = proximity.getProximityDetails(isAnyLocationPermissionGranted = false)
 
         // then
         TestCase.assertEquals("Requires location permission", result)
+    }
+
+    @Test
+    fun givenProximityWithAllNullFieldsAndPermissionGranted_whenGetProximityDetails_thenReturnsNoData() {
+        // given
+        val proximity = SmartSignal.Proximity(
+            id = null,
+            precisionRadius = null,
+            confidence = null
+        )
+
+        // when
+        val result = proximity.getProximityDetails(isAnyLocationPermissionGranted = true)
+
+        // then
+        TestCase.assertEquals("Unable to retrieve location data", result)
     }
 
     @Test

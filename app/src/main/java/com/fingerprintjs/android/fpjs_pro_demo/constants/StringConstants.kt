@@ -45,6 +45,7 @@ object StringConstants {
     const val PROXIMITY_PRECISION_RADIUS_SUFFIX = "m"
     const val PROXIMITY_CONFIDENCE_PREFIX = "Confidence: "
     const val PROXIMITY_REQUIRES_PERMISSION = "Requires location permission"
+    const val PROXIMITY_NO_DATA = "Unable to retrieve location data"
     const val PROXIMITY_DOC_URL =
         "https://dev.fingerprint.com/docs/native-android-integration#proximity-detection-for-android-devices"
 
