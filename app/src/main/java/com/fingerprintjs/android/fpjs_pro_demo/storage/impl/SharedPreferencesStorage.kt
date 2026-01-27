@@ -11,17 +11,16 @@ import com.fingerprintjs.android.fpjs_pro_demo.storage.BackingStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.runCatching
-import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-@OptIn(DelicateCoroutinesApi::class)
 @AppScope
 class SharedPreferencesStorage @Inject constructor(
     private val context: Context,
+    private val scope: CoroutineScope,
 ) : BackingStorage {
     private val encryptedSharedPreferencesSupported = android.os.Build.VERSION.SDK_INT >= 23
 
@@ -45,7 +44,7 @@ class SharedPreferencesStorage @Inject constructor(
     }
 
     init {
-        GlobalScope.launch { clearPreviousSharedPreferences() }
+        scope.launch { clearPreviousSharedPreferences() }
     }
 
     private val sharedPreferences: SharedPreferences by lazy {

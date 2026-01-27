@@ -46,6 +46,10 @@ class SmartSignalsBodyParser @Inject constructor(
                 ),
                 tampering = products.getSmartSignal(key = "tampering"),
                 mitm = products.getSmartSignal(key = "mitmAttack"),
+                proximity = products.getSmartSignal(
+                    key = "proximity",
+                    allowMissingData = true
+                ),
             )
         }.mapError { }
     }
@@ -58,10 +62,12 @@ class SmartSignalsBodyParser @Inject constructor(
     }
 
     @VisibleForTesting
+    @Suppress("ReturnCount")
     inline fun <reified T : SmartSignal> JsonObject.getSmartSignal(
         key: String,
         validation: T.() -> Boolean = { true },
         transformation: T.() -> T = { this },
+        allowMissingData: Boolean = false,
     ): SmartSignalInfo<T> {
         val elem = get(key)
         if (elem == null) return SmartSignalInfo.Disabled(key)
@@ -70,8 +76,17 @@ class SmartSignalsBodyParser @Inject constructor(
 
         val obj = elem as? JsonObject ?: return parseError
         if (obj.get("error") != null) return SmartSignalInfo.Error(key, elem)
-        val dataObj = obj.get("data")?.let { it as? JsonObject } ?: return parseError
-        val parsed = runCatching { json.decodeFromJsonElement<T>(dataObj) }
+
+        val dataObj = obj.get("data")?.let { it as? JsonObject }
+
+        // If allowMissingData is true and data is missing, try to parse an empty object
+        val dataToParse = if (dataObj == null && allowMissingData) {
+            json.parseToJsonElement("{}") as JsonObject
+        } else {
+            dataObj ?: return parseError
+        }
+
+        val parsed = runCatching { json.decodeFromJsonElement<T>(dataToParse) }
             .getOr(null)?.takeIf { it.validation() } ?: return parseError
         return SmartSignalInfo.Success(
             rawKey = key,

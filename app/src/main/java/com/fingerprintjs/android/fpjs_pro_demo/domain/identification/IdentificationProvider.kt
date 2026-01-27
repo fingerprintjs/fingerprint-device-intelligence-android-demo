@@ -24,9 +24,8 @@ class IdentificationProvider @Inject constructor(
     customApiKeysUseCase: CustomApiKeysUseCase,
     @Named("networkTimeoutMillis") private val networkTimeoutMillis: Int,
     private val app: App,
+    private val scope: CoroutineScope,
 ) {
-    private val scope = CoroutineScope(Dispatchers.IO)
-
     private val fingerprintJs = customApiKeysUseCase.state
         .map {
             FingerprintJSFactory(app).createInstance(
