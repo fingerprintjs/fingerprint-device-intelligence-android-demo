@@ -10,9 +10,12 @@ class ShowSignUpPromptUseCase @Inject constructor(
     private val customApiKeysUseCase: CustomApiKeysUseCase,
 ) {
     val showAllowed: Flow<Boolean>
-        get() = allowSignUpPromptUseCase.showAllowed.combine(customApiKeysUseCase.state) { allowed, apiKeysEnabled ->
-            allowed && !apiKeysEnabled.enabled
-        }
+        get() = allowSignUpPromptUseCase.showAllowed
+            .combine(customApiKeysUseCase.state) { allowed, apiKeysEnabled ->
+                allowed && !apiKeysEnabled.enabled
+            }
+
+    suspend fun initialize() = allowSignUpPromptUseCase.updateState()
 
     suspend fun onFingerprintSuccess() = allowSignUpPromptUseCase.onFingerprintSuccess()
 

@@ -1,5 +1,5 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import org.gradle.kotlin.dsl.project
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.util.Properties
 
 val local = Properties().apply {
@@ -13,6 +13,7 @@ val local = Properties().apply {
 val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "3.8.1"
 @Suppress("PropertyName")
 val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 44
+
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
@@ -24,14 +25,12 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.jetbrains.kotlin.kapt)
     alias(libs.plugins.arturbosch.detekt)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
 }
 
 val googleServicesFilename = "google-services.json"
 val googleServicesFile = file(googleServicesFilename)
-if (googleServicesFile.exists()) {
-    plugins.apply(libs.plugins.google.services.get().pluginId)
-    plugins.apply(libs.plugins.firebase.crashlytics.get().pluginId)
-}
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
@@ -81,6 +80,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "false")
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
         // Use this build variant for testing the app locally with minification enabled and release
         // level of performance, but also with the mocking functionality that the debug build type has.
@@ -90,6 +92,9 @@ android {
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             buildConfigField("boolean", "ALLOW_MOCKS", "true")
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
     }
 
@@ -112,6 +117,22 @@ android {
         val variant = this
         this.outputs.all {
             (this as? BaseVariantOutputImpl)?.outputFileName = "FPJS-Pro-Playground-${variant.name}-${variant.versionName}.apk"
+        }
+    }
+    
+    // Force secure versions of transitive dependencies to fix vulnerabilities
+    configurations.all {
+        resolutionStrategy {
+            force(
+                "com.google.protobuf:protobuf-java:3.25.5",
+                "com.google.protobuf:protobuf-java-util:3.25.5",
+                "commons-io:commons-io:2.14.0",
+                "io.netty:netty-codec-http2:4.1.129.Final",
+                "io.netty:netty-codec-http:4.1.129.Final",
+                "io.netty:netty-handler:4.1.118.Final",
+                "io.netty:netty-common:4.1.118",
+                "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+            )
         }
     }
 }
@@ -141,10 +162,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.preview)
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.animation)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.crashlytics.ndk)
 
     //shimmer
@@ -176,4 +197,25 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     detektPlugins(libs.detekt.formatting)
+}
+
+afterEvaluate {
+    val hasGoogleServices = googleServicesFile.exists()
+    
+    extensions.findByType(CrashlyticsExtension::class.java)?.apply {
+        mappingFileUploadEnabled = hasGoogleServices
+        nativeSymbolUploadEnabled = hasGoogleServices
+    }
+    
+    // Disable Crashlytics upload tasks if google-services.json doesn't exist
+    // Using enabled = false prevents task configuration validation errors
+    tasks.matching { it.name.startsWith("uploadCrashlytics") }.configureEach {
+        enabled = hasGoogleServices
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType<com.google.gms.googleservices.GoogleServicesTask>().configureEach {
+        onlyIf { googleServicesFile.exists() }
+    }
 }
