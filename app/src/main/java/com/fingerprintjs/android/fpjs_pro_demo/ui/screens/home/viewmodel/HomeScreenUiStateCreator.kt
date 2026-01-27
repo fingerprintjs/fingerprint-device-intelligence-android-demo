@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
-import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.fingerprintjs.android.fpjs_pro.ApiKeyExpired
 import com.fingerprintjs.android.fpjs_pro.ApiKeyNotFound
@@ -34,7 +33,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalI
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
-import com.fingerprintjs.android.fpjs_pro_demo.utils.PermissionUtils
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimestampFromTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
@@ -60,7 +58,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsData: SmartSignalsData,
         isLoading: Boolean,
-        context: Context? = null,
+        isAnyLocationPermissionGranted: Boolean = false,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
         onPutToClipboard: (String) -> Unit = {},
@@ -157,7 +155,7 @@ class HomeScreenUiStateCreator @Inject constructor(
             smartSignals = smartSignalsSuccessResult,
             isLoading = isLoading,
             isSmartSignalsLoading = isSmartSignalsLoading,
-            context = context,
+            isAnyLocationPermissionGranted = isAnyLocationPermissionGranted,
             onHideSignupPrompt = onHideSignupPrompt,
             onPutToClipboard = onPutToClipboard,
             onSmartSignalDocClicked = onSmartSignalDocClicked,
@@ -171,16 +169,12 @@ class HomeScreenUiStateCreator @Inject constructor(
         smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
-        context: Context? = null,
+        isAnyLocationPermissionGranted: Boolean = false,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
         onPutToClipboard: (String) -> Unit = {},
         onSignupPromptClicked: () -> Unit = {},
     ): HomeScreenUiState.Content.LoadingOrSuccess {
-        val hasLocationPermission = context?.let {
-            PermissionUtils.isAnyLocationPermissionGranted(it)
-        } ?: false
-
         // Checking the values from FingerprintJSProResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
@@ -407,7 +401,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { proximity },
                     name = StringConstants.PROXIMITY,
                     docUrl = StringConstants.PROXIMITY_DOC_URL,
-                    value = { getProximityDetails(isAnyLocationPermissionGranted = hasLocationPermission) },
+                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
                     smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
             )
