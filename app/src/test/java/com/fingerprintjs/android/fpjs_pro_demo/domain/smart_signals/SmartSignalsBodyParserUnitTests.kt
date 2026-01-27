@@ -169,82 +169,10 @@ class SmartSignalsBodyParserUnitTests {
         TestCase.assertTrue(result.isErr)
     }
 
-    @Test
-    fun givenEmptyProximityObject_whenGetSmartSignalWithAllowMissingData_thenProximityParsedWithNullFields() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = "{}",
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = null, precisionRadius = null, confidence = null),
-                it.typedData
-            )
-        }
-    }
-
-    @Test
-    fun givenEmptyProximityObject_whenGetSmartSignalWithoutAllowMissingData_thenParseErrorReturned() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = "{}",
-            expectedKey = "proximity",
-            allowMissingData = false
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.ParseError)
-        }
-    }
-
-    @Test
-    fun givenProximityWithData_whenGetSmartSignalWithAllowMissingData_thenProximityParsedCorrectly() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = """
-            {
-                "data": {
-                    "id": "testId",
-                    "precisionRadius": 10,
-                    "confidence": 0.76
-                }
-            }
-            """.trimIndent(),
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = "testId", precisionRadius = 10, confidence = 0.76f),
-                it.typedData
-            )
-        }
-    }
-
-    @Test
-    fun givenEmptyProximityDataObject_whenGetSmartSignalWithAllowMissingData_thenProximityParsedWithNullFields() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = """
-            {
-                "data": {}
-            }
-            """.trimIndent(),
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = null, precisionRadius = null, confidence = null),
-                it.typedData
-            )
-        }
-    }
-
     private inline fun <reified T : SmartSignal> testSmartSignalParsing(
         jsonEntry: String,
         expectedKey: String,
         actualKey: String = expectedKey,
-        allowMissingData: Boolean = false,
         test: (SmartSignalInfo<T>) -> Unit,
     ) {
         val jsonString = """
@@ -254,9 +182,7 @@ class SmartSignalsBodyParserUnitTests {
         """.trimIndent()
         val jsonObject = json.parseToJsonElement(jsonString) as JsonObject
 
-        val signal = with(parser) {
-            jsonObject.getSmartSignal<T>(expectedKey, allowMissingData = allowMissingData)
-        }
+        val signal = with(parser) { jsonObject.getSmartSignal<T>(expectedKey) }
 
         test(signal)
     }
