@@ -139,7 +139,7 @@ class StateMocks @Inject constructor(
                 smartSignals = smartSignals,
                 isLoading = false,
                 isSmartSignalsLoading = false,
-                context = null
+                isAnyLocationPermissionGranted = false
             )
         }
     }
