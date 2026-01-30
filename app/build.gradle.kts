@@ -188,7 +188,6 @@ dependencies {
 
     //testing
     testImplementation(libs.junit)
-    testImplementation("org.robolectric:robolectric:4.15")
     androidTestImplementation(libs.androidx.test.junit.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
