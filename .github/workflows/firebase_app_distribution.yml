@@ -34,7 +34,6 @@ jobs:
             -PVERSION_CODE=${{ github.event.inputs.versionCode }} \
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
-          KEYSTORE_PATH: release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
           RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
@@ -44,5 +43,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: testers
-          releaseNotes: ${{ github.event.inputs.releaseNotes }}
           file: app/build/outputs/apk/release/app-release.apk
