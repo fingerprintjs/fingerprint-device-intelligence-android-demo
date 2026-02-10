@@ -30,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build release APK
         run: |
-          ./gradlew assembleRelease \
+          ./gradlew bundleRelease \
             -PVERSION_CODE=${{ github.event.inputs.versionCode }} \
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
