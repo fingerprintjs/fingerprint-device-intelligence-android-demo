@@ -25,3 +25,9 @@ jobs:
 
       - name: detekt
         run: ./gradlew detekt
+
+#      - name: lint
+#        run: ./gradlew lintDebug  // Re-enable after private repo is configured for SDK
+
+#      - name: run tests
+#        run: ./gradlew test  // Re-enable after private repo is configured for SDK
