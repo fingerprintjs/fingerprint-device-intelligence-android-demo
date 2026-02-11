@@ -3,6 +3,8 @@ package com.fingerprintjs.android.fpjs_pro_demo.di.modules
 import android.app.Application
 import android.content.Context
 import com.fingerprintjs.android.fpjs_pro_demo.App
+import com.fingerprintjs.android.fpjs_pro_demo.domain.permissions.PermissionChecker
+import com.fingerprintjs.android.fpjs_pro_demo.domain.permissions.PermissionCheckerImpl
 import com.fingerprintjs.android.fpjs_pro_demo.storage.BackingStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.Serializer
 import com.fingerprintjs.android.fpjs_pro_demo.storage.impl.JsonSerializer
@@ -18,6 +20,9 @@ interface AppBindingModule {
 
     @Binds
     fun bindAppToContext(application: App): Context
+
+    @Binds
+    fun bindPermissionChecker(impl: PermissionCheckerImpl): PermissionChecker
 
     @Binds
     fun bindSerializer(serializer: JsonSerializer): Serializer
