@@ -53,10 +53,12 @@ import kotlin.math.round
 class HomeScreenUiStateCreator @Inject constructor(
     private val json: Json,
 ) {
+    @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod", "ReturnCount")
     fun HomeScreenUiState.Content.Companion.create(
         fingerprintSdkResponse: FingerprintJSProResult,
         smartSignalsData: SmartSignalsData,
         isLoading: Boolean,
+        isAnyLocationPermissionGranted: Boolean = false,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
         onPutToClipboard: (String) -> Unit = {},
@@ -153,6 +155,7 @@ class HomeScreenUiStateCreator @Inject constructor(
             smartSignals = smartSignalsSuccessResult,
             isLoading = isLoading,
             isSmartSignalsLoading = isSmartSignalsLoading,
+            isAnyLocationPermissionGranted = isAnyLocationPermissionGranted,
             onHideSignupPrompt = onHideSignupPrompt,
             onPutToClipboard = onPutToClipboard,
             onSmartSignalDocClicked = onSmartSignalDocClicked,
@@ -160,11 +163,13 @@ class HomeScreenUiStateCreator @Inject constructor(
         )
     }
 
+    @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
         fingerprintJSProResponse: FingerprintJSProResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
+        isAnyLocationPermissionGranted: Boolean = false,
         onSmartSignalDocClicked: (url: String) -> Unit = {},
         onHideSignupPrompt: () -> Unit = {},
         onPutToClipboard: (String) -> Unit = {},
@@ -396,7 +401,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { proximity },
                     name = StringConstants.PROXIMITY,
                     docUrl = StringConstants.PROXIMITY_DOC_URL,
-                    value = { getProximityDetails() },
+                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
                     smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
             )

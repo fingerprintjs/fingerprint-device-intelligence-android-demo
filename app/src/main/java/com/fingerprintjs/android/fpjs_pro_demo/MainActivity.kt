@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fpjs_pro_demo
 
 import android.Manifest
 import android.animation.ObjectAnimator
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -11,10 +10,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.animation.doOnEnd
-import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.navigation.NavScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
+import com.fingerprintjs.android.fpjs_pro_demo.utils.PermissionUtils.isAnyLocationPermissionGranted
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun checkLocationPermissions() {
-        if (isAnyLocationPermissionGranted()) {
+        if (isAnyLocationPermissionGranted(this)) {
             return
         }
 
@@ -65,17 +64,5 @@ class MainActivity : ComponentActivity() {
         } catch (e: IllegalStateException) {
             FirebaseCrashlytics.getInstance().recordException(e)
         }
-    }
-
-    private fun isAnyLocationPermissionGranted(): Boolean {
-        return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION) ||
-            isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-    }
-
-    private fun isPermissionGranted(permission: String): Boolean {
-        return ActivityCompat.checkSelfPermission(
-            this,
-            permission
-        ) == PackageManager.PERMISSION_GRANTED
     }
 }
