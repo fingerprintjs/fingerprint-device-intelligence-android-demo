@@ -30,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Build release APK
         run: |
-          ./gradlew bundleRelease \
+          ./gradlew clean :app:assembleRelease \
             -PVERSION_CODE=${{ github.event.inputs.versionCode }} \
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
@@ -43,4 +43,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: testers
-          file: app/build/outputs/bundle/release/app-release.aab
+          file: app/build/outputs/apk/release/*.apk
