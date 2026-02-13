@@ -37,16 +37,10 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
           RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
-      - name: Prepare APK for Firebase
-        run: |
-          mkdir -p firebase-artifact
-          cp app/build/outputs/apk/release/*.apk firebase-artifact/
-          echo "APK prepared:"
-          ls -l firebase-artifact
       - name: Upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           groups: testers
-          file: firebase-artifact/*.apk
+          file: app/build/outputs/apk/release/app-release.apk
