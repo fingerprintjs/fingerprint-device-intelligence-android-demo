@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.identification
 
 import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintJS
+import com.fingerprintjs.android.fpjs_pro.FingerprintException
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
 import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials
@@ -14,11 +14,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
-import kotlin.coroutines.resume
 
 class IdentificationProvider @Inject constructor(
     customApiKeysUseCase: CustomApiKeysUseCase,
@@ -46,25 +44,11 @@ class IdentificationProvider @Inject constructor(
 
     suspend fun getVisitorId(): FingerprintJSProResult {
         return withContext(Dispatchers.IO) {
-            fingerprintJs.first().getVisitorId()
-        }
-    }
-
-    private suspend fun FingerprintJS.getVisitorId(): FingerprintJSProResult {
-        return suspendCancellableCoroutine { cancellableContinuation ->
-            this.getVisitorId(
-                timeoutMillis = networkTimeoutMillis,
-                listener = {
-                    cancellableContinuation.resume(
-                        Ok(it)
-                    )
-                },
-                errorListener = {
-                    cancellableContinuation.resume(
-                        Err(it)
-                    )
-                },
-            )
+            try {
+                Ok(fingerprintJs.first().getVisitorId(networkTimeoutMillis))
+            } catch (e: FingerprintException) {
+                Err(e.error)
+            }
         }
     }
 }
