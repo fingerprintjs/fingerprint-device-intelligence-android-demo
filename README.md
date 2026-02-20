@@ -53,21 +53,15 @@ You can install the app using one of the following methods:
 
 ## Build the app from sources
 
-### Prerequisites (macOS)
+### Prerequisites
 
-This project requires JDK 21. Install via Homebrew:
+This project requires JDK 21. On macOS, install via Homebrew:
 
 ```sh
 brew install --cask temurin@21
 ```
 
-Add to `~/.zshrc`:
-
-```sh
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
-```
-
-See [Gradle Daemon JVM](https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria) for details.
+Gradle will automatically detect and use the correct JDK via [Daemon JVM criteria](https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria).
 
 ### Instructions
 
