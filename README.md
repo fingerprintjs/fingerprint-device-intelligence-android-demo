@@ -53,7 +53,17 @@ You can install the app using one of the following methods:
 
 ## Build the app from sources
 
-Build the app from sources in a few simple steps:
+### Prerequisites
+
+This project requires JDK 21. On macOS, install via Homebrew:
+
+```sh
+brew install --cask temurin@21
+```
+
+Gradle will automatically detect and use the correct JDK via [Daemon JVM criteria](https://docs.gradle.org/current/userguide/gradle_daemon.html#sec:daemon_jvm_criteria).
+
+### Instructions
 
 1. Clone the repository:
     ```sh
