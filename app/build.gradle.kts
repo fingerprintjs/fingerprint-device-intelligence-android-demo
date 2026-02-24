@@ -100,6 +100,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -185,6 +186,9 @@ dependencies {
     //security
     implementation(libs.androidx.security.crypto)
     implementation(fingerprintProLib)
+    
+    //desugaring - for java.time APIs on API < 26
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     //testing
     testImplementation(libs.junit)
