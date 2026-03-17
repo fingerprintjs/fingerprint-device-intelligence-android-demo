@@ -131,13 +131,15 @@ class StateMocks @Inject constructor(
         )
     }
 
+    @Suppress("VariableNaming")
     val HomeScreenUiState.Content.LoadingOrSuccess.Companion.SuccessMocked by lazy {
         with(homeScreenUiStateCreator) {
             HomeScreenUiState.Content.LoadingOrSuccess.create(
                 fingerprintJSProResponse = fingerprintJSResponse,
                 smartSignals = smartSignals,
                 isLoading = false,
-                isSmartSignalsLoading = false
+                isSmartSignalsLoading = false,
+                isAnyLocationPermissionGranted = false
             )
         }
     }
