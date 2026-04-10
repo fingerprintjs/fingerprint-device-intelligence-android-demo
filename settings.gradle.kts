@@ -22,6 +22,14 @@ dependencyResolutionManagement {
         }
 
         maven { url = uri("https://maven.fpregistry.io/releases") }
+
+        maven {
+            url = uri("https://maven.fpregistry.io/private-releases")
+            credentials {
+                username = providers.gradleProperty("privateMavenUser").orNull ?: System.getenv("PRIVATE_MAVEN_USER")
+                password = providers.gradleProperty("privateMavenPassword").orNull ?: System.getenv("PRIVATE_MAVEN_PASSWORD")
+            }
+        }
     }
 }
 
