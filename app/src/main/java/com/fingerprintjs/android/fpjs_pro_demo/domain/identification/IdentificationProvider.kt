@@ -3,6 +3,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.identification
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintException
 import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysUseCase
@@ -37,7 +38,7 @@ class IdentificationProvider @Inject constructor(
         }
         .shareIn(
             scope = scope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.Lazily,
             replay = 1
         )
 
@@ -47,6 +48,8 @@ class IdentificationProvider @Inject constructor(
                 Ok(fingerprintJs.first().getVisitorId(networkTimeoutMillis))
             } catch (e: FingerprintException) {
                 Err(e.error)
+            } catch (e: Exception) {
+                Err(UnknownError())
             }
         }
     }

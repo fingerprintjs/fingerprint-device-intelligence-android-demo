@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -112,7 +111,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .stateIn(
-                scope = viewModelScope + Dispatchers.IO,
+                scope = viewModelScope,
                 started = SharingStarted.Eagerly,
                 initialValue = HomeScreenUiState.Content.TapToBegin(
                     onTap = ::onReload,
@@ -137,7 +136,7 @@ class HomeViewModel @Inject constructor(
             mocking = mocking,
             content = content,
         )
-    }.shareIn(viewModelScope + Dispatchers.IO, started = SharingStarted.Eagerly, replay = 1)
+    }.shareIn(viewModelScope, started = SharingStarted.WhileSubscribed(5_000), replay = 1)
 
     private fun onToggleMocking(): Job = viewModelScope.launch {
         mockingState.update { it?.copy(enabled = !it.enabled) }
