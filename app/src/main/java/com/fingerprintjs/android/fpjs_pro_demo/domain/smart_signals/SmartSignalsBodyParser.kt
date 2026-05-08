@@ -50,6 +50,7 @@ class SmartSignalsBodyParser @Inject constructor(
                     key = "proximity",
                     allowMissingData = true
                 ),
+                developerTools = products.getSmartSignal(key = "developerTools"),
             )
         }.mapError { }
     }

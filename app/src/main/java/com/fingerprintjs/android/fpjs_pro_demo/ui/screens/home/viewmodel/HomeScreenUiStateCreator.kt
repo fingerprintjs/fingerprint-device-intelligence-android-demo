@@ -404,6 +404,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = { getProximityDetails(isAnyLocationPermissionGranted) },
                     smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
+                smartSignalProperty(
+                    from = { developerTools },
+                    name = StringConstants.DEVELOPER_TOOLS,
+                    docUrl = URLs.SmartSignalsOverview.developerTools,
+                    value = { result.detectionStatusString() }
+                ),
             )
                 .map {
                     it.copy(
@@ -442,6 +448,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.tampering,
                             smartSignals.vpn,
                             smartSignals.proximity,
+                            smartSignals.developerTools,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {
