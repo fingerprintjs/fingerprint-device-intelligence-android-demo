@@ -221,6 +221,41 @@ class SmartSignalsBodyParserUnitTests {
     }
 
     @Test
+    fun givenDeveloperToolsSignal_whenParseSmartSignals_thenDeveloperToolsParsedCorrectly() {
+        val body = """
+        {
+            "products": {
+                "developerTools": {
+                    "data": {
+                        "result": true
+                    }
+                }
+            }
+        }
+        """.trimIndent()
+
+        val signals = parser.parseSmartSignals(body).get()!!
+
+        TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Success)
+        val success = signals.developerTools as SmartSignalInfo.Success
+        TestCase.assertEquals(SmartSignal.DeveloperTools(result = true), success.typedData)
+        TestCase.assertEquals("developerTools", success.rawKey)
+    }
+
+    @Test
+    fun givenDeveloperToolsAbsent_whenParseSmartSignals_thenDeveloperToolsDisabled() {
+        val body = """
+        {
+            "products": {}
+        }
+        """.trimIndent()
+
+        val signals = parser.parseSmartSignals(body).get()!!
+
+        TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Disabled)
+    }
+
+    @Test
     fun givenEmptyProximityDataObject_whenGetSmartSignalWithAllowMissingData_thenProximityParsedWithNullFields() {
         testSmartSignalParsing<SmartSignal.Proximity>(
             jsonEntry = """
