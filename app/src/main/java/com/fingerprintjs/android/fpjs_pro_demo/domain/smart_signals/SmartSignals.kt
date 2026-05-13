@@ -18,7 +18,8 @@ class SmartSignals(
     val ipBlocklist: SmartSignalInfo<SmartSignal.IPBlocklist>,
     val proxy: SmartSignalInfo<SmartSignal.Proxy>,
     val ipInfo: SmartSignalInfo<SmartSignal.IPInfo>,
-    val proximity: SmartSignalInfo<SmartSignal.Proximity>
+    val proximity: SmartSignalInfo<SmartSignal.Proximity>,
+    val developerTools: SmartSignalInfo<SmartSignal.DeveloperTools>,
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -177,5 +178,10 @@ sealed class SmartSignal {
         val id: String? = null,
         val precisionRadius: Int? = null,
         val confidence: Float? = null
+    ) : SmartSignal()
+
+    @Serializable
+    data class DeveloperTools(
+        val result: Boolean,
     ) : SmartSignal()
 }

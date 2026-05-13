@@ -117,6 +117,11 @@ private val expectedJson = """
                     "osMismatch": false
                 }
             }
+        },
+        "developerTools": {
+            "data": {
+                "result": false
+            }
         }
     }
 }

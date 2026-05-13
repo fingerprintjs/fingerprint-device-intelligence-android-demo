@@ -112,6 +112,11 @@ class StateMocks @Inject constructor(
                     "osMismatch": false
                 }
             }
+        },
+        "developerTools": {
+            "data": {
+                "result": false
+            }
         }
     }
 }
