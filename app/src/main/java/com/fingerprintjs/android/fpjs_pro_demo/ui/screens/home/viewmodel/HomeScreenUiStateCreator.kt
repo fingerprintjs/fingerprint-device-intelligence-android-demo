@@ -12,6 +12,7 @@ import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
 import com.fingerprintjs.android.fpjs_pro.NetworkError
+import com.fingerprintjs.android.fpjs_pro.NetworkUnavailableError
 import com.fingerprintjs.android.fpjs_pro.NotAvailableForCrawlBots
 import com.fingerprintjs.android.fpjs_pro.NotAvailableWithoutUA
 import com.fingerprintjs.android.fpjs_pro.OriginNotAvailable
@@ -118,6 +119,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                         error = error,
                         onReload = onReload,
                     )
+                    is NetworkUnavailableError -> networkError
                 }
             }
 
