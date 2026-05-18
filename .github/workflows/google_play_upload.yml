@@ -42,7 +42,7 @@ jobs:
         run: chmod +x ./gradlew
 
       # -----------------------------
-      # Build signed AAB
+      # Build signed AAB (SDK from private Maven: maven.fpregistry.io/private-releases)
       # -----------------------------
       - name: Build Release AAB
         run: |
@@ -50,6 +50,8 @@ jobs:
             -PVERSION_CODE=${{ github.event.inputs.versionCode }} \
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
+          PRIVATE_REPO_NAME: ${{ secrets.PRIVATE_MAVEN_USER }}
+          PRIVATE_REPO_PASSWORD: ${{ secrets.PRIVATE_MAVEN_PASSWORD }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
           RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
