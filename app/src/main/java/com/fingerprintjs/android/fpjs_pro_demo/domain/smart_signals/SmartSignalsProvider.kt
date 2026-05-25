@@ -48,7 +48,8 @@ internal fun buildCustomKeysRequest(
     apiKey: String,
 ): SmartSignalsRequest {
     val url = endpointUrl.toHttpUrl().newBuilder()
-        .addPathSegment("event")
+        .addPathSegment("v4")
+        .addPathSegment("events")
         .addPathSegment(requestId)
         .build()
         .toString()
@@ -56,7 +57,7 @@ internal fun buildCustomKeysRequest(
         url = url,
         headers = mapOf(
             "Accept" to "application/json",
-            "Auth-API-Key" to apiKey,
+            "Authorization" to "Bearer $apiKey",
         ),
     )
 }

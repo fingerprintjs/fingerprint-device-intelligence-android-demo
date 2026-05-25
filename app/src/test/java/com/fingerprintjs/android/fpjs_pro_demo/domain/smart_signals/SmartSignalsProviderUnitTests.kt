@@ -90,7 +90,7 @@ class SmartSignalsProviderUnitTests {
     }
 
     @Test
-    fun buildCustomKeysRequest_buildsEventPathAndSetsAuthApiKeyHeader() {
+    fun buildCustomKeysRequest_buildsV4EventsPathAndSetsBearerAuthorizationHeader() {
         val request = buildCustomKeysRequest(
             endpointUrl = "https://api.fpjs.io",
             requestId = "1111111111111.AAAAAA",
@@ -98,23 +98,23 @@ class SmartSignalsProviderUnitTests {
         )
 
         TestCase.assertEquals(
-            "https://api.fpjs.io/event/1111111111111.AAAAAA",
+            "https://api.fpjs.io/v4/events/1111111111111.AAAAAA",
             request.url,
         )
-        TestCase.assertEquals("secret-api-key", request.headers["Auth-API-Key"])
+        TestCase.assertEquals("Bearer secret-api-key", request.headers["Authorization"])
         TestCase.assertEquals("application/json", request.headers["Accept"])
     }
 
     @Test
-    fun buildCustomKeysRequest_doesNotIncludeProxyHeadersOrSecretParam() {
+    fun buildCustomKeysRequest_doesNotIncludeProxyOriginHeaderOrSecretParam() {
         val request = buildCustomKeysRequest(
             endpointUrl = "https://api.fpjs.io",
             requestId = "req",
             apiKey = "key",
         )
 
-        TestCase.assertFalse(request.headers.containsKey("Authorization"))
         TestCase.assertFalse(request.headers.containsKey("Origin"))
+        TestCase.assertFalse(request.headers.containsKey("Auth-API-Key"))
         TestCase.assertFalse(request.url.contains("secret="))
     }
 }
