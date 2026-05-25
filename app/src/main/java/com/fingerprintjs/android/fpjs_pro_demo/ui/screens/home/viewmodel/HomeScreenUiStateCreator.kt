@@ -125,12 +125,16 @@ class HomeScreenUiStateCreator @Inject constructor(
             if (smartSignalsData is SmartSignalsData.Data) {
                 smartSignalsData.smartSignalsResponse
                     .recoverIf(
-                        predicate = { it is SmartSignalsError.EndpointInfoNotSetInApp },
+                        predicate = {
+                            it is SmartSignalsError.EndpointInfoNotSetInApp ||
+                                it is SmartSignalsError.BasicAuthCredentialsNotSetInApp
+                        },
                         transform = { null }
                     )
                     .getOrElse { error ->
                         return when (error) {
                             SmartSignalsError.EndpointInfoNotSetInApp -> unknownError // unreachable
+                            SmartSignalsError.BasicAuthCredentialsNotSetInApp -> unknownError // unreachable
                             SmartSignalsError.FeatureNotEnabled -> unknownError
                             SmartSignalsError.RequestNotFound -> secretApiKeyMismatchError
                             SmartSignalsError.SubscriptionNotActive -> secretApiKeyMismatchError
@@ -166,7 +170,7 @@ class HomeScreenUiStateCreator @Inject constructor(
     @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
         fingerprintJSProResponse: FingerprintJSProResponse,
-        smartSignals: SmartSignals?, // null indicates that endpoint info is not set in the app
+        smartSignals: SmartSignals?, // null indicates that endpoint info or basic auth credentials are not set in the app
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
         isAnyLocationPermissionGranted: Boolean = false,

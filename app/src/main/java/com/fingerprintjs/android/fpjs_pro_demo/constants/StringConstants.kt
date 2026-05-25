@@ -83,17 +83,17 @@ object StringConstants {
 
     // VPN Detection
     val VPN_METHOD_LABELS = mapOf(
-        "publicVPN" to "Public VPN",
-        "timezoneMismatch" to "Timezone mismatch",
+        "public_vpn" to "Public VPN",
+        "timezone_mismatch" to "Timezone mismatch",
         "relay" to "Relay",
-        "auxiliaryMobile" to "Auxiliary mobile",
+        "auxiliary_mobile" to "Auxiliary mobile",
     )
 
     val VPN_METHOD_PRIORITY = listOf(
-        "publicVPN",
-        "timezoneMismatch",
+        "public_vpn",
+        "timezone_mismatch",
         "relay",
-        "auxiliaryMobile",
+        "auxiliary_mobile",
     )
 
     const val COUNTRY_CODE_LENGTH = 2
