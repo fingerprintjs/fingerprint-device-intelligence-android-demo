@@ -20,6 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@Suppress("TooManyFunctions", "ReturnCount")
 class SmartSignalsBodyParser @Inject constructor(
     val json: Json,
 ) {
@@ -295,7 +296,6 @@ class SmartSignalsBodyParser @Inject constructor(
             else -> SmartSignalsError.UnknownApiError
         }
     }
-
 }
 
 @Serializable

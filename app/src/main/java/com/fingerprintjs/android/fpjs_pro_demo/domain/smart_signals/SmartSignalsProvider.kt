@@ -16,10 +16,8 @@ internal data class SmartSignalsRequest(
     val url: String,
     val headers: Map<String, String>,
 )
-
 internal fun buildProxyRequest(
     baseUrl: String,
-    origin: String,
     requestId: String,
     secret: String,
     username: String,
@@ -68,6 +66,7 @@ class SmartSignalsProvider @Inject constructor(
     private val smartSignalsBodyParser: SmartSignalsBodyParser,
 ) {
 
+    @Suppress("ReturnCount")
     suspend fun getSmartSignals(
         requestId: String,
         secret: String,
@@ -86,7 +85,6 @@ class SmartSignalsProvider @Inject constructor(
             }
             buildProxyRequest(
                 baseUrl = baseUrl,
-                origin = origin,
                 requestId = requestId,
                 secret = secret,
                 username = username,

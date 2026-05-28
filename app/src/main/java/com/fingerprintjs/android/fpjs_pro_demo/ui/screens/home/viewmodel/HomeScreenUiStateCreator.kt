@@ -170,7 +170,7 @@ class HomeScreenUiStateCreator @Inject constructor(
     @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
         fingerprintJSProResponse: FingerprintJSProResponse,
-        smartSignals: SmartSignals?, // null indicates that endpoint info or basic auth credentials are not set in the app
+        smartSignals: SmartSignals?, // null indicates that endpoint info or credentials are not set
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
         isAnyLocationPermissionGranted: Boolean = false,

@@ -9,7 +9,6 @@ class SmartSignalsProviderUnitTests {
     fun buildProxyRequest_appendsSecretAsQueryParameter() {
         val request = buildProxyRequest(
             baseUrl = "https://proxy.example.com",
-            origin = "https://demo.example.com",
             requestId = "1111111111111.AAAAAA",
             secret = "d1f2e879",
             username = "user",
@@ -26,7 +25,6 @@ class SmartSignalsProviderUnitTests {
     fun buildProxyRequest_setsBasicAuthorizationHeaderWithBase64EncodedCredentials() {
         val request = buildProxyRequest(
             baseUrl = "https://proxy.example.com",
-            origin = "https://demo.example.com",
             requestId = "req",
             secret = "abcdef01",
             username = "user",
@@ -40,7 +38,6 @@ class SmartSignalsProviderUnitTests {
     fun buildProxyRequest_setsAcceptHeader() {
         val request = buildProxyRequest(
             baseUrl = "https://proxy.example.com",
-            origin = "https://demo.example.com",
             requestId = "req",
             secret = "abcdef01",
             username = "u",
@@ -54,7 +51,6 @@ class SmartSignalsProviderUnitTests {
     fun buildProxyRequest_trailingSlashInBaseUrlDoesNotProduceDoubleSlash() {
         val request = buildProxyRequest(
             baseUrl = "https://proxy.example.com/",
-            origin = "https://demo.example.com",
             requestId = "req",
             secret = "00000007",
             username = "u",
@@ -71,7 +67,6 @@ class SmartSignalsProviderUnitTests {
     fun buildProxyRequest_differentSecretsProduceDifferentUrls() {
         val r1 = buildProxyRequest(
             baseUrl = "https://proxy.example.com",
-            origin = "https://demo.example.com",
             requestId = "req",
             secret = "00000001",
             username = "u",
@@ -79,7 +74,6 @@ class SmartSignalsProviderUnitTests {
         )
         val r2 = buildProxyRequest(
             baseUrl = "https://proxy.example.com",
-            origin = "https://demo.example.com",
             requestId = "req",
             secret = "00000002",
             username = "u",
