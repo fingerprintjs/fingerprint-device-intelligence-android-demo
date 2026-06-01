@@ -28,7 +28,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("publicVPN" to true),
+            methods = mapOf("public_vpn" to true),
             confidence = "high",
             originCountry = "US"
         )
@@ -48,7 +48,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("timezoneMismatch" to true),
+            methods = mapOf("timezone_mismatch" to true),
             confidence = "medium",
             originCountry = "DE"
         )
@@ -88,7 +88,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("auxiliaryMobile" to true),
+            methods = mapOf("auxiliary_mobile" to true),
             confidence = null,
             originCountry = null
         )
@@ -105,12 +105,12 @@ class SmartSignalUtilsUnitTests {
 
     @Test
     fun givenVpnWithMultipleMethods_whenGetVpnStatusString_thenReturnsHighestPriorityMethod() {
-        // given - publicVPN has highest priority
+        // given - public_vpn has highest priority
         val vpn = SmartSignal.Vpn(
             result = true,
             methods = mapOf(
-                "publicVPN" to true,
-                "timezoneMismatch" to true,
+                "public_vpn" to true,
+                "timezone_mismatch" to true,
                 "relay" to true
             ),
             confidence = "high",
@@ -131,7 +131,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("publicVPN" to true),
+            methods = mapOf("public_vpn" to true),
             confidence = null,
             originCountry = "US"
         )
@@ -150,7 +150,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("publicVPN" to true),
+            methods = mapOf("public_vpn" to true),
             confidence = "high",
             originCountry = null
         )
@@ -206,7 +206,7 @@ class SmartSignalUtilsUnitTests {
         // given
         val vpn = SmartSignal.Vpn(
             result = true,
-            methods = mapOf("publicVPN" to true),
+            methods = mapOf("public_vpn" to true),
             confidence = "high",
             originCountry = "US"
         )
@@ -239,7 +239,7 @@ class SmartSignalUtilsUnitTests {
     fun givenMethodsWithPublicVpn_whenGetVpnDetectionDetails_thenReturnsWithPublicVpn() {
         // when
         val result = getVpnDetectionDetails(
-            methods = mapOf("publicVPN" to true),
+            methods = mapOf("public_vpn" to true),
             confidence = null,
             originCountry = null
         )
@@ -255,7 +255,7 @@ class SmartSignalUtilsUnitTests {
     fun givenMethodsWithAllFields_whenGetVpnDetectionDetails_thenReturnsCompleteString() {
         // when
         val result = getVpnDetectionDetails(
-            methods = mapOf("timezoneMismatch" to true),
+            methods = mapOf("timezone_mismatch" to true),
             confidence = "medium",
             originCountry = "DE"
         )
