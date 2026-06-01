@@ -15,8 +15,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.withContext
+import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Named
+
+data class VisitorIdResponse(
+    val result: FingerprintJSProResult,
+    val secret: String,
+)
 
 class IdentificationProvider @Inject constructor(
     customApiKeysUseCase: CustomApiKeysUseCase,
@@ -24,6 +30,8 @@ class IdentificationProvider @Inject constructor(
     private val app: App,
     private val scope: CoroutineScope,
 ) {
+    private val secureRandom = SecureRandom()
+
     private val fingerprintJs = customApiKeysUseCase.state
         .map {
             FingerprintJSFactory(app).createInstance(
@@ -41,13 +49,15 @@ class IdentificationProvider @Inject constructor(
             replay = 1
         )
 
-    suspend fun getVisitorId(): FingerprintJSProResult {
-        return withContext(Dispatchers.IO) {
+    suspend fun getVisitorId(): VisitorIdResponse {
+        val secret = "%08x".format(secureRandom.nextInt())
+        val result = withContext(Dispatchers.IO) {
             try {
-                Ok(fingerprintJs.first().getVisitorId(networkTimeoutMillis))
+                Ok(fingerprintJs.first().getVisitorId(networkTimeoutMillis, mapOf<String, Any>("secret" to secret)))
             } catch (e: FingerprintException) {
                 Err(e.error)
             }
         }
+        return VisitorIdResponse(result, secret)
     }
 }

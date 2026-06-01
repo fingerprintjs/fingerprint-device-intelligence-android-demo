@@ -17,6 +17,14 @@ object Protected {
     val smartSignalsOrigin: String?
         get() = stringsFromJNI()[3]
 
+    @Suppress("MagicNumber")
+    val username: String?
+        get() = stringsFromJNI()[4]
+
+    @Suppress("MagicNumber")
+    val password: String?
+        get() = stringsFromJNI()[5]
+
     private external fun stringFromJNI(): String
 
     private fun stringsFromJNI(): List<String?> {
