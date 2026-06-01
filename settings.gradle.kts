@@ -1,5 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
+val localProperties = java.util.Properties().apply {
+    val f = file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 pluginManagement {
     repositories {
         google()
@@ -28,10 +33,10 @@ dependencyResolutionManagement {
             credentials(PasswordCredentials::class) {
                 username = providers.gradleProperty("privateMavenUser")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
-                    .getOrElse("")
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_USER", ""))
                 password = providers.gradleProperty("privateMavenPassword")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_PASSWORD"))
-                    .getOrElse("")
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_PASSWORD", ""))
             }
             content {
                 includeGroup("com.fingerprint.android")
