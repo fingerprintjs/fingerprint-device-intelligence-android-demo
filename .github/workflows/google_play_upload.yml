@@ -13,6 +13,10 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
+    # Gradle reads ORG_GRADLE_PROJECT_* as project properties (privateMavenUser / privateMavenPassword).
+    env:
+      ORG_GRADLE_PROJECT_privateMavenUser: ${{ secrets.PRIVATE_MAVEN_USER }}
+      ORG_GRADLE_PROJECT_privateMavenPassword: ${{ secrets.PRIVATE_MAVEN_PASSWORD }}
 
     steps:
       # -----------------------------
@@ -41,8 +45,22 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Fetch string.h from private Maven
+        run: |
+          curl --fail --silent --show-error \
+            -u "${{ secrets.PRIVATE_MAVEN_USER }}:${{ secrets.PRIVATE_MAVEN_PASSWORD }}" \
+            -o app/src/main/cpp/secret/string.h \
+            "https://maven.fpregistry.io/private-releases/com/fingerprintjs/demo-native-secrets/1.0.0/string.h"
+
+      - name: Validate private Maven credentials
+        run: |
+          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenPassword" ]; then
+            echo "::error::GitHub secrets PRIVATE_MAVEN_USER and PRIVATE_MAVEN_PASSWORD must be configured."
+            exit 1
+          fi
+
       # -----------------------------
-      # Build signed AAB
+      # Build signed AAB (SDK from private Maven: maven.fpregistry.io/private-releases)
       # -----------------------------
       - name: Build Release AAB
         run: |

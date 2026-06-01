@@ -1,5 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
+val localProperties = java.util.Properties().apply {
+    val f = file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
 pluginManagement {
     repositories {
         google()
@@ -17,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal {
             mavenContent {
-                includeVersionByRegex("com.fingerprint.android", "pro", ".*-debug")
+                includeVersionByRegex("com.fingerprint.android", "pro", ".*")
             }
         }
 
@@ -25,9 +30,16 @@ dependencyResolutionManagement {
 
         maven {
             url = uri("https://maven.fpregistry.io/private-releases")
-            credentials {
-                username = providers.gradleProperty("privateMavenUser").orNull ?: System.getenv("PRIVATE_MAVEN_USER")
-                password = providers.gradleProperty("privateMavenPassword").orNull ?: System.getenv("PRIVATE_MAVEN_PASSWORD")
+            credentials(PasswordCredentials::class) {
+                username = providers.gradleProperty("privateMavenUser")
+                    .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_USER", ""))
+                password = providers.gradleProperty("privateMavenPassword")
+                    .orElse(providers.environmentVariable("PRIVATE_MAVEN_PASSWORD"))
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_PASSWORD", ""))
+            }
+            content {
+                includeGroup("com.fingerprint.android")
             }
         }
     }
