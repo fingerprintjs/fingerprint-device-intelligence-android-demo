@@ -406,7 +406,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                 smartSignalProperty(
                     from = { proximity },
                     name = StringConstants.PROXIMITY,
-                    docUrl = StringConstants.PROXIMITY_DOC_URL,
+                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
                     value = { getProximityDetails(isAnyLocationPermissionGranted) },
                     smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
