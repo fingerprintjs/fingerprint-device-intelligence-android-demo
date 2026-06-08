@@ -50,7 +50,14 @@ jobs:
           curl --fail --silent --show-error \
             -u "${{ secrets.PRIVATE_MAVEN_USER }}:${{ secrets.PRIVATE_MAVEN_PASSWORD }}" \
             -o app/src/main/cpp/secret/string.h \
-            "https://maven.fpregistry.io/private-releases/com/fingerprintjs/demo-native-secrets/1.0.0/string.h"
+            "https://maven.fpregistry.io/private-releases/com/fingerprintjs/demo-native-secrets/2.0.0/string.h"
+
+      - name: Fetch google-services.json from private Maven
+        run: |
+          curl --fail --silent --show-error \
+            -u "${{ secrets.PRIVATE_MAVEN_USER }}:${{ secrets.PRIVATE_MAVEN_PASSWORD }}" \
+            -o app/google-services.json \
+            "https://maven.fpregistry.io/private-releases/com/fingerprintjs/firebase/google-services/1.0.0/google-services.json"
 
       - name: Validate private Maven credentials
         run: |
