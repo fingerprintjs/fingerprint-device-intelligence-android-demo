@@ -4,6 +4,7 @@ import java.io.IOException
 
 sealed interface SmartSignalsError {
     data object EndpointInfoNotSetInApp : SmartSignalsError
+    data object BasicAuthCredentialsNotSetInApp : SmartSignalsError
     data class NetworkError(val cause: IOException) : SmartSignalsError
     data object ParseError : SmartSignalsError
     data object Unknown : SmartSignalsError

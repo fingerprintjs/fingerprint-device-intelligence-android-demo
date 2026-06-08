@@ -3,261 +3,268 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.github.michaelbull.result.get
 import junit.framework.TestCase
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonObject
 import org.junit.Test
 
 class SmartSignalsBodyParserUnitTests {
     private val parser = CommonComponentStorage.commonComponent.smartSignalsBodyParser()
-    private val json = CommonComponentStorage.commonComponent.json()
 
     @Test
-    fun givenCorrectSmartSignal_whenGetSmartSignal_thenSmartSignalParsedCorrectly() {
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = """
-            {
-                "data": {
-                    "result": true
-                }
-            }
-            """.trimIndent(),
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(SmartSignal.Emulator(true), it.typedData)
-        }
+    fun givenFlatBooleanSignal_whenParse_thenSuccess() {
+        val signals = parser.parseSmartSignals("""{ "emulator": true }""").get()!!
+        TestCase.assertTrue(signals.emulator is SmartSignalInfo.Success)
+        val success = signals.emulator as SmartSignalInfo.Success
+        TestCase.assertEquals(SmartSignal.Emulator(result = true), success.typedData)
+        TestCase.assertEquals("emulator", success.rawKey)
     }
 
     @Test
-    fun givenIncorrectSmartSignal_whenGetSmartSignal_thenSmartSignalReturnsParseError() {
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = """
-            {
-                "data": "unexpected"
-            }
-            """.trimIndent(),
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.ParseError)
-            it as SmartSignalInfo.ParseError
-        }
+    fun givenFlatBooleanWithUnexpectedType_whenParse_thenParseError() {
+        val signals = parser.parseSmartSignals("""{ "emulator": "not-a-bool" }""").get()!!
+        TestCase.assertTrue(signals.emulator is SmartSignalInfo.ParseError)
     }
 
     @Test
-    fun givenCorrectSmartSignalWithUnknownFields_whenGetSmartSignal_thenSmartSignalParsedCorrectly() {
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = """
-            {
-                "unknown": 1,
-                "data": {
-                    "result": true,
-                    "unknown": 2
-                }
-            }
-            """.trimIndent(),
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(SmartSignal.Emulator(true), it.typedData)
-        }
+    fun givenSignalMissing_whenParse_thenDisabled() {
+        val signals = parser.parseSmartSignals("""{ }""").get()!!
+        TestCase.assertTrue(signals.emulator is SmartSignalInfo.Disabled)
+        TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Disabled)
+        TestCase.assertTrue(signals.ipInfo is SmartSignalInfo.Disabled)
     }
 
     @Test
-    fun givenSmartSignalError_whenGetSmartSignal_thenSmartSignalErrorReturned() {
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = """
-            { 
-                "data": {
-                    "result": true,
-                    "comment": "data object is expected to be ignored"
-                },
-                "error": {
-                    "code": "some_code",
-                    "message": "some_message"
-                }
-            }
-            """.trimIndent(),
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Error)
+    fun givenExtraRootFields_whenParse_thenIgnoredAndKnownSignalsParsed() {
+        val body = """
+        {
+            "developer_tools": true,
+            "unknown_extra_field": 42,
+            "some_new_v4_signal": { "result": true }
         }
-    }
-
-    @Test
-    fun givenSmartSignalNotPresent_whenGetSmartSignal_thenSmartSignalDisabledReturned() {
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = "{\"comment\": \"stub\"}",
-            actualKey = "some_key",
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Disabled)
-        }
-    }
-
-    @Test
-    fun givenSmartSignalWithWhateverPayloadObject_whenGetSmartSignal_thenRawDataPreserved() {
-        val entry = """
-                {
-                    "unexpected_prop1": "string",
-                    "unexpected_prop2": 1
-                }
         """.trimIndent()
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = entry,
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.WithRawData)
-            it as SmartSignalInfo.WithRawData
-            TestCase.assertEquals(entry, json.encodeToString(it.rawData))
-        }
+        val signals = parser.parseSmartSignals(body).get()!!
+        TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Success)
     }
 
     @Test
-    fun givenSmartSignalWithWhateverPayloadPrimitive_whenGetSmartSignal_thenRawDataPreserved() {
-        val entry = "0"
-
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = entry,
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.WithRawData)
-            it as SmartSignalInfo.WithRawData
-            TestCase.assertEquals(entry, json.encodeToString(it.rawData))
-        }
+    fun givenFactoryResetTimestamp_whenParse_thenSuccessWithDerivedTime() {
+        val signals = parser.parseSmartSignals("""{ "factory_reset_timestamp": 1707144876 }""").get()!!
+        TestCase.assertTrue(signals.factoryReset is SmartSignalInfo.Success)
+        val success = signals.factoryReset as SmartSignalInfo.Success
+        TestCase.assertEquals(1707144876L, success.typedData.timestamp)
+        TestCase.assertEquals("2024-02-05T14:54:36Z", success.typedData.time)
     }
 
     @Test
-    fun givenSmartSignalWithWhateverPayloadArray_whenGetSmartSignal_thenRawDataPreserved() {
-        val entry = """
-        [
-            0,
-            1,
-            2
-        ]
+    fun givenFactoryResetMissing_whenParse_thenDisabled() {
+        val signals = parser.parseSmartSignals("""{ }""").get()!!
+        TestCase.assertTrue(signals.factoryReset is SmartSignalInfo.Disabled)
+    }
+
+    @Test
+    fun givenHighActivity_whenParse_thenDailyRequestsIsNullBecauseV4OmitsIt() {
+        val signals = parser.parseSmartSignals("""{ "high_activity_device": true }""").get()!!
+        val success = signals.highActivity as SmartSignalInfo.Success
+        TestCase.assertEquals(true, success.typedData.result)
+        TestCase.assertNull(success.typedData.dailyRequests)
+    }
+
+    @Test
+    fun givenVpnWithAllFields_whenParse_thenSplitFieldsAssembled() {
+        val body = """
+        {
+            "vpn": true,
+            "vpn_confidence": "high",
+            "vpn_origin_timezone": "America/New_York",
+            "vpn_origin_country": "DE",
+            "vpn_methods": {
+                "timezone_mismatch": true,
+                "public_vpn": false,
+                "auxiliary_mobile": false,
+                "relay": true
+            }
+        }
         """.trimIndent()
-
-        testSmartSignalParsing<SmartSignal.Emulator>(
-            jsonEntry = entry,
-            expectedKey = "emulator"
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.WithRawData)
-            it as SmartSignalInfo.WithRawData
-            TestCase.assertEquals(entry, json.encodeToString(it.rawData))
-        }
+        val signals = parser.parseSmartSignals(body).get()!!
+        val success = signals.vpn as SmartSignalInfo.Success
+        val vpn = success.typedData
+        TestCase.assertEquals(true, vpn.result)
+        TestCase.assertEquals("high", vpn.confidence)
+        TestCase.assertEquals("America/New_York", vpn.originTimezone)
+        TestCase.assertEquals("DE", vpn.originCountry)
+        TestCase.assertEquals(
+            mapOf(
+                "timezone_mismatch" to true,
+                "public_vpn" to false,
+                "auxiliary_mobile" to false,
+                "relay" to true,
+            ),
+            vpn.methods,
+        )
     }
 
     @Test
-    fun givenCorrentErrorBody_whenParseSmartSignalsError_thenCorrectErrorReturned() {
+    fun givenVpnOriginUnknown_whenParse_thenOriginCoercedToNull() {
+        val body = """
+        {
+            "vpn": false,
+            "vpn_origin_country": "unknown",
+            "vpn_origin_timezone": ""
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val vpn = (signals.vpn as SmartSignalInfo.Success).typedData
+        TestCase.assertNull(vpn.originCountry)
+        TestCase.assertNull(vpn.originTimezone)
+    }
+
+    @Test
+    fun givenTampering_whenParse_thenAnomalyScoreReadFromDetails() {
+        val body = """
+        {
+            "tampering": true,
+            "tampering_details": { "anomaly_score": 1.5 }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val tampering = (signals.tampering as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals(true, tampering.result)
+        TestCase.assertEquals(1.5f, tampering.anomalyScore)
+    }
+
+    @Test
+    fun givenTamperingWithoutDetails_whenParse_thenAnomalyScoreDefaultsToZero() {
+        val signals = parser.parseSmartSignals("""{ "tampering": false }""").get()!!
+        val tampering = (signals.tampering as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals(false, tampering.result)
+        TestCase.assertEquals(0f, tampering.anomalyScore)
+    }
+
+    @Test
+    fun givenProxyWithDetails_whenParse_thenDetailsMappedToV3CamelCaseKeys() {
+        val body = """
+        {
+            "proxy": true,
+            "proxy_confidence": "medium",
+            "proxy_details": {
+                "proxy_type": "residential",
+                "last_seen_at": 1779321600000
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val proxy = (signals.proxy as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals(true, proxy.result)
+        TestCase.assertEquals("medium", proxy.confidence)
+        TestCase.assertEquals("residential", proxy.details["proxy_type"])
+        TestCase.assertEquals("2026-05-21T00:00:00Z", proxy.details["last_seen_at"])
+    }
+
+    @Test
+    fun givenIpBlocklist_whenParse_thenResultDerivedFromAnyTrueFlag() {
+        val body = """
+        {
+            "ip_blocklist": {
+                "email_spam": false,
+                "attack_source": true,
+                "tor_node": false
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val ipBlocklist = (signals.ipBlocklist as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals(true, ipBlocklist.result)
+        TestCase.assertEquals(
+            mapOf("email_spam" to false, "attack_source" to true),
+            ipBlocklist.details,
+        )
+    }
+
+    @Test
+    fun givenIpInfo_whenParse_thenNestedStructureBuilt() {
+        val body = """
+        {
+            "ip_info": {
+                "v4": {
+                    "address": "106.222.216.201",
+                    "geolocation": {
+                        "accuracy_radius": 500,
+                        "latitude": 23.25469,
+                        "longitude": 77.40289,
+                        "postal_code": "464993",
+                        "timezone": "Asia/Kolkata",
+                        "city_name": "Bhopal",
+                        "country_code": "IN",
+                        "country_name": "India",
+                        "continent_code": "AS",
+                        "continent_name": "Asia"
+                    },
+                    "asn": "24560",
+                    "asn_name": "Bharti Airtel",
+                    "asn_network": "106.222.208.0/20",
+                    "asn_type": "isp",
+                    "datacenter_result": false
+                }
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val ipInfo = (signals.ipInfo as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals("106.222.216.201", ipInfo.v4.address)
+        TestCase.assertEquals("24560", ipInfo.v4.asn.asn)
+        TestCase.assertEquals("Bharti Airtel", ipInfo.v4.asn.name)
+        TestCase.assertEquals("106.222.208.0/20", ipInfo.v4.asn.network)
+        TestCase.assertEquals(false, ipInfo.v4.datacenter.result)
+        TestCase.assertEquals("", ipInfo.v4.datacenter.name)
+        TestCase.assertEquals(464993, ipInfo.v4.geolocation.postalCode)
+        TestCase.assertEquals("Bhopal", ipInfo.v4.geolocation.city.name)
+        TestCase.assertEquals("IN", ipInfo.v4.geolocation.country.code)
+        TestCase.assertEquals("Asia", ipInfo.v4.geolocation.continent.name)
+    }
+
+    @Test
+    fun givenProximityWithAllFields_whenParse_thenAllFieldsExtracted() {
+        val body = """
+        {
+            "proximity": {
+                "id": "VhRLfKfgXDt",
+                "precision_radius": 10,
+                "confidence": 0.76
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val proximity = (signals.proximity as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals("VhRLfKfgXDt", proximity.id)
+        TestCase.assertEquals(10, proximity.precisionRadius)
+        TestCase.assertEquals(0.76f, proximity.confidence)
+    }
+
+    @Test
+    fun givenProximityEmpty_whenParse_thenAllFieldsNull() {
+        val signals = parser.parseSmartSignals("""{ "proximity": {} }""").get()!!
+        val proximity = (signals.proximity as SmartSignalInfo.Success).typedData
+        TestCase.assertNull(proximity.id)
+        TestCase.assertNull(proximity.precisionRadius)
+        TestCase.assertNull(proximity.confidence)
+    }
+
+    @Test
+    fun givenValidErrorBody_whenParseSmartSignalsError_thenCorrectErrorReturned() {
         val result = parser.parseSmartSignalsError(
             """
-        {
-            "error": {
-                "message": "some_value",
-                "code": "TokenRequired"
+            {
+                "error": {
+                    "message": "some_value",
+                    "code": "TokenRequired"
+                }
             }
-        }
             """.trimIndent()
         )
         TestCase.assertEquals(SmartSignalsError.TokenRequired, result.get())
     }
 
     @Test
-    fun givenIncorrectErrorBody_whenParseSmartSignalsError_thenErrorReturned() {
+    fun givenInvalidErrorBody_whenParseSmartSignalsError_thenErrorReturned() {
         val result = parser.parseSmartSignalsError("whatever_string")
         TestCase.assertTrue(result.isErr)
-    }
-
-    @Test
-    fun givenEmptyProximityObject_whenGetSmartSignalWithAllowMissingData_thenProximityParsedWithNullFields() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = "{}",
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = null, precisionRadius = null, confidence = null),
-                it.typedData
-            )
-        }
-    }
-
-    @Test
-    fun givenEmptyProximityObject_whenGetSmartSignalWithoutAllowMissingData_thenParseErrorReturned() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = "{}",
-            expectedKey = "proximity",
-            allowMissingData = false
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.ParseError)
-        }
-    }
-
-    @Test
-    fun givenProximityWithData_whenGetSmartSignalWithAllowMissingData_thenProximityParsedCorrectly() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = """
-            {
-                "data": {
-                    "id": "testId",
-                    "precisionRadius": 10,
-                    "confidence": 0.76
-                }
-            }
-            """.trimIndent(),
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = "testId", precisionRadius = 10, confidence = 0.76f),
-                it.typedData
-            )
-        }
-    }
-
-    @Test
-    fun givenEmptyProximityDataObject_whenGetSmartSignalWithAllowMissingData_thenProximityParsedWithNullFields() {
-        testSmartSignalParsing<SmartSignal.Proximity>(
-            jsonEntry = """
-            {
-                "data": {}
-            }
-            """.trimIndent(),
-            expectedKey = "proximity",
-            allowMissingData = true
-        ) {
-            TestCase.assertTrue(it is SmartSignalInfo.Success)
-            it as SmartSignalInfo.Success
-            TestCase.assertEquals(
-                SmartSignal.Proximity(id = null, precisionRadius = null, confidence = null),
-                it.typedData
-            )
-        }
-    }
-
-    private inline fun <reified T : SmartSignal> testSmartSignalParsing(
-        jsonEntry: String,
-        expectedKey: String,
-        actualKey: String = expectedKey,
-        allowMissingData: Boolean = false,
-        test: (SmartSignalInfo<T>) -> Unit,
-    ) {
-        val jsonString = """
-            {
-            "$actualKey": $jsonEntry
-            }
-        """.trimIndent()
-        val jsonObject = json.parseToJsonElement(jsonString) as JsonObject
-
-        val signal = with(parser) {
-            jsonObject.getSmartSignal<T>(expectedKey, allowMissingData = allowMissingData)
-        }
-
-        test(signal)
     }
 }

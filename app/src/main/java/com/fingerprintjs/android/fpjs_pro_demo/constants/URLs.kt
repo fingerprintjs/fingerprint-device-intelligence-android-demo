@@ -22,6 +22,8 @@ object URLs {
         val ipNetworkProvider = smartSignalOverviewUrl("ip-geolocation")
         val ipBlocklist = smartSignalOverviewUrl("ip-blocklist-matching")
         val proxy = smartSignalOverviewUrl("proxy-detection")
+        val developerTools = smartSignalOverviewUrl("developer-tools-detection-for-mobile-devices")
+        val proximityDetection = smartSignalOverviewUrl("proximity-detection")
 
         private fun smartSignalOverviewUrl(forAnchor: String): String {
             return "https://dev.fingerprint.com/docs/smart-signals-overview#$forAnchor"

@@ -61,59 +61,24 @@ class StateMocks @Inject constructor(
 
     val smartSignalsRawResponse = """
 {
-    "products": {
-        "clonedApp": {
-            "data": {
-                "result": false
-            }
-        },
-        "emulator": {
-            "data": {
-                "result": false
-            }
-        },
-        "factoryReset": {
-            "data": {
-                "time": "2024-02-05T14:54:36Z",
-                "timestamp": 1707144876
-            }
-        },
-        "frida": {
-            "data": {
-                "result": false
-            }
-        },
-        "highActivity": {
-            "data": {
-                "result": true,
-                "dailyRequests": 125
-            }
-        },
-        "locationSpoofing": {
-            "data": {
-                "result": false
-            }
-        },
-        "rootApps": {
-            "data": {
-                "result": false
-            }
-        },
-        "vpn": {
-            "data": {
-                "result": true,
-                "originTimezone": "America/New_York",
-                "originCountry": "DE",
-                "confidence": "high",
-                "methods": {
-                    "timezoneMismatch": true,
-                    "publicVPN": false,
-                    "auxiliaryMobile": false,
-                    "osMismatch": false
-                }
-            }
-        }
-    }
+    "cloned_app": false,
+    "emulator": false,
+    "factory_reset_timestamp": 1707144876,
+    "frida": false,
+    "high_activity_device": true,
+    "location_spoofing": false,
+    "root_apps": false,
+    "vpn": true,
+    "vpn_confidence": "high",
+    "vpn_origin_timezone": "America/New_York",
+    "vpn_origin_country": "DE",
+    "vpn_methods": {
+        "timezone_mismatch": true,
+        "public_vpn": false,
+        "auxiliary_mobile": false,
+        "relay": false
+    },
+    "developer_tools": false
 }
     """.trimIndent()
 

@@ -1,6 +1,5 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
-import android.net.Uri
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Protected
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysUseCase
 import com.fingerprintjs.android.fpjs_pro_demo.network.HttpClient
@@ -9,7 +8,57 @@ import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.fold
 import com.github.michaelbull.result.mapError
 import kotlinx.coroutines.flow.first
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import okio.ByteString.Companion.encodeUtf8
 import javax.inject.Inject
+
+internal data class SmartSignalsRequest(
+    val url: String,
+    val headers: Map<String, String>,
+)
+internal fun buildProxyRequest(
+    baseUrl: String,
+    requestId: String,
+    secret: String,
+    username: String,
+    password: String,
+): SmartSignalsRequest {
+    val url = baseUrl.toHttpUrl().newBuilder()
+        .addPathSegment("event")
+        .addPathSegment("v4")
+        .addPathSegment(requestId)
+        .addQueryParameter("secret", secret)
+        .build()
+        .toString()
+    val basicAuth = "$username:$password".encodeUtf8().base64()
+    return SmartSignalsRequest(
+        url = url,
+        headers = mapOf(
+            "Accept" to "application/json",
+            "Authorization" to "Basic $basicAuth",
+        ),
+    )
+}
+
+internal fun buildCustomKeysRequest(
+    endpointUrl: String,
+    requestId: String,
+    apiKey: String,
+): SmartSignalsRequest {
+    val url = endpointUrl.toHttpUrl().newBuilder()
+        .addPathSegment("v4")
+        .addPathSegment("events")
+        .addPathSegment(requestId)
+        .build()
+        .toString()
+    return SmartSignalsRequest(
+        url = url,
+        headers = mapOf(
+            "Accept" to "application/json",
+            "Authorization" to "Bearer $apiKey",
+        ),
+    )
+}
 
 class SmartSignalsProvider @Inject constructor(
     private val customApiKeysUseCase: CustomApiKeysUseCase,
@@ -17,38 +66,41 @@ class SmartSignalsProvider @Inject constructor(
     private val smartSignalsBodyParser: SmartSignalsBodyParser,
 ) {
 
+    @Suppress("ReturnCount")
     suspend fun getSmartSignals(
         requestId: String,
+        secret: String,
     ): SmartSignalsResponse {
         val customKeysState = customApiKeysUseCase.state.first()
-        val headers = mutableMapOf(
-            "Accept" to "application/json"
-        )
-        val url: String
-        if (!customKeysState.enabled) {
+        val request: SmartSignalsRequest = if (!customKeysState.enabled) {
             val baseUrl = Protected.smartSignalsBaseUrl
             val origin = Protected.smartSignalsOrigin
             if (baseUrl == null || origin == null) {
                 return Err(SmartSignalsError.EndpointInfoNotSetInApp)
             }
-            url = Uri.parse(baseUrl)
-                .buildUpon()
-                .appendPath("event")
-                .appendPath(requestId)
-                .toString()
-            headers["Origin"] = origin
+            val username = Protected.username
+            val password = Protected.password
+            if (username.isNullOrBlank() || password.isNullOrBlank()) {
+                return Err(SmartSignalsError.BasicAuthCredentialsNotSetInApp)
+            }
+            buildProxyRequest(
+                baseUrl = baseUrl,
+                requestId = requestId,
+                secret = secret,
+                username = username,
+                password = password,
+            )
         } else {
-            url = Uri.parse(customKeysState.region.endpointUrl)
-                .buildUpon()
-                .appendPath("events")
-                .appendPath(requestId)
-                .toString()
-            headers["Auth-API-Key"] = customKeysState.secret
+            buildCustomKeysRequest(
+                endpointUrl = customKeysState.region.endpointUrl,
+                requestId = requestId,
+                apiKey = customKeysState.secret,
+            )
         }
 
         return httpClient.request(
-            url = url,
-            headers = headers,
+            url = request.url,
+            headers = request.headers,
         )
             .mapError {
                 when (it) {
