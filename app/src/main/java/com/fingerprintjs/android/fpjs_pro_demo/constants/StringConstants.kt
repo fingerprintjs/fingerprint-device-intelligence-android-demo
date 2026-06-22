@@ -34,6 +34,7 @@ object StringConstants {
     const val TAMPERED_REQUEST = "Tampered Request"
     const val VPN = "VPN"
     const val PROXIMITY = "Proximity Detection"
+    const val DEVELOPER_TOOLS = "Developer Tools"
 
     // Smart signal link text
     const val SMART_SIGNAL = "Smart Signal"
@@ -46,8 +47,6 @@ object StringConstants {
     const val PROXIMITY_CONFIDENCE_PREFIX = "Confidence: "
     const val PROXIMITY_REQUIRES_PERMISSION = "Requires location permission"
     const val PROXIMITY_NO_DATA = "Unable to retrieve location data"
-    const val PROXIMITY_DOC_URL =
-        "https://dev.fingerprint.com/docs/native-android-integration#proximity-detection-for-android-devices"
 
     // Visitor found values
     const val YES = "Yes"
@@ -82,17 +81,17 @@ object StringConstants {
 
     // VPN Detection
     val VPN_METHOD_LABELS = mapOf(
-        "publicVPN" to "Public VPN",
-        "timezoneMismatch" to "Timezone mismatch",
+        "public_vpn" to "Public VPN",
+        "timezone_mismatch" to "Timezone mismatch",
         "relay" to "Relay",
-        "auxiliaryMobile" to "Auxiliary mobile",
+        "auxiliary_mobile" to "Auxiliary mobile",
     )
 
     val VPN_METHOD_PRIORITY = listOf(
-        "publicVPN",
-        "timezoneMismatch",
+        "public_vpn",
+        "timezone_mismatch",
         "relay",
-        "auxiliaryMobile",
+        "auxiliary_mobile",
     )
 
     const val COUNTRY_CODE_LENGTH = 2
