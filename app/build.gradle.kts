@@ -11,9 +11,9 @@ val local = Properties().apply {
 }
 
 @Suppress("PropertyName")
-val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "4.0.0"
+val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "4.1.2"
 @Suppress("PropertyName")
-val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 61
+val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 64
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
