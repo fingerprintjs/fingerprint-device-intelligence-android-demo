@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 val local = Properties().apply {
@@ -102,9 +103,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
         isCoreLibraryDesugaringEnabled = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         buildConfig = true
     }
@@ -130,10 +128,15 @@ android {
                 "io.netty:netty-codec-http2:4.1.129.Final",
                 "io.netty:netty-codec-http:4.1.129.Final",
                 "io.netty:netty-handler:4.1.118.Final",
-                "io.netty:netty-common:4.1.118",
-                "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+                "io.netty:netty-common:4.1.118"
             )
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
 
@@ -182,6 +185,7 @@ dependencies {
     //di
     implementation(libs.google.dagger)
     kapt(libs.google.dagger.compiler)
+    kapt(libs.jetbrains.kotlin.metadata.jvm)
 
     //security
     implementation(libs.androidx.security.crypto)
