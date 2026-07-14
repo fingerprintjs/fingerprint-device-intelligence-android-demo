@@ -10,7 +10,7 @@ object StringConstants {
     const val SIGNAL_DISABLED = "Signal disabled for your account"
 
     // Property names
-    const val REQUEST_ID = "Request ID"
+    const val EVENT_ID = "Event ID"
     const val VISITOR_ID = "Visitor ID"
     const val VISITOR_FOUND = "Visitor Found"
     const val CONFIDENCE = "Confidence"

@@ -192,7 +192,7 @@ class HomeViewModel @Inject constructor(
                     // if fingerprintSdkResponse is error, consider smart signals response as
                     // error too for simplicity
                     .mapError { SmartSignalsError.Unknown }
-                    .flatMap { smartSignalsProvider.getSmartSignals(it.requestId, visitorIdResponse.secret) }
+                    .flatMap { smartSignalsProvider.getSmartSignals(it.eventId, visitorIdResponse.secret) }
             }
         }
     }
