@@ -127,10 +127,6 @@ android {
                 "com.google.protobuf:protobuf-java:3.25.5",
                 "com.google.protobuf:protobuf-java-util:3.25.5",
                 "commons-io:commons-io:2.14.0",
-                "io.netty:netty-codec-http2:4.1.129.Final",
-                "io.netty:netty-codec-http:4.1.129.Final",
-                "io.netty:netty-handler:4.1.118.Final",
-                "io.netty:netty-common:4.1.118",
                 "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
             )
         }

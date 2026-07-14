@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
+package com.fingerprintjs.android.fpjs_pro_demo.viewmodel
 
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.fingerprintjs.android.fpjs_pro_demo.utils.stateMocks
