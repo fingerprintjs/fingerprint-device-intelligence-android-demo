@@ -60,6 +60,7 @@ class SmartSignalsBodyParser @Inject constructor(
                 developerTools = root.flatBoolSignal("developer_tools", rawKey = "developerTools") {
                     SmartSignal.DeveloperTools(it)
                 },
+                identificationInfo = root.parseIdentificationInfo(),
             )
         }.mapError { }
     }
@@ -235,6 +236,33 @@ class SmartSignalsBodyParser @Inject constructor(
                 )
             ),
             rawData = ipInfoObj,
+        )
+    }
+
+    private fun JsonObject.parseIdentificationInfo(): SmartSignalInfo<SmartSignal.IdentificationInfo> {
+        val rawKey = "identificationInfo"
+        val identObj = get("identification") as? JsonObject ?: return SmartSignalInfo.Disabled(rawKey)
+        val visitorFound = (identObj["visitor_found"] as? JsonPrimitive)?.booleanOrNull
+            ?: return SmartSignalInfo.Disabled(rawKey)
+        val confidenceScore = (identObj["confidence"] as? JsonObject)
+            ?.let { (it["score"] as? JsonPrimitive)?.doubleOrNull } ?: 0.0
+        val firstSeenAt = (identObj["first_seen_at"] as? JsonPrimitive)?.longOrNull ?: 0L
+        val lastSeenAt = (identObj["last_seen_at"] as? JsonPrimitive)?.longOrNull ?: 0L
+        val rawData = buildJsonObject {
+            put("visitor_found", visitorFound)
+            put("confidence_score", confidenceScore)
+            put("first_seen_at", firstSeenAt)
+            put("last_seen_at", lastSeenAt)
+        }
+        return SmartSignalInfo.Success(
+            rawKey = rawKey,
+            typedData = SmartSignal.IdentificationInfo(
+                visitorFound = visitorFound,
+                confidenceScore = confidenceScore,
+                firstSeenAt = firstSeenAt,
+                lastSeenAt = lastSeenAt,
+            ),
+            rawData = rawData,
         )
     }
 

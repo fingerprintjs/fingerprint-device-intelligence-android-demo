@@ -20,6 +20,8 @@ class SmartSignals(
     val ipInfo: SmartSignalInfo<SmartSignal.IPInfo>,
     val proximity: SmartSignalInfo<SmartSignal.Proximity>,
     val developerTools: SmartSignalInfo<SmartSignal.DeveloperTools>,
+    // Identification data from the GetEvents response (not smart signals)
+    val identificationInfo: SmartSignalInfo<SmartSignal.IdentificationInfo>,
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -184,4 +186,13 @@ sealed class SmartSignal {
     data class DeveloperTools(
         val result: Boolean,
     ) : SmartSignal()
+
+    @Serializable
+    data class IdentificationInfo(
+        val visitorFound: Boolean,
+        val confidenceScore: Double,
+        val firstSeenAt: Long,
+        val lastSeenAt: Long,
+    ) : SmartSignal()
+
 }
