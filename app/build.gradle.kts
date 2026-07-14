@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 val local = Properties().apply {
@@ -102,9 +103,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
         isCoreLibraryDesugaringEnabled = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         buildConfig = true
     }
@@ -126,10 +124,15 @@ android {
             force(
                 "com.google.protobuf:protobuf-java:3.25.5",
                 "com.google.protobuf:protobuf-java-util:3.25.5",
-                "commons-io:commons-io:2.14.0",
-                "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+                "commons-io:commons-io:2.14.0"
             )
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
 
@@ -178,6 +181,7 @@ dependencies {
     //di
     implementation(libs.google.dagger)
     kapt(libs.google.dagger.compiler)
+    kapt(libs.jetbrains.kotlin.metadata.jvm)
 
     //security
     implementation(libs.androidx.security.crypto)
