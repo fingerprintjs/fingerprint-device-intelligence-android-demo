@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.identification
 
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintException
-import com.fingerprintjs.android.fpjs_pro.Fingerprint
 import com.fingerprintjs.android.fpjs_pro.FingerprintFactory
 import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials
