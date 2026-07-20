@@ -1,30 +1,36 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
 import androidx.annotation.VisibleForTesting
-import com.fingerprintjs.android.fpjs_pro.ApiKeyExpired
 import com.fingerprintjs.android.fpjs_pro.ApiKeyNotFound
 import com.fingerprintjs.android.fpjs_pro.ApiKeyRequired
 import com.fingerprintjs.android.fpjs_pro.ClientTimeout
+import com.fingerprintjs.android.fpjs_pro.EnvironmentRestricted
 import com.fingerprintjs.android.fpjs_pro.Failed
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
-import com.fingerprintjs.android.fpjs_pro.HeaderRestricted
+import com.fingerprintjs.android.fpjs_pro.FeatureNotEnabled
+import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
 import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
+import com.fingerprintjs.android.fpjs_pro.MissingModule
 import com.fingerprintjs.android.fpjs_pro.NetworkError
 import com.fingerprintjs.android.fpjs_pro.NetworkUnavailableError
-import com.fingerprintjs.android.fpjs_pro.NotAvailableForCrawlBots
-import com.fingerprintjs.android.fpjs_pro.NotAvailableWithoutUA
-import com.fingerprintjs.android.fpjs_pro.OriginNotAvailable
-import com.fingerprintjs.android.fpjs_pro.PackageNotAuthorized
+import com.fingerprintjs.android.fpjs_pro.PayloadTooLarge
 import com.fingerprintjs.android.fpjs_pro.ProxyIntegrationSecretEnvironmentMismatch
 import com.fingerprintjs.android.fpjs_pro.RequestCannotBeParsed
+import com.fingerprintjs.android.fpjs_pro.RequestNotFound
 import com.fingerprintjs.android.fpjs_pro.RequestTimeout
 import com.fingerprintjs.android.fpjs_pro.ResponseCannotBeParsed
+import com.fingerprintjs.android.fpjs_pro.RulesetNotFound
+import com.fingerprintjs.android.fpjs_pro.SecretApiKeyNotFound
+import com.fingerprintjs.android.fpjs_pro.SecretApiKeyRequired
+import com.fingerprintjs.android.fpjs_pro.ServiceUnavailable
+import com.fingerprintjs.android.fpjs_pro.StateNotReady
 import com.fingerprintjs.android.fpjs_pro.SubscriptionNotActive
+import com.fingerprintjs.android.fpjs_pro.SubscriptionNotFound
+import com.fingerprintjs.android.fpjs_pro.SubscriptionRestricted
 import com.fingerprintjs.android.fpjs_pro.TooManyRequest
 import com.fingerprintjs.android.fpjs_pro.UnknownError
-import com.fingerprintjs.android.fpjs_pro.UnsupportedVersion
+import com.fingerprintjs.android.fpjs_pro.VisitorNotFound
 import com.fingerprintjs.android.fpjs_pro.WrongRegion
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
@@ -35,7 +41,6 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
-import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimestampFromTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
@@ -48,7 +53,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.round
 
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
@@ -83,43 +87,45 @@ class HomeScreenUiStateCreator @Inject constructor(
                 return when (error) {
                     is NetworkError -> networkError
                     is TooManyRequest -> HomeScreenUiState.Content.Error.TooManyRequests(onReload = onReload)
-                    is ApiKeyExpired -> HomeScreenUiState.Content.Error.PublicApiKeyExpired(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
                     is ApiKeyNotFound -> HomeScreenUiState.Content.Error.PublicApiKeyInvalid(
                         onGotoApiKeysSettings = onGotoApiKeysSettings
                     )
 
                     is ApiKeyRequired -> unknownError
-                    is Failed -> unknownError
-                    is HeaderRestricted -> unknownError
-                    is InstallationMethodRestricted -> unknownError
-                    is NotAvailableForCrawlBots -> unknownError
-                    is NotAvailableWithoutUA -> unknownError
-                    is OriginNotAvailable -> unknownError
-                    is PackageNotAuthorized -> unknownError
-                    is RequestCannotBeParsed -> unknownError
-                    is RequestTimeout -> unknownError
-                    is ResponseCannotBeParsed -> unknownError
-                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
-                    is UnknownError -> unknownError
-                    is UnsupportedVersion -> unknownError
-                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
                     is ClientTimeout -> networkError
+                    is EnvironmentRestricted -> unknownError
+                    is Failed -> unknownError
+                    is FeatureNotEnabled -> unknownError
+                    is InstallationMethodRestricted -> unknownError
                     is InvalidProxyIntegrationHeaders,
                     is InvalidProxyIntegrationSecret,
                     is ProxyIntegrationSecretEnvironmentMismatch -> HomeScreenUiState.Content.Error.Generic(
                         error = error,
                         onReload = onReload,
                     )
+                    is MissingModule -> unknownError
                     is NetworkUnavailableError -> networkError
+                    is PayloadTooLarge -> unknownError
+                    is RequestCannotBeParsed -> unknownError
+                    is RequestNotFound -> unknownError
+                    is RequestTimeout -> unknownError
+                    is ResponseCannotBeParsed -> unknownError
+                    is RulesetNotFound -> unknownError
+                    is SecretApiKeyNotFound -> unknownError
+                    is SecretApiKeyRequired -> unknownError
+                    is ServiceUnavailable -> unknownError
+                    is StateNotReady -> unknownError
+                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
+                    is SubscriptionNotFound -> unknownError
+                    is SubscriptionRestricted -> unknownError
+                    is UnknownError -> unknownError
+                    is VisitorNotFound -> unknownError
+                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
                 }
             }
 
@@ -171,7 +177,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info or credentials are not set
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
@@ -181,7 +187,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         onPutToClipboard: (String) -> Unit = {},
         onSignupPromptClicked: () -> Unit = {},
     ): HomeScreenUiState.Content.LoadingOrSuccess {
-        // Checking the values from FingerprintJSProResponse for unavailability
+        // Checking the values from FingerprintResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
             it.isNotEmpty() &&
@@ -189,17 +195,8 @@ class HomeScreenUiStateCreator @Inject constructor(
                 !it.contentEquals(StringConstants.NULL_STRING, ignoreCase = true)
         }
 
-        val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
+        val eventId = fingerprintJSProResponse.eventId.dropEssentiallyEmpty()
         val visitorId = fingerprintJSProResponse.visitorId
-        val visitorFound = fingerprintJSProResponse.visitorFound
-        val confidence = fingerprintJSProResponse.confidenceScore.score
-        val ipAddress = fingerprintJSProResponse.ipAddress.dropEssentiallyEmpty()
-        val ipCity = fingerprintJSProResponse.ipLocation?.city?.name?.dropEssentiallyEmpty()
-        val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
-        val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
-        val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
-        val firstSeenAtTimestamp = firstSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
-        val lastSeenAtTimestamp = lastSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -253,32 +250,12 @@ class HomeScreenUiStateCreator @Inject constructor(
             isSignupPromptShown = false,
             prettifiedProps = listOfNotNull(
                 identificationProperty(
-                    name = StringConstants.REQUEST_ID,
-                    value = requestId
+                    name = StringConstants.EVENT_ID,
+                    value = eventId
                 ),
                 identificationProperty(
                     name = StringConstants.VISITOR_ID,
                     value = visitorId
-                ),
-                identificationProperty(
-                    name = StringConstants.VISITOR_FOUND,
-                    value = if (visitorFound) StringConstants.YES else StringConstants.NO
-                ),
-                identificationProperty(
-                    name = StringConstants.CONFIDENCE,
-                    value = "${round(confidence * 100).toInt()}${StringConstants.PERCENTAGE}"
-                ),
-                identificationProperty(
-                    name = StringConstants.IP_ADDRESS,
-                    value = ipAddress
-                ),
-                identificationProperty(
-                    name = StringConstants.FIRST_SEEN_AT,
-                    value = getRelativeTimeString(firstSeenAt, firstSeenAtTimestamp)
-                ),
-                identificationProperty(
-                    name = StringConstants.LAST_SEEN_AT,
-                    value = getRelativeTimeString(lastSeenAt, lastSeenAtTimestamp)
                 ),
 
                 smartSignalProperty(
@@ -339,11 +316,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     name = StringConstants.IP_LOCATION,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                     value = {
-                        when {
-                            ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
-                            ipCountry != null -> ipCountry
-                            else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
-                        }
+                        "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
                     }
                 ),
 
@@ -430,7 +403,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @VisibleForTesting
     fun createRawJson(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?,
     ): String {
         val map = buildMap {

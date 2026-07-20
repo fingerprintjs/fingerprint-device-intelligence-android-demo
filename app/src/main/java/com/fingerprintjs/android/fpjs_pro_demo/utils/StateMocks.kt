@@ -5,11 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.Mail
-import com.fingerprintjs.android.fpjs_pro.ConfidenceScore
 import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
-import com.fingerprintjs.android.fpjs_pro.IpLocation
-import com.fingerprintjs.android.fpjs_pro.Timestamp
+import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
 import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysState
@@ -28,34 +25,10 @@ class StateMocks @Inject constructor(
     private val smartSignalsBodyParser: SmartSignalsBodyParser,
 ) {
     @Suppress("MaximumLineLength")
-    val fingerprintJSResponse = FingerprintJSProResponse(
-        requestId = "1111111111111.AAAAAA",
+    val fingerprintJSResponse = FingerprintResponse(
+        eventId = "1111111111111.AAAAAA",
         visitorId = "rVC74CiaXVZGVC69OBsP",
-        confidenceScore = ConfidenceScore(score = 1.0),
-        visitorFound = true,
-        ipAddress = "192.192.192.192",
-        ipLocation = IpLocation(
-            accuracyRadius = 20,
-            latitude = 20.2020,
-            longitude = 20.2020,
-            postalCode = "123456",
-            timezone = "Europe / Berlin",
-            city = IpLocation.City(name = "Berlin"),
-            country = IpLocation.Country(code = "DE", name = "Germany"),
-            continent = IpLocation.Continent(code = "EU", name = "Europe"),
-            subdivisions = listOf(IpLocation.Subdivisions(isoCode = "DE-BE", name = "Berlin"))
-        ),
-        osName = "Android",
-        osVersion = "13",
-        firstSeenAt = Timestamp(
-            global = "2024-01-16T01:01:01.587Z",
-            subscription = "2024-01-16T01:01:01.587Z",
-        ),
-        lastSeenAt = Timestamp(
-            global = "2024-01-20T01:01:01.587Z",
-            subscription = "2024-01-20T01:01:01.587Z",
-        ),
-        asJson = "{\"browserName\":\"Other\",\"browserVersion\":\"\",\"confidence\":{\"score\":1},\"device\":\"Pixel 4 XL\",\"firstSeenAt\":{\"global\":\"2024-01-16T01:01:01.587Z\",\"subscription\":\"2024-01-16T01:01:01.587Z\"},\"incognito\":false,\"ip\":\"192.192.192.192\",\"ipLocation\":{\"accuracyRadius\":20,\"city\":{\"name\":\"Berlin\"},\"continent\":{\"code\":\"EU\",\"name\":\"Europe\"},\"country\":{\"code\":\"DE\",\"name\":\"Germany\"},\"latitude\":20.2020,\"longitude\":20.2020,\"postalCode\":\"123456\",\"subdivisions\":[{\"isoCode\":\"DE-BE\",\"name\":\"Berlin\"}],\"timezone\":\"Europe\\/Berlin\"},\"lastSeenAt\":{\"global\":\"2024-01-20T01:01:01.587Z\",\"subscription\":\"2024-01-20T01:01:01.587Z\"},\"meta\":{\"version\":\"v1.1.2221+e341fd375\"},\"os\":\"Android\",\"osVersion\":\"13\",\"visitorFound\":true,\"visitorId\":\"rVC74CiaXVZGVC69OBsP\"}",
+        asJson = "{\"event_id\":\"1111111111111.AAAAAA\",\"visitor_id\":\"rVC74CiaXVZGVC69OBsP\",\"suspect_score\":0}",
         errorMessage = null
     )
 
