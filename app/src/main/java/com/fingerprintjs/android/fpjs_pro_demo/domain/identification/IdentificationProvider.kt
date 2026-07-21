@@ -2,7 +2,7 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.identification
 
 import com.fingerprintjs.android.fpjs_pro.Configuration
 import com.fingerprintjs.android.fpjs_pro.FingerprintException
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSFactory
+import com.fingerprintjs.android.fpjs_pro.FingerprintFactory
 import com.fingerprintjs.android.fpjs_pro_demo.App
 import com.fingerprintjs.android.fpjs_pro_demo.constants.Credentials
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysUseCase
@@ -34,7 +34,7 @@ class IdentificationProvider @Inject constructor(
 
     private val fingerprintJs = customApiKeysUseCase.state
         .map {
-            FingerprintJSFactory(app).createInstance(
+            FingerprintFactory(app).createInstance(
                 Configuration(
                     apiKey = if (it.enabled) it.public else Credentials.apiKey,
                     endpointUrl = if (it.enabled) it.region.endpointUrl else Credentials.endpointUrl,

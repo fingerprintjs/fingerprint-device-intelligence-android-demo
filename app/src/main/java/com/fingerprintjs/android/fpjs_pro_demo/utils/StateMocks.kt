@@ -6,7 +6,7 @@ import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.Mail
 import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
+import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
 import com.fingerprintjs.android.fpjs_pro.UnknownError
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysState
@@ -25,7 +25,7 @@ class StateMocks @Inject constructor(
     private val smartSignalsBodyParser: SmartSignalsBodyParser,
 ) {
     @Suppress("MaximumLineLength")
-    val fingerprintJSResponse = FingerprintJSProResponse(
+    val fingerprintJSResponse = FingerprintResponse(
         eventId = "1111111111111.AAAAAA",
         visitorId = "rVC74CiaXVZGVC69OBsP",
         asJson = "{\"event_id\":\"1111111111111.AAAAAA\",\"visitor_id\":\"rVC74CiaXVZGVC69OBsP\",\"suspect_score\":0}",

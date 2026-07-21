@@ -7,7 +7,7 @@ import com.fingerprintjs.android.fpjs_pro.ClientTimeout
 import com.fingerprintjs.android.fpjs_pro.EnvironmentRestricted
 import com.fingerprintjs.android.fpjs_pro.Failed
 import com.fingerprintjs.android.fpjs_pro.FeatureNotEnabled
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
+import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
 import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
 import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
@@ -178,7 +178,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info or credentials are not set
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
@@ -188,7 +188,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         onPutToClipboard: (String) -> Unit = {},
         onSignupPromptClicked: () -> Unit = {},
     ): HomeScreenUiState.Content.LoadingOrSuccess {
-        // Checking the values from FingerprintJSProResponse for unavailability
+        // Checking the values from FingerprintResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
             it.isNotEmpty() &&
@@ -442,7 +442,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @VisibleForTesting
     fun createRawJson(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?,
     ): String {
         val identificationMap = buildMap<String, Any?> {
