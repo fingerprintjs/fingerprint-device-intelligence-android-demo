@@ -41,19 +41,20 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnStatusString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonMap
 import com.fingerprintjs.android.fpjs_pro_demo.utils.toJsonObject
-import java.time.Instant
 import com.github.michaelbull.result.getOrElse
 import com.github.michaelbull.result.recoverIf
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.round
 
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
@@ -279,7 +280,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                 identificationPropertyFromSignal(
                     from = { identificationInfo },
                     name = StringConstants.CONFIDENCE,
-                    value = { confidenceScore.toString() },
+                    value = { "${round(confidenceScore * 100).toInt()}${StringConstants.PERCENTAGE}" },
                 ),
                 identificationPropertyFromSignal(
                     from = { ipInfo },
@@ -289,12 +290,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                 identificationPropertyFromSignal(
                     from = { identificationInfo },
                     name = StringConstants.FIRST_SEEN_AT,
-                    value = { Instant.ofEpochMilli(firstSeenAt).toString() },
+                    value = { getRelativeTimeString(epochMillisToIsoString(firstSeenAt), firstSeenAt) },
                 ),
                 identificationPropertyFromSignal(
                     from = { identificationInfo },
                     name = StringConstants.LAST_SEEN_AT,
-                    value = { Instant.ofEpochMilli(lastSeenAt).toString() },
+                    value = { getRelativeTimeString(epochMillisToIsoString(lastSeenAt), lastSeenAt) },
                 ),
 
                 smartSignalProperty(
@@ -451,8 +452,8 @@ class HomeScreenUiStateCreator @Inject constructor(
                 (smartSignals.identificationInfo as? SmartSignalInfo.Success)?.typedData?.let {
                     put("visitorFound", it.visitorFound)
                     put("confidenceScore", it.confidenceScore)
-                    put("firstSeenAt", Instant.ofEpochMilli(it.firstSeenAt).toString())
-                    put("lastSeenAt", Instant.ofEpochMilli(it.lastSeenAt).toString())
+                    epochMillisToIsoString(it.firstSeenAt)?.let { v -> put("firstSeenAt", v) }
+                    epochMillisToIsoString(it.lastSeenAt)?.let { v -> put("lastSeenAt", v) }
                 }
                 (smartSignals.ipInfo as? SmartSignalInfo.Success)?.typedData?.let {
                     put("ipAddress", it.v4.address)

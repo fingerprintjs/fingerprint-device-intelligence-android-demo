@@ -194,5 +194,4 @@ sealed class SmartSignal {
         val firstSeenAt: Long,
         val lastSeenAt: Long,
     ) : SmartSignal()
-
 }

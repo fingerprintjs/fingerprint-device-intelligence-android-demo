@@ -2,8 +2,8 @@ package com.fingerprintjs.android.fpjs_pro_demo.utils
 
 import android.text.format.DateUtils
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
+import java.time.DateTimeException
 import java.time.Instant
-import java.time.format.DateTimeParseException
 
 const val TIME_STAMP = 10_000_000_000L
 const val SECONDS_IN_MINUTE = 60
@@ -42,7 +42,7 @@ fun relativeTime(time: String?, timestamp: Long): String {
             "$weeks $unit ${StringConstants.AGO}"
         }
         else -> DateUtils.getRelativeTimeSpanString(
-            timestamp * MILLIS_IN_SECOND,
+            timestampMillis,
             System.currentTimeMillis(),
             DateUtils.MINUTE_IN_MILLIS,
             DateUtils.FORMAT_ABBREV_RELATIVE
@@ -51,16 +51,26 @@ fun relativeTime(time: String?, timestamp: Long): String {
     return "$time ($relative)"
 }
 
-fun getEpochTimestampFromTimeString(time: String): Long? {
+@Suppress("SwallowedException")
+fun epochMillisToIsoString(millis: Long): String? {
     return try {
-        Instant.parse(time).epochSecond
-    } catch (e: DateTimeParseException) {
+        Instant.ofEpochMilli(millis).toString()
+    } catch (e: DateTimeException) {
+        null
+    }
+}
+
+@Suppress("SwallowedException")
+fun epochSecondsToIsoString(seconds: Long): String? {
+    return try {
+        Instant.ofEpochSecond(seconds).toString()
+    } catch (e: DateTimeException) {
         null
     }
 }
 
 fun getRelativeTimeString(time: String?, timestamp: Long): String {
-    return if (timestamp <= 0 || time?.isBlank() == true) {
+    return if (timestamp <= 0 || time.isNullOrBlank()) {
         StringConstants.NOT_DETECTED
     } else {
         relativeTime(time, timestamp)

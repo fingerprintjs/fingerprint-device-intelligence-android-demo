@@ -1,5 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochSecondsToIsoString
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.runCatching
@@ -15,7 +17,6 @@ import kotlinx.serialization.json.floatOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.json.put
-import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -88,7 +89,8 @@ class SmartSignalsBodyParser @Inject constructor(
         val elem = get("factory_reset_timestamp") ?: return SmartSignalInfo.Disabled(rawKey)
         val timestamp = (elem as? JsonPrimitive)?.longOrNull
             ?: return SmartSignalInfo.ParseError(rawKey, elem)
-        val time = Instant.ofEpochSecond(timestamp).toString()
+        val time = epochSecondsToIsoString(timestamp)
+            ?: return SmartSignalInfo.ParseError(rawKey, elem)
         val rawData = buildJsonObject {
             put("time", time)
             put("timestamp", timestamp)
@@ -166,7 +168,7 @@ class SmartSignalsBodyParser @Inject constructor(
         val detailsObj = get("proxy_details") as? JsonObject
         val proxyType = (detailsObj?.get("proxy_type") as? JsonPrimitive)?.contentOrNull
         val lastSeenAt = (detailsObj?.get("last_seen_at") as? JsonPrimitive)?.let { prim ->
-            prim.longOrNull?.let { Instant.ofEpochMilli(it).toString() } ?: prim.contentOrNull
+            prim.longOrNull?.let { epochMillisToIsoString(it) } ?: prim.contentOrNull
         }
         val details = buildMap {
             proxyType?.let { put("proxy_type", it) }
