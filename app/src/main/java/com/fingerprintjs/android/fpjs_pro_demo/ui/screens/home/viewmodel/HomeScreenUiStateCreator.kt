@@ -41,6 +41,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
@@ -53,6 +54,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.round
 
 @Singleton
 class HomeScreenUiStateCreator @Inject constructor(
@@ -240,6 +242,15 @@ class HomeScreenUiStateCreator @Inject constructor(
             )
         }
 
+        fun <T : SmartSignal> identificationPropertyFromSignal(
+            from: SmartSignals.() -> SmartSignalInfo<T>,
+            name: String,
+            value: T.() -> String,
+        ): PrettifiedProperty {
+            val extracted = (smartSignals?.let(from) as? SmartSignalInfo.Success)?.typedData?.value()
+            return identificationProperty(name = name, value = extracted)
+        }
+
         return HomeScreenUiState.Content.LoadingOrSuccess(
             visitorId = fingerprintJSProResponse.visitorId,
             rawJson = runCatching {
@@ -256,6 +267,35 @@ class HomeScreenUiStateCreator @Inject constructor(
                 identificationProperty(
                     name = StringConstants.VISITOR_ID,
                     value = visitorId
+                ),
+                identificationProperty(
+                    name = StringConstants.SUSPECT_SCORE,
+                    value = fingerprintJSProResponse.suspectScore?.toString()
+                ),
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
+                    name = StringConstants.VISITOR_FOUND,
+                    value = { if (visitorFound) StringConstants.YES else StringConstants.NO },
+                ),
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
+                    name = StringConstants.CONFIDENCE,
+                    value = { "${round(confidenceScore * 100).toInt()}${StringConstants.PERCENTAGE}" },
+                ),
+                identificationPropertyFromSignal(
+                    from = { ipInfo },
+                    name = StringConstants.IP_ADDRESS,
+                    value = { v4.address },
+                ),
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
+                    name = StringConstants.FIRST_SEEN_AT,
+                    value = { getRelativeTimeString(epochMillisToIsoString(firstSeenAt), firstSeenAt) },
+                ),
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
+                    name = StringConstants.LAST_SEEN_AT,
+                    value = { getRelativeTimeString(epochMillisToIsoString(lastSeenAt), lastSeenAt) },
                 ),
 
                 smartSignalProperty(
@@ -406,8 +446,22 @@ class HomeScreenUiStateCreator @Inject constructor(
         fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?,
     ): String {
+        val identificationMap = buildMap<String, Any?> {
+            putAll(fingerprintJSProResponse.toJsonMap())
+            if (smartSignals != null) {
+                (smartSignals.identificationInfo as? SmartSignalInfo.Success)?.typedData?.let {
+                    put("visitorFound", it.visitorFound)
+                    put("confidenceScore", it.confidenceScore)
+                    epochMillisToIsoString(it.firstSeenAt)?.let { v -> put("firstSeenAt", v) }
+                    epochMillisToIsoString(it.lastSeenAt)?.let { v -> put("lastSeenAt", v) }
+                }
+                (smartSignals.ipInfo as? SmartSignalInfo.Success)?.typedData?.let {
+                    put("ipAddress", it.v4.address)
+                }
+            }
+        }
         val map = buildMap {
-            this.put(StringConstants.IDENTIFICATION, fingerprintJSProResponse.toJsonMap())
+            this.put(StringConstants.IDENTIFICATION, identificationMap)
             if (smartSignals != null) {
                 this.put(
                     StringConstants.SMART_SIGNALS,

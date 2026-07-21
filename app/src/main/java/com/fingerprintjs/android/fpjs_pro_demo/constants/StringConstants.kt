@@ -12,6 +12,7 @@ object StringConstants {
     // Property names
     const val EVENT_ID = "Event ID"
     const val VISITOR_ID = "Visitor ID"
+    const val SUSPECT_SCORE = "Suspect Score"
     const val VISITOR_FOUND = "Visitor Found"
     const val CONFIDENCE = "Confidence"
     const val IP_ADDRESS = "IP Address"

@@ -1,5 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochSecondsToIsoString
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.runCatching
@@ -15,7 +17,6 @@ import kotlinx.serialization.json.floatOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
 import kotlinx.serialization.json.put
-import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,6 +61,7 @@ class SmartSignalsBodyParser @Inject constructor(
                 developerTools = root.flatBoolSignal("developer_tools", rawKey = "developerTools") {
                     SmartSignal.DeveloperTools(it)
                 },
+                identificationInfo = root.parseIdentificationInfo(),
             )
         }.mapError { }
     }
@@ -87,7 +89,8 @@ class SmartSignalsBodyParser @Inject constructor(
         val elem = get("factory_reset_timestamp") ?: return SmartSignalInfo.Disabled(rawKey)
         val timestamp = (elem as? JsonPrimitive)?.longOrNull
             ?: return SmartSignalInfo.ParseError(rawKey, elem)
-        val time = Instant.ofEpochSecond(timestamp).toString()
+        val time = epochSecondsToIsoString(timestamp)
+            ?: return SmartSignalInfo.ParseError(rawKey, elem)
         val rawData = buildJsonObject {
             put("time", time)
             put("timestamp", timestamp)
@@ -165,7 +168,7 @@ class SmartSignalsBodyParser @Inject constructor(
         val detailsObj = get("proxy_details") as? JsonObject
         val proxyType = (detailsObj?.get("proxy_type") as? JsonPrimitive)?.contentOrNull
         val lastSeenAt = (detailsObj?.get("last_seen_at") as? JsonPrimitive)?.let { prim ->
-            prim.longOrNull?.let { Instant.ofEpochMilli(it).toString() } ?: prim.contentOrNull
+            prim.longOrNull?.let { epochMillisToIsoString(it) } ?: prim.contentOrNull
         }
         val details = buildMap {
             proxyType?.let { put("proxy_type", it) }
@@ -235,6 +238,33 @@ class SmartSignalsBodyParser @Inject constructor(
                 )
             ),
             rawData = ipInfoObj,
+        )
+    }
+
+    private fun JsonObject.parseIdentificationInfo(): SmartSignalInfo<SmartSignal.IdentificationInfo> {
+        val rawKey = "identificationInfo"
+        val identObj = get("identification") as? JsonObject ?: return SmartSignalInfo.Disabled(rawKey)
+        val visitorFound = (identObj["visitor_found"] as? JsonPrimitive)?.booleanOrNull
+            ?: return SmartSignalInfo.Disabled(rawKey)
+        val confidenceScore = (identObj["confidence"] as? JsonObject)
+            ?.let { (it["score"] as? JsonPrimitive)?.doubleOrNull } ?: 0.0
+        val firstSeenAt = (identObj["first_seen_at"] as? JsonPrimitive)?.longOrNull ?: 0L
+        val lastSeenAt = (identObj["last_seen_at"] as? JsonPrimitive)?.longOrNull ?: 0L
+        val rawData = buildJsonObject {
+            put("visitor_found", visitorFound)
+            put("confidence_score", confidenceScore)
+            put("first_seen_at", firstSeenAt)
+            put("last_seen_at", lastSeenAt)
+        }
+        return SmartSignalInfo.Success(
+            rawKey = rawKey,
+            typedData = SmartSignal.IdentificationInfo(
+                visitorFound = visitorFound,
+                confidenceScore = confidenceScore,
+                firstSeenAt = firstSeenAt,
+                lastSeenAt = lastSeenAt,
+            ),
+            rawData = rawData,
         )
     }
 
