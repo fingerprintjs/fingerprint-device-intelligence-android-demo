@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.gradle.api.credentials.HttpHeaderCredentials
-import org.gradle.authentication.http.HttpHeaderAuthentication
-
 val localProperties = java.util.Properties().apply {
     val f = file("local.properties")
     if (f.exists()) f.inputStream().use { load(it) }
@@ -33,15 +30,14 @@ dependencyResolutionManagement {
 
         maven {
             url = uri("https://maven.fpregistry.io/private-releases")
-            credentials(HttpHeaderCredentials::class) {
-                name = "Authorization"
-                value = providers.gradleProperty("privateMavenRepoToken")
+            // Reposilite Basic auth: username = token name, password = token secret
+            credentials(PasswordCredentials::class) {
+                username = providers.gradleProperty("privateMavenUser")
+                    .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_USER", ""))
+                password = providers.gradleProperty("privateMavenPassword")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_REPO_TOKEN"))
                     .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_REPO_TOKEN", ""))
-                    .let { "Bearer $it" }
-            }
-            authentication {
-                create<HttpHeaderAuthentication>("header")
             }
             content {
                 includeGroup("com.fingerprint.android")
