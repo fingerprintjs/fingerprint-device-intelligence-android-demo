@@ -41,12 +41,20 @@ fun relativeTime(time: String?, timestamp: Long): String {
             val unit = if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK
             "$weeks $unit ${StringConstants.AGO}"
         }
-        else -> DateUtils.getRelativeTimeSpanString(
-            timestampMillis,
-            System.currentTimeMillis(),
-            DateUtils.MINUTE_IN_MILLIS,
-            DateUtils.FORMAT_ABBREV_RELATIVE
-        )
+        else -> runCatching {
+            DateUtils.getRelativeTimeSpanString(
+                timestampMillis,
+                System.currentTimeMillis(),
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_ABBREV_RELATIVE
+            )
+        }.getOrElse {
+            // DateUtils resolves TimeZone.getDefault()/Locale.getDefault(), which can be
+            // null on misconfigured devices and throws "tz == null". Fall back to a manual
+            // format that doesn't depend on system defaults.
+            val unit = if (weeks > 1) StringConstants.WEEKS else StringConstants.WEEK
+            "$weeks $unit ${StringConstants.AGO}"
+        }
     }
     return "$time ($relative)"
 }
