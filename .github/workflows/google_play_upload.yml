@@ -13,10 +13,9 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
-    # Gradle reads ORG_GRADLE_PROJECT_* as project properties (privateMavenUser / privateMavenPassword).
+    # Gradle reads this as the private Maven repository token.
     env:
-      ORG_GRADLE_PROJECT_privateMavenUser: ${{ secrets.PRIVATE_MAVEN_USER }}
-      ORG_GRADLE_PROJECT_privateMavenPassword: ${{ secrets.PRIVATE_MAVEN_PASSWORD }}
+      ORG_GRADLE_PROJECT_privateMavenRepoToken: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
 
     steps:
       # -----------------------------
@@ -48,21 +47,21 @@ jobs:
       - name: Fetch string.h from private Maven
         run: |
           curl --fail --silent --show-error \
-            -u "${{ secrets.PRIVATE_MAVEN_USER }}:${{ secrets.PRIVATE_MAVEN_PASSWORD }}" \
+            -H "Authorization: Bearer ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}" \
             -o app/src/main/cpp/secret/string.h \
             "https://maven.fpregistry.io/private-releases/com/fingerprintjs/demo-native-secrets/2.0.0/string.h"
 
       - name: Fetch google-services.json from private Maven
         run: |
           curl --fail --silent --show-error \
-            -u "${{ secrets.PRIVATE_MAVEN_USER }}:${{ secrets.PRIVATE_MAVEN_PASSWORD }}" \
+            -H "Authorization: Bearer ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}" \
             -o app/google-services.json \
             "https://maven.fpregistry.io/private-releases/com/fingerprintjs/firebase/google-services/1.0.0/google-services.json"
 
-      - name: Validate private Maven credentials
+      - name: Validate private Maven token
         run: |
-          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenPassword" ]; then
-            echo "::error::GitHub secrets PRIVATE_MAVEN_USER and PRIVATE_MAVEN_PASSWORD must be configured."
+          if [ -z "$ORG_GRADLE_PROJECT_privateMavenRepoToken" ]; then
+            echo "::error::GitHub secret PRIVATE_MAVEN_REPO_TOKEN must be configured."
             exit 1
           fi
 
