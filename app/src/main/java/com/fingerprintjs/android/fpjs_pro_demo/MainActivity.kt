@@ -2,7 +2,6 @@ package com.fingerprintjs.android.fpjs_pro_demo
 
 import android.Manifest
 import android.animation.ObjectAnimator
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -22,22 +21,20 @@ class MainActivity : ComponentActivity() {
     ) { _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            splashScreen.setOnExitAnimationListener { splashScreenView ->
-                val slideUp = ObjectAnimator.ofFloat(
-                    splashScreenView,
-                    View.ALPHA,
-                    1f,
-                    0f
-                )
-                slideUp.interpolator = AccelerateInterpolator()
-                slideUp.duration = 200L
-                slideUp.doOnEnd { splashScreenView.remove() }
-                slideUp.start()
-            }
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            val slideUp = ObjectAnimator.ofFloat(
+                splashScreenView.view,
+                View.ALPHA,
+                1f,
+                0f
+            )
+            slideUp.interpolator = AccelerateInterpolator()
+            slideUp.duration = 200L
+            slideUp.doOnEnd { splashScreenView.remove() }
+            slideUp.start()
         }
 
         setContent {
