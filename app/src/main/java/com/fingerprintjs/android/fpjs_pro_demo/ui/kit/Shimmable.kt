@@ -1,15 +1,9 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.kit
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.wrapContentSize
@@ -45,85 +39,49 @@ fun <T> Shimmable(
     modifier: Modifier = Modifier,
     content: @Composable (ShimmableState<T>) -> Unit,
 ) {
-    AnimatedContent(
-        modifier = modifier,
-        targetState = state,
-        transitionSpec = {
-            val toShimmed = !initialState.isShimmed && targetState.isShimmed
-            val fromShimmed = initialState.isShimmed && !targetState.isShimmed
-            when {
-                fromShimmed -> {
-                    EnterTransition.None.togetherWith(fadeOut(animationSpec = tween())).apply {
-                        this.targetContentZIndex = 0f
-                    }
-                }
+    val shimmer = rememberShimmer(
+        shimmerBounds = ShimmerBounds.View,
+        theme = ShimmerTheme(
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 800,
+                    easing = LinearEasing,
+                    delayMillis = 500,
+                ),
+                repeatMode = RepeatMode.Restart,
+            ),
+            // DstIn is the library default; Src + AnimatedContent previously stacked
+            // graphics-layer work during loading and matched prod SIGSEGV draw stacks.
+            blendMode = BlendMode.DstIn,
+            rotation = 15.0f,
+            shaderColors = listOf(
+                AppTheme.materialTheme.colorScheme.surfaceContainer.copy(alpha = 0.25f),
+                AppTheme.materialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 1.00f),
+                AppTheme.materialTheme.colorScheme.surfaceContainer.copy(alpha = 0.25f),
+            ),
+            shaderColorStops = listOf(
+                0.0f,
+                0.5f,
+                1.0f,
+            ),
+            shimmerWidth = 400.dp,
+        ),
+    )
 
-                toShimmed -> {
-                    fadeIn(animationSpec = tween()).togetherWith(
-                        // this is a fake fadeout that serves as a "static" animation
-                        fadeOut(animationSpec = tween(easing = { f -> f }))
-                    ).apply {
-                        this.targetContentZIndex = 1f
-                    }
-                }
-
-                else -> {
-                    // default transition
-                    (
-                        fadeIn(
-                            animationSpec = tween(
-                                220,
-                                delayMillis = 90
-                            )
-                        ) + scaleIn(
-                            initialScale = 0.92f,
-                            animationSpec = tween(220, delayMillis = 90)
-                        )
-                        ).togetherWith(fadeOut(animationSpec = tween(90)))
-                }
-            }
-        },
-        label = "Shim animation",
+    Box(
+        modifier = modifier
+            .wrapContentSize()
+            .then(
+                if (state.isShimmed) {
+                    Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .shimmer(shimmer)
+                } else {
+                    Modifier
+                },
+            ),
     ) {
-        if (it.isShimmed) {
-            Box(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .clip(RoundedCornerShape(4.dp))
-                    .shimmer(
-                        rememberShimmer(
-                            shimmerBounds = ShimmerBounds.View,
-                            theme = ShimmerTheme(
-                                animationSpec = infiniteRepeatable(
-                                    animation = tween(
-                                        800,
-                                        easing = LinearEasing,
-                                        delayMillis = 500,
-                                    ),
-                                    repeatMode = RepeatMode.Restart,
-                                ),
-                                blendMode = BlendMode.Src,
-                                rotation = 15.0f,
-                                shaderColors = listOf(
-                                    AppTheme.materialTheme.colorScheme.surfaceContainer,
-                                    AppTheme.materialTheme.colorScheme.surfaceContainerHighest,
-                                    AppTheme.materialTheme.colorScheme.surfaceContainer,
-                                ),
-                                shaderColorStops = listOf(
-                                    0.0f,
-                                    0.5f,
-                                    1.0f,
-                                ),
-                                shimmerWidth = 400.dp,
-                            )
-                        )
-                    )
-            ) {
-                content(it)
-            }
-        } else {
-            content(it)
-        }
+        content(state)
     }
 }
 
