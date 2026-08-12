@@ -34,7 +34,7 @@ val googleServicesFile = file(googleServicesFilename)
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
-    compileSdk = 35
+    compileSdk = 36
 
     ndkVersion = "28.2.13676358"
     
@@ -48,7 +48,7 @@ android {
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
 
