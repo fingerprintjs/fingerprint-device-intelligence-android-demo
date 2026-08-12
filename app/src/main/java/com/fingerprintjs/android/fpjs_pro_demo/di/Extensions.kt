@@ -9,11 +9,15 @@ import com.fingerprintjs.android.fpjs_pro_demo.App
 
 @Composable
 fun getAppComponent(): AppComponent {
-    return (LocalContext.current.applicationContext as App).appComponent
+    val application = LocalContext.current.applicationContext as? App
+        ?: error("Application is not ${App::class.java.name}")
+    return application.appComponent
 }
 
 fun Context.getAppComponent(): AppComponent {
-    return (this.applicationContext as App).appComponent
+    val application = applicationContext as? App
+        ?: error("Application is not ${App::class.java.name}")
+    return application.appComponent
 }
 
 @Composable
