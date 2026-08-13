@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalExpandTransition
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.verticalShrinkTransition
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.HomeScreen
+import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.native_load_tests.NativeLoadTestsScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.details.SettingsDetailsScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.main.SettingsScreen
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
@@ -131,6 +132,9 @@ fun NavScreen() {
                             modifier = Modifier
                                 .respectNavBarSizeAccordingTo(Screen.Settings),
                             onGoToDetails = { navController.openScreen(Screen.SettingsDetails) },
+                            onGoToNativeLoadTests = {
+                                navController.openScreen(Screen.NativeLoadTests)
+                            },
                             sharedTransitionScope = this@SharedTransitionLayout,
                             animatedContentScope = this,
                         )
@@ -143,6 +147,14 @@ fun NavScreen() {
                             onGoBack = { navController.popBackStack() },
                             sharedTransitionScope = this@SharedTransitionLayout,
                             animatedContentScope = this,
+                        )
+                    }
+                    composable(
+                        route = Screen.NativeLoadTests.absoluteRoute,
+                    ) {
+                        NativeLoadTestsScreen(
+                            modifier = Modifier.respectNavBarSizeAccordingTo(Screen.NativeLoadTests),
+                            onGoBack = { navController.popBackStack() },
                         )
                     }
                 }

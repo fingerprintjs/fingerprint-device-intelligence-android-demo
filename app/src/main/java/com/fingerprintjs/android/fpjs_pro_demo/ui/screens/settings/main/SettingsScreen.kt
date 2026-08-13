@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.BackHand
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.VpnKey
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +49,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.utils.IntentUtils
 @Composable
 fun SettingsScreen(
     onGoToDetails: () -> Unit,
+    onGoToNativeLoadTests: () -> Unit = {},
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedContentScope: AnimatedContentScope? = null,
@@ -55,13 +57,21 @@ fun SettingsScreen(
     val viewModel = injectedViewModel { settingsViewModel }
     val state by viewModel.state.collectAsState()
 
-    SettingsScreenInternal(state, onGoToDetails, modifier, sharedTransitionScope, animatedContentScope)
+    SettingsScreenInternal(
+        state = state,
+        onGoToDetails = onGoToDetails,
+        onGoToNativeLoadTests = onGoToNativeLoadTests,
+        modifier = modifier,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope,
+    )
 }
 
 @Composable
 private fun SettingsScreenInternal(
     state: SettingsUiState,
     onGoToDetails: () -> Unit,
+    onGoToNativeLoadTests: () -> Unit = {},
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedContentScope: AnimatedContentScope? = null,
@@ -99,6 +109,16 @@ private fun SettingsScreenInternal(
                 },
                 onClick = onGoToDetails,
             )
+            if (BuildConfig.ALLOW_MOCKS) {
+                SettingsEntry(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    icon = Icons.Outlined.BugReport,
+                    text = "Native load tests",
+                    supportingText = "ANR / preload scenarios",
+                    onClick = onGoToNativeLoadTests,
+                )
+            }
             SettingsSeparator()
             SettingsEntry(
                 modifier = Modifier

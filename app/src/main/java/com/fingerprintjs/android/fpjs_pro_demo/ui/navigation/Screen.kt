@@ -7,7 +7,8 @@ enum class Screen(
 ) {
     Home(Tab.Home, "main", true),
     Settings(Tab.Settings, "main", true),
-    SettingsDetails(Tab.Settings, "details", false);
+    SettingsDetails(Tab.Settings, "details", false),
+    NativeLoadTests(Tab.Settings, "native_load_tests", false);
 
     val absoluteRoute: String
         get() = "${tab.route}/$route"
