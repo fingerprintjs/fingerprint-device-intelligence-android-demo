@@ -36,6 +36,7 @@ object StringConstants {
     const val VPN = "VPN"
     const val PROXIMITY = "Proximity Detection"
     const val DEVELOPER_TOOLS = "Developer Tools"
+    const val ACTIVE_CALL = "Active Call"
 
     // Smart signal link text
     const val SMART_SIGNAL = "Smart Signal"

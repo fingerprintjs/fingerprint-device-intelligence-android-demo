@@ -429,6 +429,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                     docUrl = URLs.SmartSignalsOverview.developerTools,
                     value = { result.detectionStatusString() }
                 ),
+                smartSignalProperty(
+                    from = { activeCall },
+                    name = StringConstants.ACTIVE_CALL,
+                    docUrl = URLs.SmartSignalsOverview.activeCall,
+                    value = { result.detectionStatusString() }
+                ),
             )
                 .map {
                     it.copy(
@@ -482,6 +488,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.vpn,
                             smartSignals.proximity,
                             smartSignals.developerTools,
+                            smartSignals.activeCall,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {
