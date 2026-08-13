@@ -299,12 +299,24 @@ class HomeScreenUiStateCreator @Inject constructor(
                 ),
 
                 smartSignalProperty(
+                    from = { activeCall },
+                    name = StringConstants.ACTIVE_CALL,
+                    docUrl = URLs.SmartSignalsOverview.activeCall,
+                    value = { result.detectionStatusString() }
+                ),
+                smartSignalProperty(
                     from = { clonedApp },
                     name = StringConstants.CLONED_APP,
                     docUrl = URLs.SmartSignalsOverview.clonedApp,
                     value = {
                         result.detectionStatusString()
                     },
+                ),
+                smartSignalProperty(
+                    from = { developerTools },
+                    name = StringConstants.DEVELOPER_TOOLS,
+                    docUrl = URLs.SmartSignalsOverview.developerTools,
+                    value = { result.detectionStatusString() }
                 ),
                 smartSignalProperty(
                     from = { emulator },
@@ -331,6 +343,14 @@ class HomeScreenUiStateCreator @Inject constructor(
                     }
                 ),
                 smartSignalProperty(
+                    from = { locationSpoofing },
+                    name = StringConstants.GEOLOCATION_SPOOFING,
+                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
+                smartSignalProperty(
                     from = { highActivity },
                     name = StringConstants.HIGH_ACTIVITY,
                     docUrl = URLs.SmartSignalsOverview.highActivity,
@@ -350,7 +370,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                         result.detectionStatusString()
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_LOCATION,
@@ -359,22 +378,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                         "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_NETWORK_PROVIDER,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                     value = {
                         "${v4.asn.name} - ${v4.asn.asn}"
-                    }
-                ),
-
-                smartSignalProperty(
-                    from = { locationSpoofing },
-                    name = StringConstants.GEOLOCATION_SPOOFING,
-                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
-                    value = {
-                        result.detectionStatusString()
                     }
                 ),
                 smartSignalProperty(
@@ -384,6 +393,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = {
                         result.detectionStatusString()
                     }
+                ),
+                smartSignalProperty(
+                    from = { proximity },
+                    name = StringConstants.PROXIMITY,
+                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
+                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
+                    smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
                 smartSignalProperty(
                     from = { proxy },
@@ -415,25 +431,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     docUrl = URLs.SmartSignalsOverview.vpn,
                     value = { getVpnStatusString() },
                     note = { getVpnNoteString() },
-                ),
-                smartSignalProperty(
-                    from = { proximity },
-                    name = StringConstants.PROXIMITY,
-                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
-                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
-                    smartSignalLinkText = StringConstants.MORE_INFO,
-                ),
-                smartSignalProperty(
-                    from = { developerTools },
-                    name = StringConstants.DEVELOPER_TOOLS,
-                    docUrl = URLs.SmartSignalsOverview.developerTools,
-                    value = { result.detectionStatusString() }
-                ),
-                smartSignalProperty(
-                    from = { activeCall },
-                    name = StringConstants.ACTIVE_CALL,
-                    docUrl = URLs.SmartSignalsOverview.activeCall,
-                    value = { result.detectionStatusString() }
                 ),
             )
                 .map {
@@ -473,22 +470,22 @@ class HomeScreenUiStateCreator @Inject constructor(
                     StringConstants.SMART_SIGNALS,
                     buildMap {
                         listOfNotNull(
+                            smartSignals.activeCall,
                             smartSignals.clonedApp,
+                            smartSignals.developerTools,
                             smartSignals.emulator,
                             smartSignals.factoryReset,
                             smartSignals.frida,
-                            smartSignals.highActivity,
-                            smartSignals.ipInfo,
-                            smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.highActivity,
+                            smartSignals.ipBlocklist,
+                            smartSignals.ipInfo,
                             smartSignals.mitm,
+                            smartSignals.proximity,
                             smartSignals.proxy,
                             smartSignals.root,
                             smartSignals.tampering,
                             smartSignals.vpn,
-                            smartSignals.proximity,
-                            smartSignals.developerTools,
-                            smartSignals.activeCall,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {
