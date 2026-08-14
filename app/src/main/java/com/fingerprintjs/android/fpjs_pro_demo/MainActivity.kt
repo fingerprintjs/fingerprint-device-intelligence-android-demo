@@ -60,6 +60,8 @@ class MainActivity : ComponentActivity() {
             )
         } catch (e: IllegalStateException) {
             FirebaseCrashlytics.getInstance().recordException(e)
+        } catch (e: android.content.ActivityNotFoundException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
         }
     }
 }
