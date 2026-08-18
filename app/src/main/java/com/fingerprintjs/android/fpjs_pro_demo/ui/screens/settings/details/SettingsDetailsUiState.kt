@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.settings.details
 
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysState
 
 data class SettingsDetailsUiState(
