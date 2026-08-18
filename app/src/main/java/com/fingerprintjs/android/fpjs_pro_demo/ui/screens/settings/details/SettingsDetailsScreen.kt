@@ -47,7 +47,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.di.injectedViewModel
 import com.fingerprintjs.android.fpjs_pro_demo.ui.kit.IgnoringLocalMinimumInteractiveComponentEnforcement

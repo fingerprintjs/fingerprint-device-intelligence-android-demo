@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal {
             mavenContent {
-                includeVersionByRegex("com.fingerprint.android", "pro", ".*")
+                includeVersionByRegex("com.fingerprint.android", "sdk", ".*")
             }
         }
 
