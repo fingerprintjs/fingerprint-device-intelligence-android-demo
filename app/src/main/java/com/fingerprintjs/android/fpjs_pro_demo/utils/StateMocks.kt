@@ -51,7 +51,8 @@ class StateMocks @Inject constructor(
         "auxiliary_mobile": false,
         "relay": false
     },
-    "developer_tools": false
+    "developer_tools": false,
+    "active_call": false
 }
     """.trimIndent()
 

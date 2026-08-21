@@ -20,6 +20,7 @@ class SmartSignals(
     val ipInfo: SmartSignalInfo<SmartSignal.IPInfo>,
     val proximity: SmartSignalInfo<SmartSignal.Proximity>,
     val developerTools: SmartSignalInfo<SmartSignal.DeveloperTools>,
+    val activeCall: SmartSignalInfo<SmartSignal.ActiveCall>,
     // Identification data from the GetEvents response (not smart signals)
     val identificationInfo: SmartSignalInfo<SmartSignal.IdentificationInfo>,
 )
@@ -184,6 +185,11 @@ sealed class SmartSignal {
 
     @Serializable
     data class DeveloperTools(
+        val result: Boolean,
+    ) : SmartSignal()
+
+    @Serializable
+    data class ActiveCall(
         val result: Boolean,
     ) : SmartSignal()
 
