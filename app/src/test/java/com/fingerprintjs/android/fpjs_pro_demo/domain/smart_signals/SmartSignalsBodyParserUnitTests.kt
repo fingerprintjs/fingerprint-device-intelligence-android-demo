@@ -28,7 +28,16 @@ class SmartSignalsBodyParserUnitTests {
         val signals = parser.parseSmartSignals("""{ }""").get()!!
         TestCase.assertTrue(signals.emulator is SmartSignalInfo.Disabled)
         TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Disabled)
+        TestCase.assertTrue(signals.activeCall is SmartSignalInfo.Disabled)
         TestCase.assertTrue(signals.ipInfo is SmartSignalInfo.Disabled)
+    }
+
+    @Test
+    fun givenActiveCall_whenParse_thenSuccess() {
+        val signals = parser.parseSmartSignals("""{ "active_call": true }""").get()!!
+        TestCase.assertTrue(signals.activeCall is SmartSignalInfo.Success)
+        val success = signals.activeCall as SmartSignalInfo.Success
+        TestCase.assertTrue(success.typedData.result)
     }
 
     @Test

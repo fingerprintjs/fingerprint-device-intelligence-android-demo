@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.ui.theme.AppTheme
 import com.fingerprintjs.android.fpjs_pro_demo.utils.description
 import kotlinx.coroutines.flow.launchIn

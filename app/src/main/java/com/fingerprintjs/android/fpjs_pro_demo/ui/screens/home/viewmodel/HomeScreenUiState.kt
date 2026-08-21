@@ -166,7 +166,7 @@ data class HomeScreenUiState(
             }
 
             class Generic(
-                error: com.fingerprintjs.android.fpjs_pro.Error,
+                error: com.fingerprint.android.Error,
                 onReload: () -> Unit,
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline

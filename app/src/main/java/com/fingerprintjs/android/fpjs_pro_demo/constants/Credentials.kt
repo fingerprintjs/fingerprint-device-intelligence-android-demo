@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.constants
 
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 
 object Credentials {
     val apiKey: String = Protected.apiKey

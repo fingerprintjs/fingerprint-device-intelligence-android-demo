@@ -1,37 +1,37 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
 import androidx.annotation.VisibleForTesting
-import com.fingerprintjs.android.fpjs_pro.ApiKeyNotFound
-import com.fingerprintjs.android.fpjs_pro.ApiKeyRequired
-import com.fingerprintjs.android.fpjs_pro.ClientTimeout
-import com.fingerprintjs.android.fpjs_pro.EnvironmentRestricted
-import com.fingerprintjs.android.fpjs_pro.Failed
-import com.fingerprintjs.android.fpjs_pro.FeatureNotEnabled
-import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
-import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
-import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
-import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
-import com.fingerprintjs.android.fpjs_pro.MissingModule
-import com.fingerprintjs.android.fpjs_pro.NetworkError
-import com.fingerprintjs.android.fpjs_pro.NetworkUnavailableError
-import com.fingerprintjs.android.fpjs_pro.PayloadTooLarge
-import com.fingerprintjs.android.fpjs_pro.ProxyIntegrationSecretEnvironmentMismatch
-import com.fingerprintjs.android.fpjs_pro.RequestCannotBeParsed
-import com.fingerprintjs.android.fpjs_pro.RequestNotFound
-import com.fingerprintjs.android.fpjs_pro.RequestTimeout
-import com.fingerprintjs.android.fpjs_pro.ResponseCannotBeParsed
-import com.fingerprintjs.android.fpjs_pro.RulesetNotFound
-import com.fingerprintjs.android.fpjs_pro.SecretApiKeyNotFound
-import com.fingerprintjs.android.fpjs_pro.SecretApiKeyRequired
-import com.fingerprintjs.android.fpjs_pro.ServiceUnavailable
-import com.fingerprintjs.android.fpjs_pro.StateNotReady
-import com.fingerprintjs.android.fpjs_pro.SubscriptionNotActive
-import com.fingerprintjs.android.fpjs_pro.SubscriptionNotFound
-import com.fingerprintjs.android.fpjs_pro.SubscriptionRestricted
-import com.fingerprintjs.android.fpjs_pro.TooManyRequest
-import com.fingerprintjs.android.fpjs_pro.UnknownError
-import com.fingerprintjs.android.fpjs_pro.VisitorNotFound
-import com.fingerprintjs.android.fpjs_pro.WrongRegion
+import com.fingerprint.android.ApiKeyNotFound
+import com.fingerprint.android.ApiKeyRequired
+import com.fingerprint.android.ClientTimeout
+import com.fingerprint.android.EnvironmentRestricted
+import com.fingerprint.android.Failed
+import com.fingerprint.android.FeatureNotEnabled
+import com.fingerprint.android.FingerprintResponse
+import com.fingerprint.android.InstallationMethodRestricted
+import com.fingerprint.android.InvalidProxyIntegrationHeaders
+import com.fingerprint.android.InvalidProxyIntegrationSecret
+import com.fingerprint.android.MissingModule
+import com.fingerprint.android.NetworkError
+import com.fingerprint.android.NetworkUnavailableError
+import com.fingerprint.android.PayloadTooLarge
+import com.fingerprint.android.ProxyIntegrationSecretEnvironmentMismatch
+import com.fingerprint.android.RequestCannotBeParsed
+import com.fingerprint.android.RequestNotFound
+import com.fingerprint.android.RequestTimeout
+import com.fingerprint.android.ResponseCannotBeParsed
+import com.fingerprint.android.RulesetNotFound
+import com.fingerprint.android.SecretApiKeyNotFound
+import com.fingerprint.android.SecretApiKeyRequired
+import com.fingerprint.android.ServiceUnavailable
+import com.fingerprint.android.StateNotReady
+import com.fingerprint.android.SubscriptionNotActive
+import com.fingerprint.android.SubscriptionNotFound
+import com.fingerprint.android.SubscriptionRestricted
+import com.fingerprint.android.TooManyRequest
+import com.fingerprint.android.UnknownError
+import com.fingerprint.android.VisitorNotFound
+import com.fingerprint.android.WrongRegion
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
@@ -299,12 +299,24 @@ class HomeScreenUiStateCreator @Inject constructor(
                 ),
 
                 smartSignalProperty(
+                    from = { activeCall },
+                    name = StringConstants.ACTIVE_CALL,
+                    docUrl = URLs.SmartSignalsOverview.activeCall,
+                    value = { result.detectionStatusString() }
+                ),
+                smartSignalProperty(
                     from = { clonedApp },
                     name = StringConstants.CLONED_APP,
                     docUrl = URLs.SmartSignalsOverview.clonedApp,
                     value = {
                         result.detectionStatusString()
                     },
+                ),
+                smartSignalProperty(
+                    from = { developerTools },
+                    name = StringConstants.DEVELOPER_TOOLS,
+                    docUrl = URLs.SmartSignalsOverview.developerTools,
+                    value = { result.detectionStatusString() }
                 ),
                 smartSignalProperty(
                     from = { emulator },
@@ -331,6 +343,14 @@ class HomeScreenUiStateCreator @Inject constructor(
                     }
                 ),
                 smartSignalProperty(
+                    from = { locationSpoofing },
+                    name = StringConstants.GEOLOCATION_SPOOFING,
+                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
+                smartSignalProperty(
                     from = { highActivity },
                     name = StringConstants.HIGH_ACTIVITY,
                     docUrl = URLs.SmartSignalsOverview.highActivity,
@@ -350,7 +370,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                         result.detectionStatusString()
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_LOCATION,
@@ -359,22 +378,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                         "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_NETWORK_PROVIDER,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                     value = {
                         "${v4.asn.name} - ${v4.asn.asn}"
-                    }
-                ),
-
-                smartSignalProperty(
-                    from = { locationSpoofing },
-                    name = StringConstants.GEOLOCATION_SPOOFING,
-                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
-                    value = {
-                        result.detectionStatusString()
                     }
                 ),
                 smartSignalProperty(
@@ -384,6 +393,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = {
                         result.detectionStatusString()
                     }
+                ),
+                smartSignalProperty(
+                    from = { proximity },
+                    name = StringConstants.PROXIMITY,
+                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
+                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
+                    smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
                 smartSignalProperty(
                     from = { proxy },
@@ -415,19 +431,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     docUrl = URLs.SmartSignalsOverview.vpn,
                     value = { getVpnStatusString() },
                     note = { getVpnNoteString() },
-                ),
-                smartSignalProperty(
-                    from = { proximity },
-                    name = StringConstants.PROXIMITY,
-                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
-                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
-                    smartSignalLinkText = StringConstants.MORE_INFO,
-                ),
-                smartSignalProperty(
-                    from = { developerTools },
-                    name = StringConstants.DEVELOPER_TOOLS,
-                    docUrl = URLs.SmartSignalsOverview.developerTools,
-                    value = { result.detectionStatusString() }
                 ),
             )
                 .map {
@@ -467,21 +470,22 @@ class HomeScreenUiStateCreator @Inject constructor(
                     StringConstants.SMART_SIGNALS,
                     buildMap {
                         listOfNotNull(
+                            smartSignals.activeCall,
                             smartSignals.clonedApp,
+                            smartSignals.developerTools,
                             smartSignals.emulator,
                             smartSignals.factoryReset,
                             smartSignals.frida,
-                            smartSignals.highActivity,
-                            smartSignals.ipInfo,
-                            smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.highActivity,
+                            smartSignals.ipBlocklist,
+                            smartSignals.ipInfo,
                             smartSignals.mitm,
+                            smartSignals.proximity,
                             smartSignals.proxy,
                             smartSignals.root,
                             smartSignals.tampering,
                             smartSignals.vpn,
-                            smartSignals.proximity,
-                            smartSignals.developerTools,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {

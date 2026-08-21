@@ -20,22 +20,23 @@ object StringConstants {
     const val LAST_SEEN_AT = "Last Seen At"
 
     // Smart signal names
+    const val ACTIVE_CALL = "Active Call"
     const val CLONED_APP = "Cloned App"
+    const val DEVELOPER_TOOLS = "Developer Tools"
     const val EMULATOR = "Emulator"
     const val FACTORY_RESET = "Factory Reset"
     const val FRIDA = "Frida"
+    const val GEOLOCATION_SPOOFING = "Geolocation Spoofing"
     const val HIGH_ACTIVITY = "High Activity"
     const val IP_BLOCKLIST_MATCH = "IP Blocklist Match"
     const val IP_LOCATION = "IP Location"
     const val IP_NETWORK_PROVIDER = "IP Network Provider"
-    const val GEOLOCATION_SPOOFING = "Geolocation Spoofing"
     const val MITM_ATTACK = "MITM Attack"
+    const val PROXIMITY = "Proximity Detection"
     const val PROXY = "Proxy"
     const val ROOTED_DEVICE = "Rooted Device"
     const val TAMPERED_REQUEST = "Tampered Request"
     const val VPN = "VPN"
-    const val PROXIMITY = "Proximity Detection"
-    const val DEVELOPER_TOOLS = "Developer Tools"
 
     // Smart signal link text
     const val SMART_SIGNAL = "Smart Signal"

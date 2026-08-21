@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo.utils
 
-import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
+import com.fingerprint.android.Configuration
+import com.fingerprint.android.FingerprintResponse
 
 fun FingerprintResponse.toJsonMap(): Map<String, Any?> = mapOf<String, Any?>(
     "eventId" to eventId,

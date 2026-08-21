@@ -10,7 +10,7 @@ composeBom = "2024.10.00"
 okHttp3 = "5.0.0"
 androidxSplashScreen = "1.0.1"
 androidxSecurity = "1.0.0"
-composeShimmer = "1.3.0"
+composeShimmer = "1.3.2"
 composeAnimation = "1.7.4"
 kotlinResult = "2.1.0"
 kotlinSerialization = "1.7.3"
@@ -18,7 +18,7 @@ dagger = "2.57"
 junit = "4.13.2"
 junitExt = "1.2.1"
 espresso = "3.6.1"
-fingerprint = "4.0.0-alpha.0"
+fingerprint = "4.0.0-alpha.4"
 fingerprintDebug = "4.0.0-alpha.0-debug"
 androidApplicationPlugin = "8.13.0"
 kotlin = "2.3.20"
@@ -57,9 +57,9 @@ google-dagger = { group = "com.google.dagger", name = "dagger", version.ref = "d
 google-dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 jetbrains-kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin" }
 #noinspection SimilarGradleDependency
-fingerprint-pro = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprint" }
+fingerprint-pro = { group = "com.fingerprint.android", name = "sdk", version.ref = "fingerprint" }
 #noinspection SimilarGradleDependency
-fingerprint-pro-debug = { group = "com.fingerprint.android", name = "pro", version.ref = "fingerprintDebug" }
+fingerprint-pro-debug = { group = "com.fingerprint.android", name = "sdk", version.ref = "fingerprintDebug" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 #TESTING

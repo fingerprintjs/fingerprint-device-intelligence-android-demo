@@ -61,6 +61,9 @@ class SmartSignalsBodyParser @Inject constructor(
                 developerTools = root.flatBoolSignal("developer_tools", rawKey = "developerTools") {
                     SmartSignal.DeveloperTools(it)
                 },
+                activeCall = root.flatBoolSignal("active_call", rawKey = "activeCall") {
+                    SmartSignal.ActiveCall(it)
+                },
                 identificationInfo = root.parseIdentificationInfo(),
             )
         }.mapError { }

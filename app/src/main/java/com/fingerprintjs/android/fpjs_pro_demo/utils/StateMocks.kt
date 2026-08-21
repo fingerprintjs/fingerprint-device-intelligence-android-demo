@@ -5,9 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.outlined.Mail
-import com.fingerprintjs.android.fpjs_pro.Configuration
-import com.fingerprintjs.android.fpjs_pro.FingerprintResponse
-import com.fingerprintjs.android.fpjs_pro.UnknownError
+import com.fingerprint.android.Configuration
+import com.fingerprint.android.FingerprintResponse
+import com.fingerprint.android.UnknownError
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys.CustomApiKeysState
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsBodyParser
@@ -51,7 +51,8 @@ class StateMocks @Inject constructor(
         "auxiliary_mobile": false,
         "relay": false
     },
-    "developer_tools": false
+    "developer_tools": false,
+    "active_call": false
 }
     """.trimIndent()
 
