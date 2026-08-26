@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Splash">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

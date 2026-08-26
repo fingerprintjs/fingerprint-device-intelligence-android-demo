@@ -43,7 +43,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        checkLocationPermissions()
+        if (savedInstanceState == null) {
+            checkLocationPermissions()
+        }
     }
 
     fun checkLocationPermissions() {

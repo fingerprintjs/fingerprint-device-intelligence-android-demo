@@ -1,11 +1,14 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.subscreens.tap_to_begin
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,33 +26,38 @@ fun HomeTapToBeginScreen(
     modifier: Modifier,
     onTapToBegin: () -> Unit,
 ) {
-    Column(modifier = modifier) {
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Tap to begin",
-            textAlign = TextAlign.Center,
-            style = AppTheme.materialTheme.typography.headlineMedium,
-            color = AppTheme.materialTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        FingerprintButton(
-            onClick = onTapToBegin,
+    Box(modifier = modifier) {
+        Column(
             modifier = Modifier
-                .size(136.dp)
-                .align(Alignment.CenterHorizontally),
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        Text(
-            modifier = Modifier
-                .fillMaxWidth(),
-            text = "Device intelligence powered by\n" +
-                "Fingerprint Android SDK v${BuildConfig.SDK_VERSION_NAME}",
-            textAlign = TextAlign.Center,
-            style = AppTheme.materialTheme.typography.bodyLarge,
-            color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.height(64.dp))
+                .align(Alignment.BottomCenter)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Tap to begin",
+                textAlign = TextAlign.Center,
+                style = AppTheme.materialTheme.typography.headlineMedium,
+                color = AppTheme.materialTheme.colorScheme.onBackground,
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            FingerprintButton(
+                onClick = onTapToBegin,
+                modifier = Modifier
+                    .size(136.dp)
+                    .align(Alignment.CenterHorizontally),
+            )
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "Device intelligence powered by\n" +
+                    "Fingerprint Android SDK v${BuildConfig.SDK_VERSION_NAME}",
+                textAlign = TextAlign.Center,
+                style = AppTheme.materialTheme.typography.bodyLarge,
+                color = AppTheme.materialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(64.dp))
+        }
     }
 }
 
