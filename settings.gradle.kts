@@ -34,9 +34,9 @@ dependencyResolutionManagement {
                 username = providers.gradleProperty("privateMavenUser")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
                     .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_USER", ""))
-                password = providers.gradleProperty("privateMavenPassword")
-                    .orElse(providers.environmentVariable("PRIVATE_MAVEN_PASSWORD"))
-                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_PASSWORD", ""))
+                password = providers.gradleProperty("privateMavenRepoToken")
+                    .orElse(providers.environmentVariable("PRIVATE_MAVEN_REPO_TOKEN"))
+                    .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_REPO_TOKEN", ""))
             }
             content {
                 includeGroup("com.fingerprint.android")
