@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys
 
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 
 data class CustomApiKeysState(
     val public: String,

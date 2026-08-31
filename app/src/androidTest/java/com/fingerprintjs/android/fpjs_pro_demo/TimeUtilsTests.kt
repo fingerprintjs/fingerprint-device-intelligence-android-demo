@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.fpjs_pro_demo
 
-import com.fingerprintjs.android.fpjs_pro_demo.utils.relativeFactoryResetTime
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.relativeTime
 import junit.framework.TestCase
 import org.junit.Test
 
@@ -10,65 +11,38 @@ class TimeUtilsTests {
         private const val SECONDS_IN_MINUTE = 60L
         private const val MINUTES_IN_HOUR = 60L
         private const val HOURS_IN_DAY = 24L
-        private const val DAYS_IN_WEEK = 7L
+        private const val MILLIS_IN_SECOND = 1000L
     }
 
-    private fun nowSeconds(): Long =
-        System.currentTimeMillis() / 1000
+    private fun nowMillis(): Long = System.currentTimeMillis()
+
+    // relativeTime — older-than-5-weeks path uses DateUtils.getRelativeTimeSpanString
+    // which requires a device context, so these live in androidTest.
 
     @Test
-    fun ReturnsJustnowForSecondsLessThan60() {
-        val now = nowSeconds()
-        val timestamp = now - 30
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertEquals("12:00 PM (Just now)", result)
-    }
-
-    @Test
-    fun ReturnsMinutesAgoForLessThanAnHour() {
-        val now = nowSeconds()
-        val timestamp = now - 5 * SECONDS_IN_MINUTE
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertEquals("12:00 PM (5 minutes ago)", result)
+    fun relativeTime_sixWeeksAgo_returnsDateUtilsSpanString() {
+        val timestampMillis = nowMillis() - 42 * HOURS_IN_DAY * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * MILLIS_IN_SECOND
+        val result = relativeTime("2024-01-01T00:00:00Z", timestampMillis)
+        // DateUtils formats as "X months ago" / "X weeks ago" depending on locale;
+        // we just verify the original label is prepended and the relative part is non-empty.
+        TestCase.assertTrue(result.startsWith("2024-01-01T00:00:00Z ("))
+        TestCase.assertTrue(result.endsWith(")"))
     }
 
     @Test
-    fun ReturnsHoursAgoForLessThanADay() {
-        val now = nowSeconds()
-        val timestamp = now - 3 * MINUTES_IN_HOUR * SECONDS_IN_MINUTE
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertEquals("12:00 PM (3 hours ago)", result)
+    fun relativeTime_oneYearAgo_returnsDateUtilsSpanString() {
+        val timestampMillis = nowMillis() - 365 * HOURS_IN_DAY * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * MILLIS_IN_SECOND
+        val result = relativeTime("2023-01-01T00:00:00Z", timestampMillis)
+        TestCase.assertTrue(result.startsWith("2023-01-01T00:00:00Z ("))
+        TestCase.assertTrue(result.endsWith(")"))
     }
 
     @Test
-    fun ReturnsDaysAgoForLessThanAWeek() {
-        val now = nowSeconds()
-        val timestamp = now - 2 * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertEquals("12:00 PM (2 days ago)", result)
-    }
-
-    @Test
-    fun ReturnsWeeksAgoForLessThanThreshold() {
-        val now = nowSeconds()
-        val timestamp =
-            now - DAYS_IN_WEEK * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertEquals("12:00 PM (1 week ago)", result)
-    }
-
-    @Test
-    fun FallsBackToDateUtilsForOlderTimestamps() {
-        val now = nowSeconds()
-        val timestamp =
-            now - 40L * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE
-
-        val result = relativeFactoryResetTime("12:00 PM", timestamp)
-        TestCase.assertTrue(result.startsWith("12:00 PM ("))
+    fun getRelativeTimeString_oldTimestampWithValidTime_returnsFormattedString() {
+        val timestampMillis = nowMillis() - 42 * HOURS_IN_DAY * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * MILLIS_IN_SECOND
+        val isoString = "2024-01-01T00:00:00Z"
+        val result = getRelativeTimeString(isoString, timestampMillis)
+        TestCase.assertTrue(result.startsWith("$isoString ("))
+        TestCase.assertTrue(result.endsWith(")"))
     }
 }

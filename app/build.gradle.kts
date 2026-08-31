@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 val local = Properties().apply {
@@ -10,9 +11,9 @@ val local = Properties().apply {
 }
 
 @Suppress("PropertyName")
-val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "4.1.2"
+val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "4.2.0"
 @Suppress("PropertyName")
-val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 64
+val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 68
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
@@ -102,9 +103,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
         isCoreLibraryDesugaringEnabled = true
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         buildConfig = true
     }
@@ -126,14 +124,15 @@ android {
             force(
                 "com.google.protobuf:protobuf-java:3.25.5",
                 "com.google.protobuf:protobuf-java-util:3.25.5",
-                "commons-io:commons-io:2.14.0",
-                "io.netty:netty-codec-http2:4.1.129.Final",
-                "io.netty:netty-codec-http:4.1.129.Final",
-                "io.netty:netty-handler:4.1.118.Final",
-                "io.netty:netty-common:4.1.118",
-                "org.jetbrains.kotlin:kotlin-stdlib:2.1.0"
+                "commons-io:commons-io:2.14.0"
             )
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }
 
@@ -182,6 +181,7 @@ dependencies {
     //di
     implementation(libs.google.dagger)
     kapt(libs.google.dagger.compiler)
+    kapt(libs.jetbrains.kotlin.metadata.jvm)
 
     //security
     implementation(libs.androidx.security.crypto)

@@ -1,6 +1,6 @@
 package com.fingerprintjs.android.fpjs_pro_demo.domain.custom_api_keys
 
-import com.fingerprintjs.android.fpjs_pro.Configuration
+import com.fingerprint.android.Configuration
 import com.fingerprintjs.android.fpjs_pro_demo.di.AppScope
 import com.fingerprintjs.android.fpjs_pro_demo.storage.AppStorage
 import com.fingerprintjs.android.fpjs_pro_demo.storage.StorageKey

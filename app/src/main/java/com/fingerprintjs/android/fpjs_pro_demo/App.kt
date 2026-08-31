@@ -7,15 +7,23 @@ import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonCompon
 
 class App : Application() {
 
-    lateinit var appComponent: AppComponent
-        private set
+    @Volatile
+    private var appComponentOrNull: AppComponent? = null
+
+    val appComponent: AppComponent
+        get() = appComponentOrNull ?: synchronized(this) {
+            appComponentOrNull ?: createAppComponent().also { appComponentOrNull = it }
+        }
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent
+        appComponent
+    }
+
+    private fun createAppComponent(): AppComponent =
+        DaggerAppComponent
             .builder()
             .commonComponent(CommonComponentStorage.commonComponent)
             .app(this)
             .build()
-    }
 }

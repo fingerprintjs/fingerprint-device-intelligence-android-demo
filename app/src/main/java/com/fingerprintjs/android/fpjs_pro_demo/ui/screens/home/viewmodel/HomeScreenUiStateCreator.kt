@@ -1,31 +1,37 @@
 package com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.viewmodel
 
 import androidx.annotation.VisibleForTesting
-import com.fingerprintjs.android.fpjs_pro.ApiKeyExpired
-import com.fingerprintjs.android.fpjs_pro.ApiKeyNotFound
-import com.fingerprintjs.android.fpjs_pro.ApiKeyRequired
-import com.fingerprintjs.android.fpjs_pro.ClientTimeout
-import com.fingerprintjs.android.fpjs_pro.Failed
-import com.fingerprintjs.android.fpjs_pro.FingerprintJSProResponse
-import com.fingerprintjs.android.fpjs_pro.HeaderRestricted
-import com.fingerprintjs.android.fpjs_pro.InstallationMethodRestricted
-import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationHeaders
-import com.fingerprintjs.android.fpjs_pro.InvalidProxyIntegrationSecret
-import com.fingerprintjs.android.fpjs_pro.NetworkError
-import com.fingerprintjs.android.fpjs_pro.NetworkUnavailableError
-import com.fingerprintjs.android.fpjs_pro.NotAvailableForCrawlBots
-import com.fingerprintjs.android.fpjs_pro.NotAvailableWithoutUA
-import com.fingerprintjs.android.fpjs_pro.OriginNotAvailable
-import com.fingerprintjs.android.fpjs_pro.PackageNotAuthorized
-import com.fingerprintjs.android.fpjs_pro.ProxyIntegrationSecretEnvironmentMismatch
-import com.fingerprintjs.android.fpjs_pro.RequestCannotBeParsed
-import com.fingerprintjs.android.fpjs_pro.RequestTimeout
-import com.fingerprintjs.android.fpjs_pro.ResponseCannotBeParsed
-import com.fingerprintjs.android.fpjs_pro.SubscriptionNotActive
-import com.fingerprintjs.android.fpjs_pro.TooManyRequest
-import com.fingerprintjs.android.fpjs_pro.UnknownError
-import com.fingerprintjs.android.fpjs_pro.UnsupportedVersion
-import com.fingerprintjs.android.fpjs_pro.WrongRegion
+import com.fingerprint.android.ApiKeyNotFound
+import com.fingerprint.android.ApiKeyRequired
+import com.fingerprint.android.ClientTimeout
+import com.fingerprint.android.EnvironmentRestricted
+import com.fingerprint.android.Failed
+import com.fingerprint.android.FeatureNotEnabled
+import com.fingerprint.android.FingerprintResponse
+import com.fingerprint.android.InstallationMethodRestricted
+import com.fingerprint.android.InvalidProxyIntegrationHeaders
+import com.fingerprint.android.InvalidProxyIntegrationSecret
+import com.fingerprint.android.MissingModule
+import com.fingerprint.android.NetworkError
+import com.fingerprint.android.NetworkUnavailableError
+import com.fingerprint.android.PayloadTooLarge
+import com.fingerprint.android.ProxyIntegrationSecretEnvironmentMismatch
+import com.fingerprint.android.RequestCannotBeParsed
+import com.fingerprint.android.RequestNotFound
+import com.fingerprint.android.RequestTimeout
+import com.fingerprint.android.ResponseCannotBeParsed
+import com.fingerprint.android.RulesetNotFound
+import com.fingerprint.android.SecretApiKeyNotFound
+import com.fingerprint.android.SecretApiKeyRequired
+import com.fingerprint.android.ServiceUnavailable
+import com.fingerprint.android.StateNotReady
+import com.fingerprint.android.SubscriptionNotActive
+import com.fingerprint.android.SubscriptionNotFound
+import com.fingerprint.android.SubscriptionRestricted
+import com.fingerprint.android.TooManyRequest
+import com.fingerprint.android.UnknownError
+import com.fingerprint.android.VisitorNotFound
+import com.fingerprint.android.WrongRegion
 import com.fingerprintjs.android.fpjs_pro_demo.constants.StringConstants
 import com.fingerprintjs.android.fpjs_pro_demo.constants.URLs
 import com.fingerprintjs.android.fpjs_pro_demo.domain.identification.FingerprintJSProResult
@@ -35,7 +41,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignalsError
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
-import com.fingerprintjs.android.fpjs_pro_demo.utils.getEpochTimestampFromTimeString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
@@ -83,43 +89,45 @@ class HomeScreenUiStateCreator @Inject constructor(
                 return when (error) {
                     is NetworkError -> networkError
                     is TooManyRequest -> HomeScreenUiState.Content.Error.TooManyRequests(onReload = onReload)
-                    is ApiKeyExpired -> HomeScreenUiState.Content.Error.PublicApiKeyExpired(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
                     is ApiKeyNotFound -> HomeScreenUiState.Content.Error.PublicApiKeyInvalid(
                         onGotoApiKeysSettings = onGotoApiKeysSettings
                     )
 
                     is ApiKeyRequired -> unknownError
-                    is Failed -> unknownError
-                    is HeaderRestricted -> unknownError
-                    is InstallationMethodRestricted -> unknownError
-                    is NotAvailableForCrawlBots -> unknownError
-                    is NotAvailableWithoutUA -> unknownError
-                    is OriginNotAvailable -> unknownError
-                    is PackageNotAuthorized -> unknownError
-                    is RequestCannotBeParsed -> unknownError
-                    is RequestTimeout -> unknownError
-                    is ResponseCannotBeParsed -> unknownError
-                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
-                    is UnknownError -> unknownError
-                    is UnsupportedVersion -> unknownError
-                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(
-                        onGotoApiKeysSettings = onGotoApiKeysSettings
-                    )
-
                     is ClientTimeout -> networkError
+                    is EnvironmentRestricted -> unknownError
+                    is Failed -> unknownError
+                    is FeatureNotEnabled -> unknownError
+                    is InstallationMethodRestricted -> unknownError
                     is InvalidProxyIntegrationHeaders,
                     is InvalidProxyIntegrationSecret,
                     is ProxyIntegrationSecretEnvironmentMismatch -> HomeScreenUiState.Content.Error.Generic(
                         error = error,
                         onReload = onReload,
                     )
+                    is MissingModule -> unknownError
                     is NetworkUnavailableError -> networkError
+                    is PayloadTooLarge -> unknownError
+                    is RequestCannotBeParsed -> unknownError
+                    is RequestNotFound -> unknownError
+                    is RequestTimeout -> unknownError
+                    is ResponseCannotBeParsed -> unknownError
+                    is RulesetNotFound -> unknownError
+                    is SecretApiKeyNotFound -> unknownError
+                    is SecretApiKeyRequired -> unknownError
+                    is ServiceUnavailable -> unknownError
+                    is StateNotReady -> unknownError
+                    is SubscriptionNotActive -> HomeScreenUiState.Content.Error.SubscriptionNotActive(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
+
+                    is SubscriptionNotFound -> unknownError
+                    is SubscriptionRestricted -> unknownError
+                    is UnknownError -> unknownError
+                    is VisitorNotFound -> unknownError
+                    is WrongRegion -> HomeScreenUiState.Content.Error.WrongRegion(
+                        onGotoApiKeysSettings = onGotoApiKeysSettings
+                    )
                 }
             }
 
@@ -171,7 +179,7 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @Suppress("LongParameterList", "LongMethod", "CyclomaticComplexMethod")
     fun HomeScreenUiState.Content.LoadingOrSuccess.Companion.create(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?, // null indicates that endpoint info or credentials are not set
         isLoading: Boolean,
         isSmartSignalsLoading: Boolean,
@@ -181,7 +189,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         onPutToClipboard: (String) -> Unit = {},
         onSignupPromptClicked: () -> Unit = {},
     ): HomeScreenUiState.Content.LoadingOrSuccess {
-        // Checking the values from FingerprintJSProResponse for unavailability
+        // Checking the values from FingerprintResponse for unavailability
         // is very inconvenient now. It will be improved in the future releases of the SDK.
         fun String.dropEssentiallyEmpty(): String? = takeIf {
             it.isNotEmpty() &&
@@ -189,17 +197,8 @@ class HomeScreenUiStateCreator @Inject constructor(
                 !it.contentEquals(StringConstants.NULL_STRING, ignoreCase = true)
         }
 
-        val requestId = fingerprintJSProResponse.requestId.dropEssentiallyEmpty()
+        val eventId = fingerprintJSProResponse.eventId.dropEssentiallyEmpty()
         val visitorId = fingerprintJSProResponse.visitorId
-        val visitorFound = fingerprintJSProResponse.visitorFound
-        val confidence = fingerprintJSProResponse.confidenceScore.score
-        val ipAddress = fingerprintJSProResponse.ipAddress.dropEssentiallyEmpty()
-        val ipCity = fingerprintJSProResponse.ipLocation?.city?.name?.dropEssentiallyEmpty()
-        val ipCountry = fingerprintJSProResponse.ipLocation?.country?.name?.dropEssentiallyEmpty()
-        val firstSeenAt = fingerprintJSProResponse.firstSeenAt.subscription.dropEssentiallyEmpty()
-        val lastSeenAt = fingerprintJSProResponse.lastSeenAt.subscription.dropEssentiallyEmpty()
-        val firstSeenAtTimestamp = firstSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
-        val lastSeenAtTimestamp = lastSeenAt?.let { getEpochTimestampFromTimeString(it) } ?: 0L
 
         fun <T : SmartSignal> smartSignalProperty(
             from: SmartSignals.() -> SmartSignalInfo<T>,
@@ -243,6 +242,15 @@ class HomeScreenUiStateCreator @Inject constructor(
             )
         }
 
+        fun <T : SmartSignal> identificationPropertyFromSignal(
+            from: SmartSignals.() -> SmartSignalInfo<T>,
+            name: String,
+            value: T.() -> String,
+        ): PrettifiedProperty {
+            val extracted = (smartSignals?.let(from) as? SmartSignalInfo.Success)?.typedData?.value()
+            return identificationProperty(name = name, value = extracted)
+        }
+
         return HomeScreenUiState.Content.LoadingOrSuccess(
             visitorId = fingerprintJSProResponse.visitorId,
             rawJson = runCatching {
@@ -253,34 +261,49 @@ class HomeScreenUiStateCreator @Inject constructor(
             isSignupPromptShown = false,
             prettifiedProps = listOfNotNull(
                 identificationProperty(
-                    name = StringConstants.REQUEST_ID,
-                    value = requestId
+                    name = StringConstants.EVENT_ID,
+                    value = eventId
                 ),
                 identificationProperty(
                     name = StringConstants.VISITOR_ID,
                     value = visitorId
                 ),
                 identificationProperty(
+                    name = StringConstants.SUSPECT_SCORE,
+                    value = fingerprintJSProResponse.suspectScore?.toString()
+                ),
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
                     name = StringConstants.VISITOR_FOUND,
-                    value = if (visitorFound) StringConstants.YES else StringConstants.NO
+                    value = { if (visitorFound) StringConstants.YES else StringConstants.NO },
                 ),
-                identificationProperty(
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
                     name = StringConstants.CONFIDENCE,
-                    value = "${round(confidence * 100).toInt()}${StringConstants.PERCENTAGE}"
+                    value = { "${round(confidenceScore * 100).toInt()}${StringConstants.PERCENTAGE}" },
                 ),
-                identificationProperty(
+                identificationPropertyFromSignal(
+                    from = { ipInfo },
                     name = StringConstants.IP_ADDRESS,
-                    value = ipAddress
+                    value = { v4.address },
                 ),
-                identificationProperty(
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
                     name = StringConstants.FIRST_SEEN_AT,
-                    value = getRelativeTimeString(firstSeenAt, firstSeenAtTimestamp)
+                    value = { getRelativeTimeString(epochMillisToIsoString(firstSeenAt), firstSeenAt) },
                 ),
-                identificationProperty(
+                identificationPropertyFromSignal(
+                    from = { identificationInfo },
                     name = StringConstants.LAST_SEEN_AT,
-                    value = getRelativeTimeString(lastSeenAt, lastSeenAtTimestamp)
+                    value = { getRelativeTimeString(epochMillisToIsoString(lastSeenAt), lastSeenAt) },
                 ),
 
+                smartSignalProperty(
+                    from = { activeCall },
+                    name = StringConstants.ACTIVE_CALL,
+                    docUrl = URLs.SmartSignalsOverview.activeCall,
+                    value = { result.detectionStatusString() }
+                ),
                 smartSignalProperty(
                     from = { clonedApp },
                     name = StringConstants.CLONED_APP,
@@ -288,6 +311,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = {
                         result.detectionStatusString()
                     },
+                ),
+                smartSignalProperty(
+                    from = { developerTools },
+                    name = StringConstants.DEVELOPER_TOOLS,
+                    docUrl = URLs.SmartSignalsOverview.developerTools,
+                    value = { result.detectionStatusString() }
                 ),
                 smartSignalProperty(
                     from = { emulator },
@@ -314,6 +343,14 @@ class HomeScreenUiStateCreator @Inject constructor(
                     }
                 ),
                 smartSignalProperty(
+                    from = { locationSpoofing },
+                    name = StringConstants.GEOLOCATION_SPOOFING,
+                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
+                    value = {
+                        result.detectionStatusString()
+                    }
+                ),
+                smartSignalProperty(
                     from = { highActivity },
                     name = StringConstants.HIGH_ACTIVITY,
                     docUrl = URLs.SmartSignalsOverview.highActivity,
@@ -333,35 +370,20 @@ class HomeScreenUiStateCreator @Inject constructor(
                         result.detectionStatusString()
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_LOCATION,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                     value = {
-                        when {
-                            ipCountry != null && ipCity != null -> "$ipCity, $ipCountry"
-                            ipCountry != null -> ipCountry
-                            else -> "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
-                        }
+                        "${v4.geolocation.city.name}, ${v4.geolocation.country.name}"
                     }
                 ),
-
                 smartSignalProperty(
                     from = { ipInfo },
                     name = StringConstants.IP_NETWORK_PROVIDER,
                     docUrl = URLs.SmartSignalsOverview.ipNetworkProvider,
                     value = {
                         "${v4.asn.name} - ${v4.asn.asn}"
-                    }
-                ),
-
-                smartSignalProperty(
-                    from = { locationSpoofing },
-                    name = StringConstants.GEOLOCATION_SPOOFING,
-                    docUrl = URLs.SmartSignalsOverview.locationSpoofing,
-                    value = {
-                        result.detectionStatusString()
                     }
                 ),
                 smartSignalProperty(
@@ -371,6 +393,13 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = {
                         result.detectionStatusString()
                     }
+                ),
+                smartSignalProperty(
+                    from = { proximity },
+                    name = StringConstants.PROXIMITY,
+                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
+                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
+                    smartSignalLinkText = StringConstants.MORE_INFO,
                 ),
                 smartSignalProperty(
                     from = { proxy },
@@ -403,19 +432,6 @@ class HomeScreenUiStateCreator @Inject constructor(
                     value = { getVpnStatusString() },
                     note = { getVpnNoteString() },
                 ),
-                smartSignalProperty(
-                    from = { proximity },
-                    name = StringConstants.PROXIMITY,
-                    docUrl = URLs.SmartSignalsOverview.proximityDetection,
-                    value = { getProximityDetails(isAnyLocationPermissionGranted) },
-                    smartSignalLinkText = StringConstants.MORE_INFO,
-                ),
-                smartSignalProperty(
-                    from = { developerTools },
-                    name = StringConstants.DEVELOPER_TOOLS,
-                    docUrl = URLs.SmartSignalsOverview.developerTools,
-                    value = { result.detectionStatusString() }
-                ),
             )
                 .map {
                     it.copy(
@@ -430,31 +446,46 @@ class HomeScreenUiStateCreator @Inject constructor(
 
     @VisibleForTesting
     fun createRawJson(
-        fingerprintJSProResponse: FingerprintJSProResponse,
+        fingerprintJSProResponse: FingerprintResponse,
         smartSignals: SmartSignals?,
     ): String {
+        val identificationMap = buildMap<String, Any?> {
+            putAll(fingerprintJSProResponse.toJsonMap())
+            if (smartSignals != null) {
+                (smartSignals.identificationInfo as? SmartSignalInfo.Success)?.typedData?.let {
+                    put("visitorFound", it.visitorFound)
+                    put("confidenceScore", it.confidenceScore)
+                    epochMillisToIsoString(it.firstSeenAt)?.let { v -> put("firstSeenAt", v) }
+                    epochMillisToIsoString(it.lastSeenAt)?.let { v -> put("lastSeenAt", v) }
+                }
+                (smartSignals.ipInfo as? SmartSignalInfo.Success)?.typedData?.let {
+                    put("ipAddress", it.v4.address)
+                }
+            }
+        }
         val map = buildMap {
-            this.put(StringConstants.IDENTIFICATION, fingerprintJSProResponse.toJsonMap())
+            this.put(StringConstants.IDENTIFICATION, identificationMap)
             if (smartSignals != null) {
                 this.put(
                     StringConstants.SMART_SIGNALS,
                     buildMap {
                         listOfNotNull(
+                            smartSignals.activeCall,
                             smartSignals.clonedApp,
+                            smartSignals.developerTools,
                             smartSignals.emulator,
                             smartSignals.factoryReset,
                             smartSignals.frida,
-                            smartSignals.highActivity,
-                            smartSignals.ipInfo,
-                            smartSignals.ipBlocklist,
                             smartSignals.locationSpoofing,
+                            smartSignals.highActivity,
+                            smartSignals.ipBlocklist,
+                            smartSignals.ipInfo,
                             smartSignals.mitm,
+                            smartSignals.proximity,
                             smartSignals.proxy,
                             smartSignals.root,
                             smartSignals.tampering,
                             smartSignals.vpn,
-                            smartSignals.proximity,
-                            smartSignals.developerTools,
                         )
                             .forEach {
                                 if (it is SmartSignalInfo.WithRawData) {

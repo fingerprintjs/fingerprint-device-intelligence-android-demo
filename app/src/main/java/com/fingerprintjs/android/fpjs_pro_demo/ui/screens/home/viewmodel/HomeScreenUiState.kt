@@ -67,17 +67,6 @@ data class HomeScreenUiState(
             val buttonTitle: String
             val onButtonCLick: () -> Unit
 
-            class PublicApiKeyExpired(
-                onGotoApiKeysSettings: () -> Unit,
-            ) : Error {
-                override val image = Icons.Outlined.ErrorOutline
-                override val title = "Failed to Fingerprint"
-                override val description = "The public key has expired."
-                override val links = emptyList<LinkableText.Link>()
-                override val buttonTitle: String = "Go to API Keys"
-                override val onButtonCLick = onGotoApiKeysSettings
-            }
-
             class PublicApiKeyInvalid(
                 onGotoApiKeysSettings: () -> Unit,
             ) : Error {
@@ -177,7 +166,7 @@ data class HomeScreenUiState(
             }
 
             class Generic(
-                error: com.fingerprintjs.android.fpjs_pro.Error,
+                error: com.fingerprint.android.Error,
                 onReload: () -> Unit,
             ) : Error {
                 override val image = Icons.Outlined.ErrorOutline
