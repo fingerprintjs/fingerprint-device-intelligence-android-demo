@@ -22,7 +22,7 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal {
             mavenContent {
-                includeVersionByRegex("com.fingerprint.android", "sdk", ".*")
+                includeVersionByRegex("com.fingerprint.android", "pro", ".*")
             }
         }
 
@@ -30,11 +30,12 @@ dependencyResolutionManagement {
 
         maven {
             url = uri("https://maven.fpregistry.io/private-releases")
+            // Reposilite Basic auth: username = token name, password = token secret
             credentials(PasswordCredentials::class) {
                 username = providers.gradleProperty("privateMavenUser")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
                     .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_USER", ""))
-                password = providers.gradleProperty("privateMavenRepoToken")
+                password = providers.gradleProperty("privateMavenPassword")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_REPO_TOKEN"))
                     .getOrElse(localProperties.getProperty("PRIVATE_MAVEN_REPO_TOKEN", ""))
             }

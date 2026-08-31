@@ -13,10 +13,10 @@ on:
 jobs:
   build-and-upload:
     runs-on: ubuntu-latest
-    # Gradle reads ORG_GRADLE_PROJECT_* as project properties (privateMavenUser / privateMavenRepoToken).
+    # Reposilite Basic auth: username = token name, password = token secret
     env:
       ORG_GRADLE_PROJECT_privateMavenUser: ${{ secrets.PRIVATE_MAVEN_USER }}
-      ORG_GRADLE_PROJECT_privateMavenRepoToken: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
+      ORG_GRADLE_PROJECT_privateMavenPassword: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
 
     steps:
       # -----------------------------
@@ -61,7 +61,7 @@ jobs:
 
       - name: Validate private Maven credentials
         run: |
-          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenRepoToken" ]; then
+          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenPassword" ]; then
             echo "::error::GitHub secrets PRIVATE_MAVEN_USER and PRIVATE_MAVEN_REPO_TOKEN must be configured."
             exit 1
           fi

@@ -36,10 +36,13 @@ jobs:
             "https://maven.fpregistry.io/private-releases/com/fingerprintjs/demo-native-secrets/1.0.0/string.h"
       - name: Validate private Maven credentials
         run: |
-          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenRepoToken" ]; then
+          if [ -z "$ORG_GRADLE_PROJECT_privateMavenUser" ] || [ -z "$ORG_GRADLE_PROJECT_privateMavenPassword" ]; then
             echo "::error::GitHub secrets PRIVATE_MAVEN_USER and PRIVATE_MAVEN_REPO_TOKEN must be configured."
             exit 1
           fi
+        env:
+          ORG_GRADLE_PROJECT_privateMavenUser: ${{ secrets.PRIVATE_MAVEN_USER }}
+          ORG_GRADLE_PROJECT_privateMavenPassword: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
       - name: Build release APK
         run: |
           ./gradlew clean :app:assembleRelease \
@@ -47,7 +50,7 @@ jobs:
             -PVERSION_NAME=${{ github.event.inputs.versionName }}
         env:
           ORG_GRADLE_PROJECT_privateMavenUser: ${{ secrets.PRIVATE_MAVEN_USER }}
-          ORG_GRADLE_PROJECT_privateMavenRepoToken: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
+          ORG_GRADLE_PROJECT_privateMavenPassword: ${{ secrets.PRIVATE_MAVEN_REPO_TOKEN }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
           RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
