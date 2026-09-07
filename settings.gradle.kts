@@ -30,7 +30,6 @@ dependencyResolutionManagement {
 
         maven {
             url = uri("https://maven.fpregistry.io/private-releases")
-            // Reposilite Basic auth: username = token name, password = token secret
             credentials(PasswordCredentials::class) {
                 username = providers.gradleProperty("privateMavenUser")
                     .orElse(providers.environmentVariable("PRIVATE_MAVEN_USER"))
