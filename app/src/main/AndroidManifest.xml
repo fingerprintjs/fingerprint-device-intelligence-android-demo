@@ -18,9 +18,8 @@
         android:theme="@style/Theme.FingerprintPRODemo">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
