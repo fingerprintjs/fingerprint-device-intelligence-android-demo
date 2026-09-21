@@ -13,7 +13,7 @@ val local = Properties().apply {
 @Suppress("PropertyName")
 val VERSION_NAME= project.findProperty("VERSION_NAME")?.toString() ?: "4.3.0"
 @Suppress("PropertyName")
-val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 71
+val VERSION_CODE= project.findProperty("VERSION_CODE")?.toString()?.toInt() ?: 72
 val useFpProDebugVersion =
     false // switch to true when needed to debug the locally built library
 val fingerprintProLib = if (useFpProDebugVersion) libs.fingerprint.pro.debug else libs.fingerprint.pro.asProvider()
@@ -34,7 +34,7 @@ val googleServicesFile = file(googleServicesFilename)
 
 android {
     namespace = "com.fingerprintjs.android.fpjs_pro_demo"
-    compileSdk = 35
+    compileSdk = 36
 
     ndkVersion = "28.2.13676358"
     
@@ -48,7 +48,7 @@ android {
     defaultConfig {
         applicationId = "com.fingerprintjs.android.fpjs_pro_demo"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = VERSION_CODE
         versionName = VERSION_NAME
 
