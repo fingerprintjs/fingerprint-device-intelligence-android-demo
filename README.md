@@ -80,7 +80,7 @@ Gradle will automatically detect and use the correct JDK via [Daemon JVM criteri
        val apiKey: String = "YOUR_PUBLIC_API_KEY"
      }
      ```
-   * If you **do not** have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should match the [region](https://dev.fingerprint.com/docs/android-sdk#region-1) you specified when registering your app with Fingerprint.
+   * If you **do not** have a custom sub-domain or a proxy integration, then the value of `endpointUrl` should match the [region](https://docs.fingerprint.com/docs/android-sdk#region) you specified when registering your app with Fingerprint.
 
      ```kotlin
      import com.fingerprintjs.android.fpjs_pro.Configuration
