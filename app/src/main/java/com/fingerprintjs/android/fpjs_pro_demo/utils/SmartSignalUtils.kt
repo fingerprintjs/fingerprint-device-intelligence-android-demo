@@ -100,3 +100,6 @@ internal fun SmartSignal.Proximity.getProximityDetails(
 internal fun Boolean.detectionStatusString(): String {
     return if (this) StringConstants.DETECTED else StringConstants.NOT_DETECTED
 }
+
+internal fun SmartSignal.DeviceDetails.getDeviceString(): String? =
+    listOfNotNull(manufacturer, model).joinToString(" ").ifEmpty { null }

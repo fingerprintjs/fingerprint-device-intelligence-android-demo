@@ -65,6 +65,7 @@ class SmartSignalsBodyParser @Inject constructor(
                     SmartSignal.ActiveCall(it)
                 },
                 identificationInfo = root.parseIdentificationInfo(),
+                deviceDetails = root.parseDeviceDetails(),
             )
         }.mapError { }
     }
@@ -305,6 +306,23 @@ class SmartSignalsBodyParser @Inject constructor(
                 id = (obj["id"] as? JsonPrimitive)?.contentOrNull,
                 precisionRadius = (obj["precision_radius"] as? JsonPrimitive)?.intOrNull,
                 confidence = (obj["confidence"] as? JsonPrimitive)?.floatOrNull,
+            ),
+            rawData = obj,
+        )
+    }
+
+    private fun JsonObject.parseDeviceDetails(): SmartSignalInfo<SmartSignal.DeviceDetails> {
+        val rawKey = "deviceDetails"
+        val obj = get("device_details") as? JsonObject ?: return SmartSignalInfo.Disabled(rawKey)
+        return SmartSignalInfo.Success(
+            rawKey = rawKey,
+            typedData = SmartSignal.DeviceDetails(
+                manufacturer = (obj["device_manufacturer"] as? JsonPrimitive)?.contentOrNull
+                    ?.takeIfNotEssentiallyEmpty(),
+                model = (obj["device_model"] as? JsonPrimitive)?.contentOrNull
+                    ?.takeIfNotEssentiallyEmpty(),
+                osVersion = (obj["os_version"] as? JsonPrimitive)?.contentOrNull
+                    ?.takeIfNotEssentiallyEmpty(),
             ),
             rawData = obj,
         )

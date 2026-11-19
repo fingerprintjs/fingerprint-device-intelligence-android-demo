@@ -42,6 +42,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getDeviceString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
@@ -245,7 +246,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         fun <T : SmartSignal> identificationPropertyFromSignal(
             from: SmartSignals.() -> SmartSignalInfo<T>,
             name: String,
-            value: T.() -> String,
+            value: T.() -> String?,
         ): PrettifiedProperty {
             val extracted = (smartSignals?.let(from) as? SmartSignalInfo.Success)?.typedData?.value()
             return identificationProperty(name = name, value = extracted)
@@ -276,6 +277,16 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { identificationInfo },
                     name = StringConstants.VISITOR_FOUND,
                     value = { if (visitorFound) StringConstants.YES else StringConstants.NO },
+                ),
+                identificationPropertyFromSignal(
+                    from = { deviceDetails },
+                    name = StringConstants.DEVICE,
+                    value = { getDeviceString() },
+                ),
+                identificationPropertyFromSignal(
+                    from = { deviceDetails },
+                    name = StringConstants.OS_VERSION,
+                    value = { osVersion },
                 ),
                 identificationPropertyFromSignal(
                     from = { identificationInfo },
@@ -473,6 +484,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.activeCall,
                             smartSignals.clonedApp,
                             smartSignals.developerTools,
+                            smartSignals.deviceDetails,
                             smartSignals.emulator,
                             smartSignals.factoryReset,
                             smartSignals.frida,

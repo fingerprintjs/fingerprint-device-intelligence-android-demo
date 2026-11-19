@@ -717,4 +717,29 @@ class SmartSignalUtilsUnitTests {
         TestCase.assertTrue(result.contains("Confidence: 0.85"))
         TestCase.assertFalse(result.contains("Precision Radius:"))
     }
+
+    // Tests for getDeviceString
+    @Test
+    fun givenManufacturerAndModel_whenGetDeviceString_thenReturnsBothJoined() {
+        val deviceDetails = SmartSignal.DeviceDetails(manufacturer = "Samsung", model = "SM-G991U")
+        TestCase.assertEquals("Samsung SM-G991U", deviceDetails.getDeviceString())
+    }
+
+    @Test
+    fun givenManufacturerOnly_whenGetDeviceString_thenReturnsManufacturer() {
+        val deviceDetails = SmartSignal.DeviceDetails(manufacturer = "Samsung")
+        TestCase.assertEquals("Samsung", deviceDetails.getDeviceString())
+    }
+
+    @Test
+    fun givenModelOnly_whenGetDeviceString_thenReturnsModel() {
+        val deviceDetails = SmartSignal.DeviceDetails(model = "SM-G991U")
+        TestCase.assertEquals("SM-G991U", deviceDetails.getDeviceString())
+    }
+
+    @Test
+    fun givenNoManufacturerAndModel_whenGetDeviceString_thenReturnsNull() {
+        val deviceDetails = SmartSignal.DeviceDetails(osVersion = "13.0.0")
+        TestCase.assertNull(deviceDetails.getDeviceString())
+    }
 }
