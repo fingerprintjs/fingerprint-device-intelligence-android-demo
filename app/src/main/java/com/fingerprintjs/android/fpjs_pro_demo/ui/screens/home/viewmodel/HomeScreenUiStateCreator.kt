@@ -484,6 +484,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                             smartSignals.activeCall,
                             smartSignals.clonedApp,
                             smartSignals.developerTools,
+                            smartSignals.deviceDetails,
                             smartSignals.emulator,
                             smartSignals.factoryReset,
                             smartSignals.frida,
