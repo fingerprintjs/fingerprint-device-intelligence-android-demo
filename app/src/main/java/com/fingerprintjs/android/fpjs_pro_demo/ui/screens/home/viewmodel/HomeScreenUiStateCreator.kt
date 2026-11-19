@@ -245,7 +245,7 @@ class HomeScreenUiStateCreator @Inject constructor(
         fun <T : SmartSignal> identificationPropertyFromSignal(
             from: SmartSignals.() -> SmartSignalInfo<T>,
             name: String,
-            value: T.() -> String,
+            value: T.() -> String?,
         ): PrettifiedProperty {
             val extracted = (smartSignals?.let(from) as? SmartSignalInfo.Success)?.typedData?.value()
             return identificationProperty(name = name, value = extracted)
