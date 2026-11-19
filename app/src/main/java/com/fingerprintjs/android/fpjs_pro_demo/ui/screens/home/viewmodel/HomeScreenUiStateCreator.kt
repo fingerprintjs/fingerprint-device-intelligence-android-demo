@@ -42,6 +42,7 @@ import com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals.SmartSignals
 import com.fingerprintjs.android.fpjs_pro_demo.ui.screens.home.views.event_details_view.tabs.PrettifiedProperty
 import com.fingerprintjs.android.fpjs_pro_demo.utils.detectionStatusString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.epochMillisToIsoString
+import com.fingerprintjs.android.fpjs_pro_demo.utils.getDeviceString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getProximityDetails
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getRelativeTimeString
 import com.fingerprintjs.android.fpjs_pro_demo.utils.getVpnNoteString
@@ -276,6 +277,16 @@ class HomeScreenUiStateCreator @Inject constructor(
                     from = { identificationInfo },
                     name = StringConstants.VISITOR_FOUND,
                     value = { if (visitorFound) StringConstants.YES else StringConstants.NO },
+                ),
+                identificationPropertyFromSignal(
+                    from = { deviceDetails },
+                    name = StringConstants.DEVICE,
+                    value = { getDeviceString() },
+                ),
+                identificationPropertyFromSignal(
+                    from = { deviceDetails },
+                    name = StringConstants.OS_VERSION,
+                    value = { osVersion },
                 ),
                 identificationPropertyFromSignal(
                     from = { identificationInfo },
