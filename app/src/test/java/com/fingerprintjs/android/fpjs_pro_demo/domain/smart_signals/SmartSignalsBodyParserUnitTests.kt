@@ -3,6 +3,8 @@ package com.fingerprintjs.android.fpjs_pro_demo.domain.smart_signals
 import com.fingerprintjs.android.fpjs_pro_demo.di.components.common.CommonComponentStorage
 import com.github.michaelbull.result.get
 import junit.framework.TestCase
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
 import org.junit.Test
 
 class SmartSignalsBodyParserUnitTests {
@@ -254,6 +256,70 @@ class SmartSignalsBodyParserUnitTests {
         TestCase.assertNull(proximity.id)
         TestCase.assertNull(proximity.precisionRadius)
         TestCase.assertNull(proximity.confidence)
+    }
+
+    @Test
+    fun givenDeviceDetailsWithAllFields_whenParse_thenAllFieldsExtracted() {
+        val body = """
+        {
+            "device_details": {
+                "device_manufacturer": "Samsung",
+                "device_model": "SM-G991U",
+                "os_version": "13.0.0"
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val success = signals.deviceDetails as SmartSignalInfo.Success
+        TestCase.assertEquals("deviceDetails", success.rawKey)
+        TestCase.assertEquals(
+            SmartSignal.DeviceDetails(manufacturer = "Samsung", model = "SM-G991U", osVersion = "13.0.0"),
+            success.typedData,
+        )
+        TestCase.assertEquals(Json.parseToJsonElement(body).jsonObject["device_details"], success.rawData)
+    }
+
+    @Test
+    fun givenDeviceDetailsWithoutOsVersion_whenParse_thenOsVersionNull() {
+        val body = """
+        {
+            "device_details": {
+                "device_manufacturer": "Samsung",
+                "device_model": "SM-G991U"
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val deviceDetails = (signals.deviceDetails as SmartSignalInfo.Success).typedData
+        TestCase.assertEquals("Samsung", deviceDetails.manufacturer)
+        TestCase.assertEquals("SM-G991U", deviceDetails.model)
+        TestCase.assertNull(deviceDetails.osVersion)
+    }
+
+    @Test
+    fun givenDeviceDetailsWithEssentiallyEmptyValues_whenParse_thenFieldsNull() {
+        val body = """
+        {
+            "device_details": {
+                "device_manufacturer": "",
+                "device_model": "unknown",
+                "os_version": "null"
+            }
+        }
+        """.trimIndent()
+        val signals = parser.parseSmartSignals(body).get()!!
+        val success = signals.deviceDetails as SmartSignalInfo.Success
+        TestCase.assertNull(success.typedData.manufacturer)
+        TestCase.assertNull(success.typedData.model)
+        TestCase.assertNull(success.typedData.osVersion)
+        // Raw view keeps the server values unfiltered
+        TestCase.assertEquals(Json.parseToJsonElement(body).jsonObject["device_details"], success.rawData)
+    }
+
+    @Test
+    fun givenDeviceDetailsMissing_whenParse_thenDisabled() {
+        val signals = parser.parseSmartSignals("""{ }""").get()!!
+        TestCase.assertTrue(signals.deviceDetails is SmartSignalInfo.Disabled)
     }
 
     @Test
