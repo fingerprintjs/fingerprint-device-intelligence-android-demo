@@ -313,6 +313,12 @@ class HomeScreenUiStateCreator @Inject constructor(
                     },
                 ),
                 smartSignalProperty(
+                    from = { compromisedDeviceIntegrity },
+                    name = StringConstants.COMPROMISED_DEVICE_INTEGRITY,
+                    docUrl = URLs.SmartSignalsOverview.compromisedDeviceIntegrity,
+                    value = { result.detectionStatusString() }
+                ),
+                smartSignalProperty(
                     from = { developerTools },
                     name = StringConstants.DEVELOPER_TOOLS,
                     docUrl = URLs.SmartSignalsOverview.developerTools,

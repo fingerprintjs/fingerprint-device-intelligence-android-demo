@@ -22,6 +22,7 @@ object StringConstants {
     // Smart signal names
     const val ACTIVE_CALL = "Active Call"
     const val CLONED_APP = "Cloned App"
+    const val COMPROMISED_DEVICE_INTEGRITY = "Compromised Device Integrity"
     const val DEVELOPER_TOOLS = "Developer Tools"
     const val EMULATOR = "Emulator"
     const val FACTORY_RESET = "Factory Reset"
