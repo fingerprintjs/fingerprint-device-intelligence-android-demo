@@ -476,6 +476,7 @@ class HomeScreenUiStateCreator @Inject constructor(
                     listOfNotNull(
                         smartSignals.activeCall,
                         smartSignals.clonedApp,
+                        smartSignals.compromisedDeviceIntegrity,
                         smartSignals.developerTools,
                         smartSignals.emulator,
                         smartSignals.factoryReset,
