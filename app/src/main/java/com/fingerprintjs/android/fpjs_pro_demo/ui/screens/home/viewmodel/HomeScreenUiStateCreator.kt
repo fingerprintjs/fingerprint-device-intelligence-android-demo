@@ -464,36 +464,33 @@ class HomeScreenUiStateCreator @Inject constructor(
             }
         }
         val map = buildMap {
-            this.put(StringConstants.IDENTIFICATION, identificationMap)
+            this[StringConstants.IDENTIFICATION] = identificationMap
             if (smartSignals != null) {
-                this.put(
-                    StringConstants.SMART_SIGNALS,
-                    buildMap {
-                        listOfNotNull(
-                            smartSignals.activeCall,
-                            smartSignals.clonedApp,
-                            smartSignals.developerTools,
-                            smartSignals.emulator,
-                            smartSignals.factoryReset,
-                            smartSignals.frida,
-                            smartSignals.locationSpoofing,
-                            smartSignals.highActivity,
-                            smartSignals.ipBlocklist,
-                            smartSignals.ipInfo,
-                            smartSignals.mitm,
-                            smartSignals.proximity,
-                            smartSignals.proxy,
-                            smartSignals.root,
-                            smartSignals.tampering,
-                            smartSignals.vpn,
-                        )
-                            .forEach {
-                                if (it is SmartSignalInfo.WithRawData) {
-                                    this.put(it.rawKey, it.rawData)
-                                }
+                this[StringConstants.SMART_SIGNALS] = buildMap {
+                    listOfNotNull(
+                        smartSignals.activeCall,
+                        smartSignals.clonedApp,
+                        smartSignals.developerTools,
+                        smartSignals.emulator,
+                        smartSignals.factoryReset,
+                        smartSignals.frida,
+                        smartSignals.locationSpoofing,
+                        smartSignals.highActivity,
+                        smartSignals.ipBlocklist,
+                        smartSignals.ipInfo,
+                        smartSignals.mitm,
+                        smartSignals.proximity,
+                        smartSignals.proxy,
+                        smartSignals.root,
+                        smartSignals.tampering,
+                        smartSignals.vpn,
+                    )
+                        .forEach {
+                            if (it is SmartSignalInfo.WithRawData) {
+                                this[it.rawKey] = it.rawData
                             }
-                    }
-                )
+                        }
+                }
             }
         }
         return json.encodeToString(map.toJsonObject()).replace("""\\""", """\""")
