@@ -29,6 +29,7 @@ class SmartSignalsBodyParserUnitTests {
         TestCase.assertTrue(signals.emulator is SmartSignalInfo.Disabled)
         TestCase.assertTrue(signals.developerTools is SmartSignalInfo.Disabled)
         TestCase.assertTrue(signals.activeCall is SmartSignalInfo.Disabled)
+        TestCase.assertTrue(signals.compromisedDeviceIntegrity is SmartSignalInfo.Disabled)
         TestCase.assertTrue(signals.ipInfo is SmartSignalInfo.Disabled)
     }
 
@@ -38,6 +39,15 @@ class SmartSignalsBodyParserUnitTests {
         TestCase.assertTrue(signals.activeCall is SmartSignalInfo.Success)
         val success = signals.activeCall as SmartSignalInfo.Success
         TestCase.assertTrue(success.typedData.result)
+    }
+
+    @Test
+    fun givenCompromisedDeviceIntegrity_whenParse_thenSuccess() {
+        val signals = parser.parseSmartSignals("""{ "compromised_device_integrity": true }""").get()!!
+        TestCase.assertTrue(signals.compromisedDeviceIntegrity is SmartSignalInfo.Success)
+        val success = signals.compromisedDeviceIntegrity as SmartSignalInfo.Success
+        TestCase.assertEquals(SmartSignal.CompromisedDeviceIntegrity(result = true), success.typedData)
+        TestCase.assertEquals("compromisedDeviceIntegrity", success.rawKey)
     }
 
     @Test
