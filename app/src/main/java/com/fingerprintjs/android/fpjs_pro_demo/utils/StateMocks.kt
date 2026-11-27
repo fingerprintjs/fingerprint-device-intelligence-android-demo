@@ -52,7 +52,12 @@ class StateMocks @Inject constructor(
         "relay": false
     },
     "developer_tools": false,
-    "active_call": false
+    "active_call": false,
+    "device_details": {
+        "device_manufacturer": "Samsung",
+        "device_model": "SM-G991U",
+        "os_version": "13.0.0"
+    }
 }
     """.trimIndent()
 

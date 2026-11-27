@@ -28,15 +28,22 @@ private val expectedJson = """
         "visitorId": "rVC74CiaXVZGVC69OBsP"
     },
     "smartSignals": {
+        "activeCall": false,
         "clonedApp": false,
+        "developerTools": false,
+        "deviceDetails": {
+            "device_manufacturer": "Samsung",
+            "device_model": "SM-G991U",
+            "os_version": "13.0.0"
+        },
         "emulator": false,
         "factoryReset": {
             "time": "2024-02-05T14:54:36Z",
             "timestamp": 1707144876
         },
         "frida": false,
-        "highActivity": true,
         "locationSpoofing": false,
+        "highActivity": true,
         "rootApps": false,
         "vpn": {
             "vpn": true,
@@ -49,8 +56,7 @@ private val expectedJson = """
                 "auxiliary_mobile": false,
                 "relay": false
             }
-        },
-        "developerTools": false
+        }
     }
 }
 """.trimIndent()

@@ -14,6 +14,8 @@ object StringConstants {
     const val VISITOR_ID = "Visitor ID"
     const val SUSPECT_SCORE = "Suspect Score"
     const val VISITOR_FOUND = "Visitor Found"
+    const val DEVICE = "Device"
+    const val OS_VERSION = "OS Version"
     const val CONFIDENCE = "Confidence"
     const val IP_ADDRESS = "IP Address"
     const val FIRST_SEEN_AT = "First Seen At"

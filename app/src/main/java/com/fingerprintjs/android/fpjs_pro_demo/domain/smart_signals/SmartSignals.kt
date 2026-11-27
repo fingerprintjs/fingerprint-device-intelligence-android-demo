@@ -23,6 +23,7 @@ class SmartSignals(
     val activeCall: SmartSignalInfo<SmartSignal.ActiveCall>,
     // Identification data from the GetEvents response (not smart signals)
     val identificationInfo: SmartSignalInfo<SmartSignal.IdentificationInfo>,
+    val deviceDetails: SmartSignalInfo<SmartSignal.DeviceDetails>,
 )
 
 sealed class SmartSignalInfo<out T : SmartSignal>(val rawKey: String) {
@@ -199,5 +200,12 @@ sealed class SmartSignal {
         val confidenceScore: Double,
         val firstSeenAt: Long,
         val lastSeenAt: Long,
+    ) : SmartSignal()
+
+    @Serializable
+    data class DeviceDetails(
+        val manufacturer: String? = null,
+        val model: String? = null,
+        val osVersion: String? = null,
     ) : SmartSignal()
 }
