@@ -33,6 +33,12 @@ class SmartSignalsBodyParser @Inject constructor(
                 clonedApp = root.flatBoolSignal("cloned_app", rawKey = "clonedApp") {
                     SmartSignal.ClonedApp(it)
                 },
+                compromisedDeviceIntegrity = root.flatBoolSignal(
+                    v4Key = "compromised_device_integrity",
+                    rawKey = "compromisedDeviceIntegrity",
+                ) {
+                    SmartSignal.CompromisedDeviceIntegrity(it)
+                },
                 emulator = root.flatBoolSignal("emulator", rawKey = "emulator") {
                     SmartSignal.Emulator(it)
                 },

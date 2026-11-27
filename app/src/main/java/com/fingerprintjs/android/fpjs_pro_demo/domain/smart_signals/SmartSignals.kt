@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonElement
 @Suppress("LongParameterList")
 class SmartSignals(
     val clonedApp: SmartSignalInfo<SmartSignal.ClonedApp>,
+    val compromisedDeviceIntegrity: SmartSignalInfo<SmartSignal.CompromisedDeviceIntegrity>,
     val emulator: SmartSignalInfo<SmartSignal.Emulator>,
     val factoryReset: SmartSignalInfo<SmartSignal.FactoryReset>,
     val frida: SmartSignalInfo<SmartSignal.Frida>,
@@ -54,6 +55,11 @@ sealed class SmartSignal {
     @Serializable
     data class ClonedApp(
         val result: Boolean
+    ) : SmartSignal()
+
+    @Serializable
+    data class CompromisedDeviceIntegrity(
+        val result: Boolean,
     ) : SmartSignal()
 
     @Serializable

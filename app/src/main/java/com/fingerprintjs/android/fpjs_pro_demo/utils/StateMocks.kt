@@ -35,6 +35,7 @@ class StateMocks @Inject constructor(
     val smartSignalsRawResponse = """
 {
     "cloned_app": false,
+    "compromised_device_integrity": false,
     "emulator": false,
     "factory_reset_timestamp": 1707144876,
     "frida": false,

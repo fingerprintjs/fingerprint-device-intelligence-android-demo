@@ -28,15 +28,18 @@ private val expectedJson = """
         "visitorId": "rVC74CiaXVZGVC69OBsP"
     },
     "smartSignals": {
+        "activeCall": false,
         "clonedApp": false,
+        "compromisedDeviceIntegrity": false,
+        "developerTools": false,
         "emulator": false,
         "factoryReset": {
             "time": "2024-02-05T14:54:36Z",
             "timestamp": 1707144876
         },
         "frida": false,
-        "highActivity": true,
         "locationSpoofing": false,
+        "highActivity": true,
         "rootApps": false,
         "vpn": {
             "vpn": true,
@@ -49,8 +52,7 @@ private val expectedJson = """
                 "auxiliary_mobile": false,
                 "relay": false
             }
-        },
-        "developerTools": false
+        }
     }
 }
 """.trimIndent()
